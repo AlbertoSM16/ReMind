@@ -1,0 +1,37 @@
+:root {
+    --azul-calma: #5a9bd4;
+    --naranja-suave: #f4b183;
+    --fondo-claro: #eaf6ff;
+  }
+  
+  body {
+    background-color: var(--fondo-claro);
+  }
+  
+  .login-card {
+    max-width: 400px;
+    margin: 0 auto;
+    border-radius: 12px;
+    background-color: white;
+  }
+  
+  .text-primary {
+    color: var(--azul-calma) !important;
+  }
+  
+  .btn-primary {
+    background-color: var(--azul-calma);
+    border-color: var(--azul-calma);
+  }
+  
+  .btn-primary:hover {
+    background-color: #4a8ac0;
+    border-color: #4a8ac0;
+  }
+  
+  .help-link {
+    color: var(--naranja-suave);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
