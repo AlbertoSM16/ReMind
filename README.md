@@ -17,3 +17,7 @@ El objetivo principal de Remind es ofrecer un espacio accesible, visualmente ami
 
 ## 🧩 Estructura del Proyecto
 
+Remind/
+├── front/ # Proyecto Angular
+├── back/ # Proyecto Spring Boot
+└── README.md
