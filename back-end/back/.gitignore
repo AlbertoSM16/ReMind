@@ -16,6 +16,9 @@ release.properties
 .DS_Store
 Thumbs.db
 
+#application.properties
+application.propierties
+
 # Archivos temporales de Java
 *.class
 *.jar

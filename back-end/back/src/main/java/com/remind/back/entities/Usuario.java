@@ -1,5 +1,7 @@
 package com.remind.back.entities;
 
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 public abstract class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +27,10 @@ public abstract class Usuario {
     private String contraseña;
     @NotBlank
     private String telefono;
-
+    @NotBlank
+    private String rol;
+    @NotBlank
+    private String usuario;
 
     public Usuario() {
     }
@@ -74,6 +80,22 @@ public abstract class Usuario {
     }
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
     
 }
