@@ -3,3 +3,11 @@ body {
     
     font-family: 'Roboto', sans-serif;
 }
+:root {
+  --background-color: #F5F5F5;
+  --button-color: #2C7A7B;
+  --card-color: #F0F0F0;
+  --text-color: #2D2D2D;
+  --link-color: #88BCA3;
+  --icon-color: #A0D8EF;
+}

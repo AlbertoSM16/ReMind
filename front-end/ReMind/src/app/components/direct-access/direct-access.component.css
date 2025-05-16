@@ -1,0 +1,9 @@
+.bg-color{
+    background-color: var(--background-color);
+}
+
+.agenda_logo{
+    width: 15%;
+    object-fit: contain;
+
+}

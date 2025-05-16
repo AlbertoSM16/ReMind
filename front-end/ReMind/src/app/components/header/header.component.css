@@ -1,0 +1,36 @@
+
+.header-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.logo {
+  width: 10%;
+  height: 10%;
+  object-fit: contain;
+}
+
+.logo_user {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+.left-icon, .right-icon {
+  position: absolute;
+  top: 50%;
+}
+
+.left-icon {
+  left: 10px;
+transform: translateY(-50%) translateX(-30%);
+
+}
+
+.right-icon {
+  right: 10px;
+transform: translateY(-50%) translateX(20%);
+}
