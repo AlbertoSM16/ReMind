@@ -13,9 +13,4 @@ import { CommonModule } from '@angular/common';
   imports: [HeaderComponent, NavComponent, DirectAccessComponent,ButtonModule,CommonModule]
 })
 export class HomeComponent {
-  @ViewChild(NavComponent) nav!: NavComponent;
-
-  openSidebar() {
-    this.nav.openDrawer();
-  }
 }

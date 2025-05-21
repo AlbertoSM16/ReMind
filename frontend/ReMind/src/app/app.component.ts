@@ -9,9 +9,10 @@ import { DrawerModule } from 'primeng/drawer';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { importProvidersFrom } from '@angular/core';
+import { NavComponent } from './components/nav/nav.component';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AuthComponent, LadingPageComponent, HomeComponent,SidebarModule, ButtonModule, DrawerModule],
+  imports: [RouterOutlet, AuthComponent, LadingPageComponent, HomeComponent, SidebarModule, ButtonModule, DrawerModule, NavComponent],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
