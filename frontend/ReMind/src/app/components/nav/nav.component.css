@@ -1,0 +1,19 @@
+.custom-sidebar {
+  background-color: var(--link-color);
+  color: var(--text-color);
+  width: 250px;
+  padding: 1rem;
+}
+
+/* Estilo para los enlaces */
+.custom-sidebar a {
+  display: block;
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 0.5rem 0;
+}
+
+.custom-sidebar a:hover {
+  background-color: var(--card-color);
+  border-radius: 0.25rem;
+}

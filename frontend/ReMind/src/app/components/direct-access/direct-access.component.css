@@ -1,0 +1,19 @@
+.bg-color {
+    background-color: var(--button-color);
+}
+
+.content {
+    margin-top: 10%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding-block: 5%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.icons {
+    display: flex;
+}
