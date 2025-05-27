@@ -78,3 +78,11 @@
 #menu-toggle:checked + .menu-btn span:nth-child(3) {
   transform: rotate(-45deg) translate(6px, -6px);
 }
+.floating-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0; /* invisible inicialmente, será expandido al abrir */
+  height: 100%;
+  z-index: 2000;
+}
