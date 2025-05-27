@@ -11,7 +11,7 @@
 }
 
 .card-button {
-    background-color: var(--card-color);
+    background-color: white;
     color: var(--text-color);
     padding: 5%;
     width: 100%;
