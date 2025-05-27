@@ -1,0 +1,15 @@
+.user {
+  font-size: 550%;
+  color:var(--text-color);
+  margin-top: 10%;
+  text-align: center;
+  margin-left:35%;
+}
+.buttons{
+  margin-top:10%;
+}
+.menu-button{
+  position:absolute;
+  margin-left: 5%;
+  margin-top: 15%;
+}

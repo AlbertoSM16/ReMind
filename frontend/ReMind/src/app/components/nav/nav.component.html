@@ -1,0 +1,17 @@
+<!-- Button to open drawer -->
+<div class="menu-button">
+  <button pButton type="button" (click)="visible = true" label="Menu" icon="pi pi-bars"></button>
+</div>
+<!-- The drawer -->
+<p-drawer [(visible)]="visible" [modal]="true" [position]="'left'" [style]="{'background-color':'var(--button-color)'}">
+  <i class="pi pi-user user mb-4 align-self-center"></i>
+  <p class="mb-5 fs-2 fw-semibold text-center">Usuario</p>
+  <div class="d-flex flex-column align-items-center buttons">
+    <p-button [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" label="Doctores" [rounded]="true" size="large"/>
+    <p-button [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" label="Pacientes" [rounded]="true" size="large"/>
+    <p-button [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" label="Agendas" [rounded]="true" size="large"/>
+    <p-button [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" label="Seguimiento" [rounded]="true" size="large"/>
+  </div>
+
+
+</p-drawer>

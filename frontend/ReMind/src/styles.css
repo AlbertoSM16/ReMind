@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --background-color: #F5F5F5;
+  --button-color: #2c7a7b;
+  --card-color: #F0F0F0;
+  --text-color: black;
+  --link-color: #88BCA3;
+  --icon-color: #A0D8EF;
+  
+}
+
+html, body { height: 100%; }
+
+body {
+    
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
+}

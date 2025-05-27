@@ -1,0 +1,29 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Montserrat:wght@700&display=swap');
+
+.logo {
+  width: 20%;
+  vertical-align: middle;
+
+}
+
+.logo-log {
+  width: 15%;
+  vertical-align: middle;
+
+}
+
+.slogan-linea1 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 400%;
+  font-weight: 600;
+  color: #000;
+  position: relative;
+}
+
+.slogan-linea2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 600%;
+  font-weight: 700;
+  color: #88bca3;
+}
