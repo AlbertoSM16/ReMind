@@ -9,8 +9,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data; // Import Lombok's Data annotation
+import lombok.NoArgsConstructor; // Import Lombok's NoArgsConstructor
+import lombok.AllArgsConstructor; // Import Lombok's AllArgsConstructor
+
 
 @Entity
+@Data // Generates getters, setters, toString, equals, and hashCode
+@NoArgsConstructor // Generates a no-argument constructor
+@AllArgsConstructor // Generates a constructor with all fields
 public class Juego {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,36 +31,4 @@ public class Juego {
 
     @OneToMany(mappedBy = "juego", cascade = CascadeType.ALL)
     private List<PacienteJuego> historialJugadores;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getInstrucciones() {
-        return instrucciones;
-    }
-
-    public void setInstrucciones(String instrucciones) {
-        this.instrucciones = instrucciones;
-    }
-
-    public List<PacienteJuego> getHistorialJugadores() {
-        return historialJugadores;
-    }
-
-    public void setHistorialJugadores(List<PacienteJuego> historialJugadores) {
-        this.historialJugadores = historialJugadores;
-    }
 }

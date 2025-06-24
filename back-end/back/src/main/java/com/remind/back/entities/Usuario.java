@@ -9,10 +9,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor; // This might need adjustment if you have specific constructor needs
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
+@Data
+@NoArgsConstructor
+// AllArgsConstructor might be problematic for abstract classes or with specific constructor logic.
+// Consider generating constructors manually or using @Builder if you need more control.
+// For this example, I'll keep it, but be aware of potential issues depending on usage.
+@AllArgsConstructor
 public abstract class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +36,10 @@ public abstract class Usuario {
     private String contraseña;
     @NotBlank
     private String telefono;
-    @NotBlank
+    
     private String rol;
-    @NotBlank
     private String usuario;
-
-    public Usuario() {
-    }
+    private TipoUsuario tipo;    // ADMINISTRADOR | TERAPEUTA | PACIENTE
 
     public Usuario(int id, @NotBlank String nombre, @NotBlank String apellido, @NotBlank String email,
             @NotBlank String contraseña, @NotBlank String telefono) {
@@ -44,58 +50,4 @@ public abstract class Usuario {
         this.contraseña = contraseña;
         this.telefono = telefono;
     }
-    
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    public String getApellido() {
-        return apellido;
-    }
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getContraseña() {
-        return contraseña;
-    }
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
-    public String getTelefono() {
-        return telefono;
-    }
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-    
 }

@@ -6,7 +6,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Entity; // Add @Entity annotation
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
+
+@Entity // Make sure it's an entity for JPA
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PacienteJuego {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,45 +31,5 @@ public class PacienteJuego {
 
     private Boolean realizado;
 
-    private LocalDateTime fecha = LocalDateTime.now();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public Juego getJuego() {
-        return juego;
-    }
-
-    public void setJuego(Juego juego) {
-        this.juego = juego;
-    }
-
-    public Boolean getRealizado() {
-        return realizado;
-    }
-
-    public void setRealizado(Boolean realizado) {
-        this.realizado = realizado;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
-    }
+    private LocalDateTime fecha = LocalDateTime.now(); // Keep initialization here if it's a default value
 }

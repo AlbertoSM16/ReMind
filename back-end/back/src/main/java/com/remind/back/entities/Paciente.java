@@ -10,10 +10,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
-import com.remind.back.entities.PacienteJuego;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true) // Include superclass fields in equals and hashCode
 @DiscriminatorValue("PACIENTE")
 @Entity
+@Data
+@NoArgsConstructor
 public class Paciente extends Usuario {
 
     @NotBlank
@@ -35,10 +40,6 @@ public class Paciente extends Usuario {
     @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
     private Agenda agenda;
 
-    public Paciente() {
-        super();
-    }
-
     public Paciente(int id, @NotBlank String nombre, @NotBlank String apellido, @NotBlank String email,
             @NotBlank String contraseña, @NotBlank String telefono, @NotBlank String enfermedad, @NotBlank String edad,
             @NotBlank String nombreResponsable, Terapeuta terapeuta) {
@@ -47,46 +48,6 @@ public class Paciente extends Usuario {
         this.edad = edad;
         this.nombreResponsable = nombreResponsable;
         this.terapeuta = terapeuta;
+        setTipo(TipoUsuario.PACIENTE);
     }
-
-    public String getEnfermedad() {
-        return enfermedad;
-    }
-
-    public void setEnfermedad(String enfermedad) {
-        this.enfermedad = enfermedad;
-    }
-
-    public String getEdad() {
-        return edad;
-    }
-
-    public void setEdad(String edad) {
-        this.edad = edad;
-    }
-
-    public String getNombreResponsable() {
-        return nombreResponsable;
-    }
-
-    public void setNombreResponsable(String nombreResponsable) {
-        this.nombreResponsable = nombreResponsable;
-    }
-
-    public Terapeuta getTerapeuta() {
-        return terapeuta;
-    }
-
-    public void setTerapeuta(Terapeuta terapeuta) {
-        this.terapeuta = terapeuta;
-    }
-
-    public List<PacienteJuego> getJuegosRealizados() {
-        return juegosRealizados;
-    }
-
-    public void setJuegosRealizados(List<PacienteJuego> juegosRealizados) {
-        this.juegosRealizados = juegosRealizados;
-    }
-
 }

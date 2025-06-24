@@ -9,6 +9,9 @@ import com.remind.back.entities.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-    Optional<Usuario> findByUsuario(String email);
+    Optional<Usuario> findById(Integer id);
+    Optional<Usuario> findByEmail(String email);
+    
+    
 }
 

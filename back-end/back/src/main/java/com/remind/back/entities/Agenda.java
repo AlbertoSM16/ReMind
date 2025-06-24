@@ -9,9 +9,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Agenda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,45 +35,4 @@ public class Agenda {
     @OneToOne
     @JoinColumn(name = "paciente_id", unique = true)
     private Paciente paciente;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public int getNumeroJuegos() {
-        return numeroJuegos;
-    }
-
-    public void setNumeroJuegos(int numeroJuegos) {
-        this.numeroJuegos = numeroJuegos;
-    }
-
-    public Terapeuta getTerapeuta() {
-        return terapeuta;
-    }
-
-    public void setTerapeuta(Terapeuta terapeuta) {
-        this.terapeuta = terapeuta;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
 }
