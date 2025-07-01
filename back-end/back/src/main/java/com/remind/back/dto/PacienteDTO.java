@@ -1,14 +1,15 @@
 package com.remind.back.dto;
 
+import com.remind.back.entities.Terapeuta;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.Data; 
+import lombok.NoArgsConstructor; 
+import lombok.AllArgsConstructor; 
 
-@Data
-@NoArgsConstructor
+@Data 
+@NoArgsConstructor 
 @AllArgsConstructor 
 public class PacienteDTO {
 
@@ -37,5 +38,5 @@ public class PacienteDTO {
     private String nombreResponsable;
 
     @NotNull(message = "El ID del terapeuta no puede ser nulo")
-    private Integer terapeutaId; 
+    private Terapeuta terapeutaId; 
 }

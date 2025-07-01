@@ -9,15 +9,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data; // Import Lombok's Data annotation
-import lombok.NoArgsConstructor; // Import Lombok's NoArgsConstructor
-import lombok.AllArgsConstructor; // Import Lombok's AllArgsConstructor
-
+import lombok.Data; 
+import lombok.NoArgsConstructor; 
+import lombok.AllArgsConstructor; 
 
 @Entity
-@Data // Generates getters, setters, toString, equals, and hashCode
-@NoArgsConstructor // Generates a no-argument constructor
-@AllArgsConstructor // Generates a constructor with all fields
+@Data 
+@NoArgsConstructor 
+@AllArgsConstructor 
 public class Juego {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -30,10 +30,6 @@ public class Paciente extends Usuario {
     @NotBlank
     private String nombreResponsable;
 
-    @ManyToOne
-    @JoinColumn(name = "terapeuta_id")
-    private Terapeuta terapeuta;
-
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<PacienteJuego> juegosRealizados;
 
@@ -47,7 +43,6 @@ public class Paciente extends Usuario {
         this.enfermedad = enfermedad;
         this.edad = edad;
         this.nombreResponsable = nombreResponsable;
-        this.terapeuta = terapeuta;
         setTipo(TipoUsuario.PACIENTE);
     }
 }
