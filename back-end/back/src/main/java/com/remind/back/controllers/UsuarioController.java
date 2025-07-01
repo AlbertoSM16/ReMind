@@ -14,6 +14,4 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/usuario")
 public class UsuarioController {
 
-     @Autowired
-    private  service;
 }
