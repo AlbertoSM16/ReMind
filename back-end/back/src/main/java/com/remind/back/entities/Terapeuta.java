@@ -14,4 +14,6 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 public class Terapeuta extends Usuario {
 
+    String especialidad;
+    
 }

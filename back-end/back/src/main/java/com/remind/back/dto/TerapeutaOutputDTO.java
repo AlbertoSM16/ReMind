@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor; 
 
@@ -12,8 +13,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor 
 
 //para mostrar solo los datos necesarios
-public class PacienteOutputDTO {
-
+public class TerapeutaOutputDTO {
     private String nombre;
 
     private String apellido;
@@ -22,13 +22,9 @@ public class PacienteOutputDTO {
 
     private String telefono;
 
-    private String enfermedad;
-
-    private String edad;
-
-    private String nombreResponsable;
-
     private Date fechaNacimiento;
 
-    private Integer terapeutaId; 
+    private String especialidad;
+
+    private List<Integer> pacientesId;
 }

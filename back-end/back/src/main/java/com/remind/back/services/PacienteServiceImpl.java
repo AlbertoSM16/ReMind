@@ -1,7 +1,6 @@
 package com.remind.back.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.remind.back.Mapper.PacienteMapper;
 import com.remind.back.dto.PacienteInputDTO;
@@ -35,6 +34,7 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PacienteOutputDTO> getAllPacientes(int page,int size) {
         List<Paciente> pacientes = pacienteRepository.findAll(PageRequest.of(page,size)).getContent();
         return pacienteRepository.findAll(PageRequest.of(page,size))
@@ -85,7 +85,6 @@ public class PacienteServiceImpl implements PacienteService {
         if(pacienteDTO.getEmail() != null){
             paciente.setEmail(pacienteDTO.getEmail());
         }
-        
         if(pacienteDTO.getFechaNacimiento() != null){
             paciente.setFechaNacimiento(pacienteDTO.getFechaNacimiento());
         }

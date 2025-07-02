@@ -18,23 +18,3 @@ public interface PacienteService {
 
     PacienteOutputDTO updatePaciente(Integer id, PacienteInputDTO pacienteDTO);
 }
-/*
-
-        @Override
-        public PersonOutputDto updatePerson(Long id, PersonInputDto personInputDto) {
-            Person person = personRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Person not found"));
-
-            if (personInputDto.getName() != null) {
-                person.setName(personInputDto.getName());
-            }
-
-            if (personInputDto.getCity() != null) {
-                person.setCity(personInputDto.getCity());
-            }
-
-            return personMapper.personToPersonOutputDto(personRepository.save(person));
-        }
-
-
-} */

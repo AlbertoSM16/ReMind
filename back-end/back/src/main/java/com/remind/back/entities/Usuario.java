@@ -43,7 +43,7 @@ public abstract class Usuario {
 
     private String rol;
     private String usuario;
-    private TipoUsuario tipo;    // ADMINISTRADOR | TERAPEUTA | PACIENTE
+    private TipoUsuario tipo;
 
     public Usuario(int id, @NotBlank String nombre, @NotBlank String apellido, @NotBlank String email,
             @NotBlank String contraseña, @NotBlank String telefono) {

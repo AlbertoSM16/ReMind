@@ -2,7 +2,6 @@ package com.remind.back.dto;
 
 import java.util.Date;
 
-import com.remind.back.entities.Terapeuta;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
