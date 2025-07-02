@@ -1,5 +1,7 @@
 package com.remind.back.dto;
 
+import java.util.Date;
+
 import com.remind.back.entities.Terapeuta;
 
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +13,9 @@ import lombok.AllArgsConstructor;
 @Data 
 @NoArgsConstructor 
 @AllArgsConstructor 
-public class PacienteDTO {
+
+//esta clase sirve para crear pacientes 
+public class PacienteInputDTO {
 
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
@@ -37,6 +41,9 @@ public class PacienteDTO {
     @NotBlank(message = "El nombre del responsable no puede estar vacío")
     private String nombreResponsable;
 
+    @NotNull(message = "La fecha de nacimiento no puede estar vacía")
+    private Date fechaNacimiento;
+    
     @NotNull(message = "El ID del terapeuta no puede ser nulo")
-    private Terapeuta terapeutaId; 
+    private Integer terapeutaId; 
 }

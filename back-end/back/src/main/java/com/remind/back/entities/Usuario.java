@@ -1,5 +1,7 @@
 package com.remind.back.entities;
 
+import java.util.Date;
+
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
@@ -36,7 +38,9 @@ public abstract class Usuario {
     private String contraseña;
     @NotBlank
     private String telefono;
-    
+    @NotBlank
+    private Date fechaNacimiento;
+
     private String rol;
     private String usuario;
     private TipoUsuario tipo;    // ADMINISTRADOR | TERAPEUTA | PACIENTE

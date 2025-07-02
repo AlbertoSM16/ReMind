@@ -29,7 +29,8 @@ public class Paciente extends Usuario {
 
     @NotBlank
     private String nombreResponsable;
-
+    
+//añadir las relaciones
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<PacienteJuego> juegosRealizados;
 

@@ -1,20 +1,40 @@
 package com.remind.back.services;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.remind.back.dto.PacienteDTO;
-import com.remind.back.entities.Paciente;
+import com.remind.back.dto.PacienteInputDTO;
+import com.remind.back.dto.PacienteOutputDTO;
+
 
 public interface PacienteService {
 
-    Paciente createPaciente(PacienteDTO pacienteDTO);
+    PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO);
 
-    Optional<Paciente> getPacienteById(Integer id);
+    PacienteOutputDTO getPacienteById(Integer id);
 
-    List<Paciente> getAllPacientes();
+    List<PacienteOutputDTO> getAllPacientes(int page,int size);
 
     void deletePaciente(Integer id);
 
-    void updatePaciente(Integer id, PacienteDTO pacienteDTO);
+    PacienteOutputDTO updatePaciente(Integer id, PacienteInputDTO pacienteDTO);
 }
+/*
+
+        @Override
+        public PersonOutputDto updatePerson(Long id, PersonInputDto personInputDto) {
+            Person person = personRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Person not found"));
+
+            if (personInputDto.getName() != null) {
+                person.setName(personInputDto.getName());
+            }
+
+            if (personInputDto.getCity() != null) {
+                person.setCity(personInputDto.getCity());
+            }
+
+            return personMapper.personToPersonOutputDto(personRepository.save(person));
+        }
+
+
+} */

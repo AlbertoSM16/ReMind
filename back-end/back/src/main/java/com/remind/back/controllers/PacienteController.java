@@ -13,10 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.remind.back.dto.PacienteDTO;
+import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.entities.Paciente;
 import com.remind.back.entities.Terapeuta;
 import com.remind.back.services.PacienteService;
@@ -59,7 +60,7 @@ public class PacienteController {
             @RequestParam("nombreResponsable") String nombreResponsable,
             @RequestParam("terapeutaId") Terapeuta terapeutaId) {
         try {
-            PacienteDTO paciente = new PacienteDTO(nombre, apellido, email, contraseña, telefono, enfermedad, edad,
+            PacienteInputDTO paciente = new PacienteInputDTO(nombre, apellido, email, contraseña, telefono, enfermedad, edad,
                     nombreResponsable, terapeutaId);
             Paciente createdPaciente = pacienteService.createPaciente(paciente);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPaciente);
