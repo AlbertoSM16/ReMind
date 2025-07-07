@@ -5,8 +5,6 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +23,7 @@ public class Paciente extends Usuario {
     private String enfermedad;
 
     @NotBlank
-    private String edad;
+    private Integer edad;
 
     @NotBlank
     private String nombreResponsable;
@@ -38,7 +36,7 @@ public class Paciente extends Usuario {
     private Agenda agenda;
 
     public Paciente(int id, @NotBlank String nombre, @NotBlank String apellido, @NotBlank String email,
-            @NotBlank String contraseña, @NotBlank String telefono, @NotBlank String enfermedad, @NotBlank String edad,
+            @NotBlank String contraseña, @NotBlank String telefono, @NotBlank String enfermedad, @NotBlank Integer edad,
             @NotBlank String nombreResponsable, Terapeuta terapeuta) {
         super(id, nombre, apellido, email, contraseña, telefono);
         this.enfermedad = enfermedad;

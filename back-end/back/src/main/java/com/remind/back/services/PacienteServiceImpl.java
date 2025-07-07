@@ -6,8 +6,11 @@ import com.remind.back.Mapper.PacienteMapper;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
 import com.remind.back.entities.Paciente;
-
+import com.remind.back.entities.PacienteTerapeuta;
+import com.remind.back.entities.Terapeuta;
 import com.remind.back.repositories.PacienteRepository;
+import com.remind.back.repositories.PacienteTerapeutaRepository;
+import com.remind.back.repositories.TerapeutaRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 import java.util.NoSuchElementException;
@@ -24,12 +27,33 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Autowired
     private PacienteMapper pacienteMapper;
+    @Autowired
+    private TerapeutaRepository terapeutaRepository;
+
+    @Autowired
+    private PacienteTerapeutaRepository pacienteTerapeutaRepository;
+
 
     @Override
     @Transactional
     public PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
     
         Paciente paciente = pacienteMapper.PacienteInputDTOToPaciente(pacienteInputDTO);
+        Paciente savedPaciente = pacienteRepository.save(paciente);
+
+         Integer terapeutaId = pacienteInputDTO.getTerapeutaId();
+        if (terapeutaId != null) {
+
+            Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
+                .orElseThrow(() -> new NoSuchElementException("Terapeuta with ID " + terapeutaId + " not found."));
+            
+            PacienteTerapeuta pacienteTerapeuta = new PacienteTerapeuta();
+            pacienteTerapeuta.setPacienteId(savedPaciente.getId()); 
+            pacienteTerapeuta.setPacienteId(terapeutaId); 
+            pacienteTerapeuta.setTerapeutaId(terapeutaId);; 
+            pacienteTerapeutaRepository.save(pacienteTerapeuta); 
+        }
+
         return pacienteMapper.PacienteToPacienteOutputDTO(pacienteRepository.save(paciente));
     }
 

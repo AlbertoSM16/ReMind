@@ -27,7 +27,7 @@ public class PacienteTerapeuta {
     
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "terapeuta_id", nullable = false) 
-    private Terapeuta terapeuta;
+    private Integer terapeutaId;
 }
 
 
