@@ -82,6 +82,7 @@ public class PacienteServiceImpl implements PacienteService {
         if(!pacienteRepository.existsById(id)){
             throw new NoSuchElementException("No existe un paciente con ese id y no se puede eliminar");
         }
+        pacienteTerapeutaRepository.deleteById(id);
         pacienteRepository.deleteById(id);
     }
 
