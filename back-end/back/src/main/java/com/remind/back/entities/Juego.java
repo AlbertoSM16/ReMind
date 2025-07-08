@@ -1,13 +1,10 @@
 package com.remind.back.entities;
 
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data; 
 import lombok.NoArgsConstructor; 
@@ -28,6 +25,4 @@ public class Juego {
     @NotBlank
     private String instrucciones;
 
-    @OneToMany(mappedBy = "juego", cascade = CascadeType.ALL)
-    private List<PacienteJuego> historialJugadores;
 }

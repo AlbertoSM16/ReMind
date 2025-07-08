@@ -32,7 +32,4 @@ public class Agenda {
     @JoinColumn(name = "terapeuta_id", nullable = false)
     private Terapeuta terapeuta;
 
-    @OneToOne
-    @JoinColumn(name = "paciente_id", unique = true)
-    private Paciente paciente;
 }

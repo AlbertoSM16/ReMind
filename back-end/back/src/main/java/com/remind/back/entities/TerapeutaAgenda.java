@@ -1,33 +1,30 @@
 package com.remind.back.entities;
 
-
-import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import lombok.Data; 
 import lombok.NoArgsConstructor; 
 import lombok.AllArgsConstructor; 
 
-@Entity
+
 @Data 
 @NoArgsConstructor 
 @AllArgsConstructor 
-public class PacienteTerapeuta {
+public class TerapeutaAgenda {
 
     @Id
-    private Integer pacienteId;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId // Esto le dice a JPA que la PK de esta entidad (pacienteId)
-            // es también una FK que apunta a la PK de Paciente.
-    @JoinColumn(name = "paciente_id")
-    private Paciente paciente;
+    @Column(name = "id")
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "terapeuta_id", nullable = false) 
-    private Terapeuta terapeuta;
+    private Integer terapeutaId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agenda_id", nullable = false) 
+    private Integer agendaId;
 }

@@ -35,7 +35,7 @@ public abstract class Usuario {
     @NotBlank
     private String email;
     @NotBlank
-    private String contraseña;
+    private String contrasenia;
     @NotBlank
     private String telefono;
     @NotBlank
@@ -46,12 +46,12 @@ public abstract class Usuario {
     private TipoUsuario tipo;
 
     public Usuario(int id, @NotBlank String nombre, @NotBlank String apellido, @NotBlank String email,
-            @NotBlank String contraseña, @NotBlank String telefono) {
+            @NotBlank String contrasenia, @NotBlank String telefono) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
-        this.contraseña = contraseña;
+        this.contrasenia = contrasenia;
         this.telefono = telefono;
     }
 }

@@ -8,6 +8,7 @@ import com.remind.back.dto.PacienteOutputDTO;
 import com.remind.back.entities.Paciente;
 import com.remind.back.entities.PacienteTerapeuta;
 import com.remind.back.entities.Terapeuta;
+import com.remind.back.entities.TipoUsuario;
 import com.remind.back.repositories.PacienteRepository;
 import com.remind.back.repositories.PacienteTerapeutaRepository;
 import com.remind.back.repositories.TerapeutaRepository;
@@ -29,32 +30,29 @@ public class PacienteServiceImpl implements PacienteService {
     private PacienteMapper pacienteMapper;
     @Autowired
     private TerapeutaRepository terapeutaRepository;
-
     @Autowired
     private PacienteTerapeutaRepository pacienteTerapeutaRepository;
-
 
     @Override
     @Transactional
     public PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
     
         Paciente paciente = pacienteMapper.PacienteInputDTOToPaciente(pacienteInputDTO);
+
+        paciente.setTipo(TipoUsuario.PACIENTE);
+        paciente.setRol("PACIENTE"); 
         Paciente savedPaciente = pacienteRepository.save(paciente);
 
-         Integer terapeutaId = pacienteInputDTO.getTerapeutaId();
+        Integer terapeutaId = pacienteInputDTO.getTerapeutaId();
         if (terapeutaId != null) {
-
             Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
                 .orElseThrow(() -> new NoSuchElementException("Terapeuta with ID " + terapeutaId + " not found."));
             
-            PacienteTerapeuta pacienteTerapeuta = new PacienteTerapeuta();
-            pacienteTerapeuta.setPacienteId(savedPaciente.getId()); 
-            pacienteTerapeuta.setPacienteId(terapeutaId); 
-            pacienteTerapeuta.setTerapeutaId(terapeutaId);; 
-            pacienteTerapeutaRepository.save(pacienteTerapeuta); 
+            PacienteTerapeuta pacienteTerapeuta = new PacienteTerapeuta(savedPaciente.getId(), savedPaciente, terapeuta);
+            pacienteTerapeutaRepository.save(pacienteTerapeuta);
         }
 
-        return pacienteMapper.PacienteToPacienteOutputDTO(pacienteRepository.save(paciente));
+        return pacienteMapper.PacienteToPacienteOutputDTO(savedPaciente);
     }
 
     @Override
@@ -82,7 +80,6 @@ public class PacienteServiceImpl implements PacienteService {
         if(!pacienteRepository.existsById(id)){
             throw new NoSuchElementException("No existe un paciente con ese id y no se puede eliminar");
         }
-        pacienteTerapeutaRepository.deleteById(id);
         pacienteRepository.deleteById(id);
     }
 
@@ -112,6 +109,16 @@ public class PacienteServiceImpl implements PacienteService {
         }
         if(pacienteDTO.getFechaNacimiento() != null){
             paciente.setFechaNacimiento(pacienteDTO.getFechaNacimiento());
+        }
+        if (pacienteDTO.getTerapeutaId() != null) {
+            Terapeuta terapeuta = terapeutaRepository.findById(pacienteDTO.getTerapeutaId())
+                .orElseThrow(() -> new NoSuchElementException("Terapeuta with ID " + pacienteDTO.getTerapeutaId() + " not found."));
+
+            PacienteTerapeuta pacienteTerapeuta = pacienteTerapeutaRepository.findByPacienteId(id)
+                .orElse(new PacienteTerapeuta(id, paciente, null));
+            
+            pacienteTerapeuta.setTerapeuta(terapeuta);
+            pacienteTerapeutaRepository.save(pacienteTerapeuta);
         }
         
         return pacienteMapper.PacienteToPacienteOutputDTO(pacienteRepository.save(paciente));
