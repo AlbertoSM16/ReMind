@@ -13,16 +13,13 @@ import jakarta.persistence.InheritanceType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor; // This might need adjustment if you have specific constructor needs
+import lombok.AllArgsConstructor; 
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 @Data
 @NoArgsConstructor
-// AllArgsConstructor might be problematic for abstract classes or with specific constructor logic.
-// Consider generating constructors manually or using @Builder if you need more control.
-// For this example, I'll keep it, but be aware of potential issues depending on usage.
 @AllArgsConstructor
 public abstract class Usuario {
     @Id
