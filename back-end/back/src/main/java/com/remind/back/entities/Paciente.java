@@ -1,44 +1,54 @@
 package com.remind.back.entities;
 
+import java.util.Date;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("PACIENTE")
 @Entity
 @Data
 @NoArgsConstructor
-public class Paciente extends Usuario {
+public class Paciente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @NotBlank
+    private String nombre;
+
+    @NotBlank
+    private String apellido;
+
+    @NotBlank
+    private String email;
+
+    @NotBlank
+    private String contrasenia;
+
+    @NotBlank
+    private String telefono;
+
+    @NotNull
+    private Date fechaNacimiento;
+
+    private String usuario;
 
     @NotBlank
     private String enfermedad;
 
-    @NotBlank
+    @NotNull
     private Integer edad;
 
     @NotBlank
     private String nombreResponsable;
-    
-    @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private Agenda agenda;
 
-    @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private PacienteTerapeuta pacienteTerapeuta;
-
-    public Paciente(int id, @NotBlank String nombre, @NotBlank String apellido, @NotBlank String email,
-            @NotBlank String contraseña, @NotBlank String telefono, @NotBlank String enfermedad, @NotBlank Integer edad,
-            @NotBlank String nombreResponsable) {
-        super(id, nombre, apellido, email, contraseña, telefono);
-        this.enfermedad = enfermedad;
-        this.edad = edad;
-        this.nombreResponsable = nombreResponsable;
-        setTipo(TipoUsuario.PACIENTE);
-    }
 }

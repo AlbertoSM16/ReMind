@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
-import com.remind.back.entities.Terapeuta;
 import com.remind.back.services.PacienteService;
 
 @RestController

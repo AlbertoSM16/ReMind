@@ -25,11 +25,11 @@ public class JuegoAgenda {
 
     @ManyToOne
     @JoinColumn(name = "juego_id")
-    private Integer juego;
+    private Juego juego;
 
     @ManyToOne
     @JoinColumn(name = "agenda_id")
-    private Integer agenda;
+    private Agenda agenda;
 
     private LocalDateTime fechaAsignacion = LocalDateTime.now();
 

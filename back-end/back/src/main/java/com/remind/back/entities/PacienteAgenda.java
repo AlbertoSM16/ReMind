@@ -23,11 +23,11 @@ public class PacienteAgenda {
 
     @ManyToOne
     @JoinColumn(name = "paciente_id")
-    private Integer paciente;
+    private Paciente paciente;
 
     @ManyToOne
     @JoinColumn(name = "agenda_id")
-    private Integer Agenda;
+    private Agenda Agenda;
 
     private LocalDateTime fecha = LocalDateTime.now();
 }

@@ -27,8 +27,6 @@ public class AdministradorServiceImpl implements AdministradorService {
     @Transactional
     public AdministradorOutputDTO createAdministrador(AdministradorInputDTO administradorInputDTO) {
         Administrador administrador = administradorMapper.AdministradorInputDTOToAdministrador(administradorInputDTO);
-        administrador.setTipo(TipoUsuario.ADMINISTRADOR);
-        administrador.setRol("ADMINISTRADOR");
         return administradorMapper.AdministradorToAdministradorOutputDTO(administradorRepository.save(administrador));
     }
 

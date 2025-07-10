@@ -38,9 +38,7 @@ public class PacienteServiceImpl implements PacienteService {
     public PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
     
         Paciente paciente = pacienteMapper.PacienteInputDTOToPaciente(pacienteInputDTO);
-
-        paciente.setTipo(TipoUsuario.PACIENTE);
-        paciente.setRol("PACIENTE"); 
+         
         Paciente savedPaciente = pacienteRepository.save(paciente);
 
         Integer terapeutaId = pacienteInputDTO.getTerapeutaId();

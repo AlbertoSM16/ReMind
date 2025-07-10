@@ -25,4 +25,6 @@ public class Juego {
     @NotBlank
     private String instrucciones;
 
+    @NotBlank
+    private String codigo;
 }

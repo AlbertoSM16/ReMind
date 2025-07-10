@@ -12,6 +12,5 @@ public interface PacienteMapper {
 
     Paciente PacienteInputDTOToPaciente(PacienteInputDTO paciente);
 
-    @Mapping(source = "pacienteTerapeuta.terapeuta.id", target = "terapeutaId")
     PacienteOutputDTO PacienteToPacienteOutputDTO(Paciente paciente);
 }

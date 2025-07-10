@@ -29,8 +29,6 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     @Transactional
     public TerapeutaOutputDTO createTerapeuta(TerapeutaInputDTO terapeutaInputDTO){
         Terapeuta terapeuta = terapeutaMapper.TerapeutaInputDTOToTerapeuta(terapeutaInputDTO);
-        terapeuta.setTipo(TipoUsuario.TERAPEUTA);
-        terapeuta.setRol("TERAPEUTA");
 
         return terapeutaMapper.TerapeutaToTerapeutaOutputDTO(terapeutaRepository.save(terapeuta));
     }
