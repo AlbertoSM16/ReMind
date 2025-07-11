@@ -2,10 +2,13 @@ package com.remind.back.entities;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -50,5 +53,6 @@ public class Paciente {
     private String nombreResponsable;
     
     private TipoUsuario rol = TipoUsuario.PACIENTE;
-
+     @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private PacienteTerapeuta pacienteTerapeuta;
 }
