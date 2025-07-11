@@ -24,7 +24,7 @@ public class PacienteOutputDTO {
 
     private String enfermedad;
 
-    private String edad;
+    private Integer edad;
 
     private String nombreResponsable;
 

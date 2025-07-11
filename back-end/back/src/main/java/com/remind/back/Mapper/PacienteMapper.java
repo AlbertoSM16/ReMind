@@ -1,7 +1,7 @@
 package com.remind.back.Mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.Mapping; 
 
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
@@ -13,4 +13,6 @@ public interface PacienteMapper {
     Paciente PacienteInputDTOToPaciente(PacienteInputDTO paciente);
 
     PacienteOutputDTO PacienteToPacienteOutputDTO(Paciente paciente);
+
+ 
 }
