@@ -4,6 +4,8 @@ import java.util.Date;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -51,8 +53,8 @@ public class Paciente {
 
     @NotBlank
     private String nombreResponsable;
-    
+    @Enumerated(EnumType.STRING)
     private TipoUsuario rol = TipoUsuario.PACIENTE;
-     @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PacienteTerapeuta pacienteTerapeuta;
 }
