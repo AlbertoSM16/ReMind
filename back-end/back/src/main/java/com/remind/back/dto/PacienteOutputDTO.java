@@ -24,11 +24,13 @@ public class PacienteOutputDTO {
 
     private String enfermedad;
 
+    private String usuario;
+
     private Integer edad;
 
     private String nombreResponsable;
 
     private Date fechaNacimiento;
 
-    private Integer terapeutaId; 
+    private Integer terapeuta_id; 
 }

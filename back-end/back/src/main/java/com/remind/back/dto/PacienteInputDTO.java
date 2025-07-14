@@ -2,18 +2,17 @@ package com.remind.back.dto;
 
 import java.util.Date;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data; 
-import lombok.NoArgsConstructor; 
-import lombok.AllArgsConstructor; 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
-@Data 
-@NoArgsConstructor 
-@AllArgsConstructor 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 
-//esta clase sirve para crear pacientes 
+// esta clase sirve para crear pacientes
 public class PacienteInputDTO {
 
     @NotBlank(message = "El nombre no puede estar vacío")
@@ -24,6 +23,9 @@ public class PacienteInputDTO {
 
     @NotBlank(message = "El email no puede estar vacío")
     private String email;
+
+    @NotBlank(message = "El usuario no puede estar vacío")
+    private String usuario;
 
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String contrasenia;
@@ -42,7 +44,7 @@ public class PacienteInputDTO {
 
     @NotNull(message = "La fecha de nacimiento no puede estar vacía")
     private Date fechaNacimiento;
-    
+
     @NotNull(message = "El ID del terapeuta no puede ser nulo")
-    private Integer terapeuta_id; 
+    private Integer terapeuta_id;
 }

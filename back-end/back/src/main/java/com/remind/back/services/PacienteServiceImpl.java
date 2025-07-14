@@ -42,21 +42,26 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Override
     @Transactional
-    public PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
-    
+     public PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
+
         Paciente paciente = pacienteMapper.PacienteInputDTOToPaciente(pacienteInputDTO);
-         
-        Paciente savedPaciente = pacienteRepository.save(paciente);
+
+        Paciente savedPaciente = pacienteRepository.save(paciente); // Save the patient first to get an ID
 
         Integer terapeutaId = pacienteInputDTO.getTerapeuta_id();
+
         if (terapeutaId != null) {
             Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
                 .orElseThrow(() -> new NoSuchElementException("Terapeuta with ID " + terapeutaId + " not found."));
-            PacienteTerapeutaInputDTO pacienteTerapeutaInputDTO = new PacienteTerapeutaInputDTO(paciente.getId(),terapeuta.getId());
-            PacienteTerapeuta pacienteTerapeuta = pacienteTerapeutaMapper.PacienteTerapeutaInputDTOToPacienteTerapeuta(pacienteTerapeutaInputDTO);
+
+            // Create PacienteTerapeuta entity directly, setting the Paciente and Terapeuta objects
+            PacienteTerapeuta pacienteTerapeuta = new PacienteTerapeuta();
+            pacienteTerapeuta.setPaciente(savedPaciente); // Set the actual Paciente object
+            pacienteTerapeuta.setTerapeuta(terapeuta); // Set the actual Terapeuta object
+
             pacienteTerapeutaRepository.save(pacienteTerapeuta);
         }
-
+      
         return pacienteMapper.PacienteToPacienteOutputDTO(savedPaciente);
     }
 

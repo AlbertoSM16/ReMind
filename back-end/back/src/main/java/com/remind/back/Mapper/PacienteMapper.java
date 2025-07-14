@@ -14,7 +14,7 @@ public interface PacienteMapper {
 
     Paciente PacienteInputDTOToPaciente(PacienteInputDTO paciente);
 
-    @Mapping(source = "pacienteTerapeuta.terapeuta.id", target = "terapeutaId") // <--- AÑADIDO ESTE MAPEADO
+    @Mapping(source = "pacienteTerapeuta.terapeuta.id", target = "terapeuta_id") // <--- AÑADIDO ESTE MAPEADO
     PacienteOutputDTO PacienteToPacienteOutputDTO(Paciente paciente);
 
 }
