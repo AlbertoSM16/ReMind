@@ -62,7 +62,7 @@ public class PacienteController {
 
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePaciente(@PathVariable Integer id) {
         try {
             pacienteService.deletePaciente(id);
@@ -72,8 +72,8 @@ public class PacienteController {
         }
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<?> updatePaciente(@PathVariable Integer id,@RequestParam("pacienteDTO")PacienteInputDTO pacienteInputDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePaciente(@PathVariable Integer id, @RequestParam("pacienteDTO")PacienteInputDTO pacienteInputDTO) {
         try {
             pacienteService.updatePaciente(id, pacienteInputDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Los datos el paciente han sido modificados");
