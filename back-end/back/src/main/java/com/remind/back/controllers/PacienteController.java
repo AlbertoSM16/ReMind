@@ -63,7 +63,7 @@ public class PacienteController {
     }
 
     @DeleteMapping("/id")
-    public ResponseEntity<?> deletePaciente(@RequestParam("id") Integer id) {
+    public ResponseEntity<?> deletePaciente(@PathVariable Integer id) {
         try {
             pacienteService.deletePaciente(id);
             return ResponseEntity.status(HttpStatus.OK).body("El paciente ha sido eliminado de la base de datos");
@@ -73,11 +73,11 @@ public class PacienteController {
     }
 
     @PutMapping("/id")
-    public ResponseEntity<?> updatePaciente(@RequestParam("id") Integer id,@RequestParam("pacienteDTO")PacienteInputDTO pacienteInputDTO) {
+    public ResponseEntity<?> updatePaciente(@PathVariable Integer id,@RequestParam("pacienteDTO")PacienteInputDTO pacienteInputDTO) {
         try {
             pacienteService.updatePaciente(id, pacienteInputDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Los datos el paciente han sido modificados");
-
+            
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede editar el paciente" +id );
 
