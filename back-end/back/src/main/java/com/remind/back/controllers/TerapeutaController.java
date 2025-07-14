@@ -52,13 +52,13 @@ public class TerapeutaController {
     public ResponseEntity<?> createTerapeuta(@RequestParam("nombre") String nombre,
             @RequestParam("apellido") String apellido,
             @RequestParam("email") String email,
-            @RequestParam("contraseña") String contraseña,
+            @RequestParam("contrasenia") String contrasenia,
             @RequestParam("telefono") String telefono,
             @RequestParam("especialidad") String especialidad,
             @RequestParam("fechaNacimiento") Date fechaNacimiento) {
 
         try {
-            TerapeutaInputDTO terapeutaInputDTO = new TerapeutaInputDTO(nombre, apellido, email, contraseña, telefono,
+            TerapeutaInputDTO terapeutaInputDTO = new TerapeutaInputDTO(nombre, apellido, email, contrasenia, telefono,
                     especialidad, fechaNacimiento, null, null);
             TerapeutaOutputDTO createdTerapeuta = terapeutaService.createTerapeuta(terapeutaInputDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdTerapeuta);

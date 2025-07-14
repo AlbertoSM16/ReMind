@@ -38,12 +38,9 @@ public class SecurityConfig {
             .cors(cors -> {}) // Habilita CORS (necesitas una configuración de CORS más completa si es compleja)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // No usar sesiones HTTP con JWT
             .authorizeHttpRequests(auth -> auth
-                // Permite acceso público a tu endpoint de Paciente para pruebas
                 .requestMatchers("/api/paciente/**").permitAll() //
-                // Permite acceso público al endpoint de autenticación para login/registro
                 .requestMatchers("/api/auth/**").permitAll() //
-                // También permite acceso público a otros controladores si los quieres probar sin autenticación
-                .requestMatchers("/api/terapeuta/**").permitAll() // Puedes quitar esto más tarde
+                .requestMatchers("/api/terapeuta/**").permitAll() 
                 .requestMatchers("/api/administrador/**").permitAll() // Puedes quitar esto más tarde
                 // Cualquier otra solicitud, por ahora, también la permitimos para facilitar pruebas,
                 // PERO ESTO DEBERÍA CAMBIARSE A .authenticated() PARA SEGURIDAD REAL
