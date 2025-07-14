@@ -40,7 +40,7 @@ public class TerapeutaInputDTO {
     @NotNull(message = "La fecha de nacimiento no puede estar vacía")
     private Date fechaNacimiento;
 
-    private List<Paciente> pacientes;
+    private List<Paciente> pacientes = null;
 
-    private List<Agenda> agendas;
+    private List<Agenda> agendas = null;
 }
