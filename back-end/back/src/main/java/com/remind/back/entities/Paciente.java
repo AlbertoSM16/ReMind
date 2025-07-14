@@ -57,6 +57,7 @@ public class Paciente {
     private String nombreResponsable;
     @Enumerated(EnumType.STRING)
     private TipoUsuario rol = TipoUsuario.PACIENTE;
+    
     @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PacienteTerapeuta pacienteTerapeuta;
 }

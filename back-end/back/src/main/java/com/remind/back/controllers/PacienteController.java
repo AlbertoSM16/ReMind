@@ -56,6 +56,7 @@ public class PacienteController {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPaciente);
         
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el paciente: " + e.getMessage());
         }
 

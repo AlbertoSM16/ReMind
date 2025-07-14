@@ -48,7 +48,7 @@ public class PacienteServiceImpl implements PacienteService {
          
         Paciente savedPaciente = pacienteRepository.save(paciente);
 
-        Integer terapeutaId = pacienteInputDTO.getTerapeutaId();
+        Integer terapeutaId = pacienteInputDTO.getTerapeuta_id();
         if (terapeutaId != null) {
             Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
                 .orElseThrow(() -> new NoSuchElementException("Terapeuta with ID " + terapeutaId + " not found."));
@@ -115,9 +115,9 @@ public class PacienteServiceImpl implements PacienteService {
         if(pacienteDTO.getFechaNacimiento() != null){
             paciente.setFechaNacimiento(pacienteDTO.getFechaNacimiento());
         }
-        if (pacienteDTO.getTerapeutaId() != null) {
-            Terapeuta terapeuta = terapeutaRepository.findById(pacienteDTO.getTerapeutaId())
-                .orElseThrow(() -> new NoSuchElementException("Terapeuta with ID " + pacienteDTO.getTerapeutaId() + " not found."));
+        if (pacienteDTO.getTerapeuta_id() != null) {
+            Terapeuta terapeuta = terapeutaRepository.findById(pacienteDTO.getTerapeuta_id())
+                .orElseThrow(() -> new NoSuchElementException("Terapeuta with ID " + pacienteDTO.getTerapeuta_id() + " not found."));
 
             PacienteTerapeuta pacienteTerapeuta = pacienteTerapeutaRepository.findByPacienteId(id)
                 .orElse(new PacienteTerapeuta(id, paciente, null));

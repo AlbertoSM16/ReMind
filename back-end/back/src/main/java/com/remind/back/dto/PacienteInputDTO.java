@@ -44,5 +44,5 @@ public class PacienteInputDTO {
     private Date fechaNacimiento;
     
     @NotNull(message = "El ID del terapeuta no puede ser nulo")
-    private Integer terapeutaId; 
+    private Integer terapeuta_id; 
 }
