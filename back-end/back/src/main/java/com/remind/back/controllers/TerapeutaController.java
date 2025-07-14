@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.remind.back.services.TerapeutaService;
+
+import jakarta.validation.Valid;
+
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
 
@@ -48,18 +52,11 @@ public class TerapeutaController {
         }
     }
 
+
     @PostMapping
-    public ResponseEntity<?> createTerapeuta(@RequestParam("nombre") String nombre,
-            @RequestParam("apellido") String apellido,
-            @RequestParam("email") String email,
-            @RequestParam("contrasenia") String contrasenia,
-            @RequestParam("telefono") String telefono,
-            @RequestParam("especialidad") String especialidad,
-            @RequestParam("fechaNacimiento") Date fechaNacimiento) {
+    public ResponseEntity<?> createTerapeuta(@RequestBody TerapeutaInputDTO terapeutaInputDTO) {
 
         try {
-            TerapeutaInputDTO terapeutaInputDTO = new TerapeutaInputDTO(nombre, apellido, email, contrasenia, telefono,
-                    especialidad, fechaNacimiento, null, null);
             TerapeutaOutputDTO createdTerapeuta = terapeutaService.createTerapeuta(terapeutaInputDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdTerapeuta);
 
@@ -80,18 +77,17 @@ public class TerapeutaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTerapeuta(@RequestParam("id") Integer id, @RequestParam("terapeutaDTO") TerapeutaInputDTO terapeutaInputDTO){
-    
+    public ResponseEntity<?> updateTerapeuta(@RequestParam("id") Integer id,
+            @RequestParam("terapeutaDTO") TerapeutaInputDTO terapeutaInputDTO) {
+
         try {
             terapeutaService.updateTerapeuta(id, terapeutaInputDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Los datos del terapeuta han sido modificados");
 
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede editar el terapeuta"  + id );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede editar el terapeuta" + id);
 
         }
     }
-    
 
 }
-

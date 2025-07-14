@@ -29,12 +29,12 @@ public class TerapeutaInputDTO {
     private String email;
 
     @NotBlank(message = "La contraseña no puede estar vacía")
-    private String contraseña;
+    private String contrasenia;
 
     @NotBlank(message = "El teléfono no puede estar vacío")
     private String telefono;
 
-    @NotNull(message = "El ID de la especialidad no puede ser nulo")
+    @NotNull(message = "La especialidad no debe ser nula")
     private String especialidad; 
     
     @NotNull(message = "La fecha de nacimiento no puede estar vacía")
