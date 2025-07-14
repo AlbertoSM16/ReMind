@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Data; 
 import lombok.NoArgsConstructor; 
 import lombok.AllArgsConstructor; 
@@ -16,6 +17,7 @@ import lombok.AllArgsConstructor;
 @Data 
 @NoArgsConstructor 
 @AllArgsConstructor 
+@Table(name = "paciente_terapeuta")
 public class PacienteTerapeuta {
 
     @Id

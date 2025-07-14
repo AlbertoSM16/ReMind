@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.remind.back.dto.PacienteInputDTO;
@@ -48,23 +49,12 @@ public class PacienteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPaciente(@RequestParam("nombre") String nombre,
-            @RequestParam("apellido") String apellido,
-            @RequestParam("email") String email,
-            @RequestParam("contraseña") String contraseña,
-            @RequestParam("telefono") String telefono,
-            @RequestParam("enfermedad") String enfermedad,
-            @RequestParam("edad") Integer edad,
-            @RequestParam("nombreResponsable") String nombreResponsable,
-            @RequestParam("fechaNacimiento") Date fechaNacimiento,
-            @RequestParam("terapeutaId") Integer terapeutaId) {
-        try {
-            PacienteInputDTO pacienteInputDTO = new PacienteInputDTO(nombre, apellido, email, contraseña, telefono,
-                    enfermedad,edad, nombreResponsable, fechaNacimiento,terapeutaId);
+    public ResponseEntity<?> createPaciente(@RequestBody PacienteInputDTO pacienteInputDTO) {
+        try {           
 
             PacienteOutputDTO createdPaciente = pacienteService.createPaciente(pacienteInputDTO);
-
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPaciente);
+        
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el paciente: " + e.getMessage());
         }
