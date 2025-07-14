@@ -3,8 +3,10 @@ package com.remind.back.services;
 import java.util.List;
 
 import com.remind.back.Mapper.PacienteMapper;
+import com.remind.back.Mapper.PacienteTerapeutaMapper;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
+import com.remind.back.dto.PacienteTerapeutaInputDTO;
 import com.remind.back.entities.Paciente;
 import com.remind.back.entities.PacienteTerapeuta;
 import com.remind.back.entities.Terapeuta;
@@ -28,8 +30,13 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Autowired
     private PacienteMapper pacienteMapper;
+    
+    @Autowired
+    private PacienteTerapeutaMapper pacienteTerapeutaMapper;
+
     @Autowired
     private TerapeutaRepository terapeutaRepository;
+
     @Autowired
     private PacienteTerapeutaRepository pacienteTerapeutaRepository;
 
@@ -45,8 +52,8 @@ public class PacienteServiceImpl implements PacienteService {
         if (terapeutaId != null) {
             Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
                 .orElseThrow(() -> new NoSuchElementException("Terapeuta with ID " + terapeutaId + " not found."));
-            
-            PacienteTerapeuta pacienteTerapeuta = new PacienteTerapeuta(savedPaciente.getId(), savedPaciente, terapeuta);
+            PacienteTerapeutaInputDTO pacienteTerapeutaInputDTO = new PacienteTerapeutaInputDTO(paciente.getId(),terapeuta.getId());
+            PacienteTerapeuta pacienteTerapeuta = pacienteTerapeutaMapper.PacienteTerapeutaInputDTOToPacienteTerapeuta(pacienteTerapeutaInputDTO);
             pacienteTerapeutaRepository.save(pacienteTerapeuta);
         }
 

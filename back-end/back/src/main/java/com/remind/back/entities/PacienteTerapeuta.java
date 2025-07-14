@@ -1,12 +1,14 @@
 package com.remind.back.entities;
 
 
+import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data; 
@@ -21,11 +23,10 @@ import lombok.AllArgsConstructor;
 public class PacienteTerapeuta {
 
     @Id
-    private Integer pacienteId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId // Esto le dice a JPA que la PK de esta entidad (pacienteId)
-            // es también una FK que apunta a la PK de Paciente.
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 

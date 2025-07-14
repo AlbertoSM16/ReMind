@@ -14,16 +14,7 @@ public interface PacienteMapper {
 
     Paciente PacienteInputDTOToPaciente(PacienteInputDTO paciente);
 
-    // Mapeo para terapeutaId: Asume que Paciente tiene un getter como getPacienteTerapeuta()
-    // y que PacienteTerapeuta tiene getTerapeuta() y Terapeuta tiene getId().
-    // Si la relación Paciente -> PacienteTerapeuta es @OneToOne, el getter sería algo como getPacienteTerapeuta().
-    // Si un Paciente puede tener múltiples PacienteTerapeuta, la lógica de mapeo sería más compleja
-    // (ej. tomar el ID del primer terapeuta en una lista, o devolver una lista de IDs).
     @Mapping(source = "pacienteTerapeuta.terapeuta.id", target = "terapeutaId") // <--- AÑADIDO ESTE MAPEADO
     PacienteOutputDTO PacienteToPacienteOutputDTO(Paciente paciente);
-
-    // ALTERNATIVA (Más robusta para nulos, si PacienteTerapeuta puede ser null para un Paciente):
-    // @Mapping(target = "terapeutaId", expression = "java(paciente.getPacienteTerapeuta() != null && paciente.getPacienteTerapeuta().getTerapeuta() != null ? paciente.getPacienteTerapeuta().getTerapeuta().getId() : null)")
-    // PacienteOutputDTO PacienteToPacienteOutputDTO(Paciente paciente);
 
 }

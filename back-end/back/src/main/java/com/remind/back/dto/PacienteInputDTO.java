@@ -26,7 +26,7 @@ public class PacienteInputDTO {
     private String email;
 
     @NotBlank(message = "La contraseña no puede estar vacía")
-    private String contraseña;
+    private String contrasenia;
 
     @NotBlank(message = "El teléfono no puede estar vacío")
     private String telefono;
