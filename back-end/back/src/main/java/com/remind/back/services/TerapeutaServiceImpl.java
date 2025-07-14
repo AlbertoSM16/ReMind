@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
 import com.remind.back.entities.Terapeuta;
-import com.remind.back.entities.TipoUsuario;
 import com.remind.back.Mapper.TerapeutaMapper;
 import com.remind.back.repositories.TerapeutaRepository;
 
