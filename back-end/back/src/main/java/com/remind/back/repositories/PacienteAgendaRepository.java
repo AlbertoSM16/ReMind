@@ -10,5 +10,6 @@ public interface PacienteAgendaRepository extends JpaRepository<PacienteAgenda, 
     
     
     List<PacienteAgenda> findByPacienteId(Integer pacienteId);
-
+    void deleteByAgendaId(Integer agendaId);
+    void deleteByPacienteId(Integer pacienteId);
 }
