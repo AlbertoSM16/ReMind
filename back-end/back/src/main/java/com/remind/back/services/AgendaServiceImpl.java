@@ -112,13 +112,10 @@ public class AgendaServiceImpl implements AgendaService {
         Agenda existingAgenda = agendaRepository.findById(id)
             .orElseThrow(() -> new NoSuchElementException("Agenda con ID " + id + " no existe."));
 
-        // Actualizar los campos de la agenda existente
         existingAgenda.setNombre(agendaInputDTO.getNombre());
 
-        // Guardar la agenda actualizada
         Agenda updatedAgenda = agendaRepository.save(existingAgenda);
 
-        // Actualizar las relaciones con Paciente y Terapeuta si es necesario
         if (agendaInputDTO.getPaciente_id() != null) {
             Paciente paciente = pacienteRepository.findById(agendaInputDTO.getPaciente_id())
                 .orElseThrow(() -> new NoSuchElementException("Paciente con ID " + agendaInputDTO.getPaciente_id() + " no existe."));
