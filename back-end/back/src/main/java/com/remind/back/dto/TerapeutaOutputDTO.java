@@ -27,4 +27,5 @@ public class TerapeutaOutputDTO {
     private String especialidad;
 
     private List<Integer> pacientesId;
+
 }

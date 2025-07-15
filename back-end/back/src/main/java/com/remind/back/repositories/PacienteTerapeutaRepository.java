@@ -9,5 +9,11 @@ import com.remind.back.entities.PacienteTerapeuta;
 public interface PacienteTerapeutaRepository extends JpaRepository<PacienteTerapeuta, Integer> {
     
     Optional<PacienteTerapeuta> findByPacienteId(Integer pacienteId);
+    
+    void deleteByPacienteId(Integer pacienteId);
+
+    Optional<PacienteTerapeuta> findByTerapeutaId(Integer terapeutaId);
+    
+    void deleteByTerapeutaId(Integer terapeutaId);
 
 }

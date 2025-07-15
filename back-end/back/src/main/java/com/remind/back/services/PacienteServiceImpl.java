@@ -6,11 +6,9 @@ import com.remind.back.Mapper.PacienteMapper;
 import com.remind.back.Mapper.PacienteTerapeutaMapper;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
-import com.remind.back.dto.PacienteTerapeutaInputDTO;
 import com.remind.back.entities.Paciente;
 import com.remind.back.entities.PacienteTerapeuta;
 import com.remind.back.entities.Terapeuta;
-import com.remind.back.entities.TipoUsuario;
 import com.remind.back.repositories.PacienteRepository;
 import com.remind.back.repositories.PacienteTerapeutaRepository;
 import com.remind.back.repositories.TerapeutaRepository;
@@ -56,8 +54,8 @@ public class PacienteServiceImpl implements PacienteService {
 
             // Create PacienteTerapeuta entity directly, setting the Paciente and Terapeuta objects
             PacienteTerapeuta pacienteTerapeuta = new PacienteTerapeuta();
-            pacienteTerapeuta.setPaciente(savedPaciente); // Set the actual Paciente object
-            pacienteTerapeuta.setTerapeuta(terapeuta); // Set the actual Terapeuta object
+            pacienteTerapeuta.setPaciente(savedPaciente); 
+            pacienteTerapeuta.setTerapeuta(terapeuta); 
 
             pacienteTerapeutaRepository.save(pacienteTerapeuta);
         }
@@ -87,10 +85,13 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     @Transactional
     public void deletePaciente(Integer id) {
+        
         if(!pacienteRepository.existsById(id)){
             throw new NoSuchElementException("No existe un paciente con ese id y no se puede eliminar");
         }
+        pacienteTerapeutaRepository.deleteByPacienteId(id);
         pacienteRepository.deleteById(id);
+        
     }
 
     @Override

@@ -11,8 +11,10 @@ import java.util.NoSuchElementException;
 
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
+import com.remind.back.entities.PacienteTerapeuta;
 import com.remind.back.entities.Terapeuta;
 import com.remind.back.Mapper.TerapeutaMapper;
+import com.remind.back.repositories.PacienteTerapeutaRepository;
 import com.remind.back.repositories.TerapeutaRepository;
 
 @Service
@@ -20,6 +22,9 @@ public class TerapeutaServiceImpl implements TerapeutaService {
 
     @Autowired
     private  TerapeutaRepository terapeutaRepository;
+
+    @Autowired
+    private PacienteTerapeutaRepository pacienteTerapeutaRepository;
 
     @Autowired
     private TerapeutaMapper terapeutaMapper;
@@ -58,7 +63,12 @@ public class TerapeutaServiceImpl implements TerapeutaService {
         if(!terapeutaRepository.existsById(id)){
             throw new NoSuchElementException("No existe un terapeuta con ese id y no se puede eliminar");
         }
+        if(pacienteTerapeutaRepository.findByTerapeutaId(id).isPresent()){
+            throw new NoSuchElementException("El terapeuta con id " + id + " no se puede eliminar porque tiene pacientes asociados");
+        }
+        pacienteTerapeutaRepository.deleteByTerapeutaId(id);
         terapeutaRepository.deleteById(id);
+    
     }
 
     @Override

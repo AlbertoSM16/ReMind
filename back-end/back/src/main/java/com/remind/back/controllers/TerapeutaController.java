@@ -66,13 +66,13 @@ public class TerapeutaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTerapeuta(@RequestParam("id") Integer id) {
+    public ResponseEntity<?> deleteTerapeuta(@PathVariable("id") Integer id) {
 
         try {
             terapeutaService.deleteTerapeuta(id);
             return ResponseEntity.status(HttpStatus.OK).body("El terapeuta ha sido eliminado de la base de datos");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puedo eliminar el terapeuta");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede eliminar el terapeuta con id: " + id);
         }
     }
 

@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 public class PacienteAgenda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "paciente_id")
