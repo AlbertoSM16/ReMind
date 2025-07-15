@@ -29,7 +29,8 @@ public class PacienteController {
     private PacienteService pacienteService;
 
     @GetMapping
-    public ResponseEntity<?> getAllPacientes(int page, int size) {
+    public ResponseEntity<?> getAllPacientes(@RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size) {
         List<PacienteOutputDTO> pacientes = pacienteService.getAllPacientes(page, size);
         if (pacientes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
@@ -73,7 +74,7 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePaciente(@PathVariable Integer id, @RequestParam("pacienteDTO")PacienteInputDTO pacienteInputDTO) {
+    public ResponseEntity<?> updatePaciente(@PathVariable Integer id, @RequestBody PacienteInputDTO pacienteInputDTO) {
         try {
             pacienteService.updatePaciente(id, pacienteInputDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Los datos el paciente han sido modificados");

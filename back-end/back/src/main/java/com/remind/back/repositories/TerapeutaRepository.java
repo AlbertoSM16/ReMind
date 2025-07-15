@@ -5,6 +5,8 @@ import com.remind.back.entities.Terapeuta;
 import java.util.Optional;
 
 public interface TerapeutaRepository extends JpaRepository<Terapeuta, Integer> {
+    
     Optional<Terapeuta> findByEmail(String email);
+
     Optional<Terapeuta> findById(Integer id);
 }

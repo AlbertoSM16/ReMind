@@ -10,6 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdministradorInputDTO {
+    
     private String nombre;
     private String apellido;
     private String email;

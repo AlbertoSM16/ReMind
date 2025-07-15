@@ -32,7 +32,8 @@ public class TerapeutaController {
     private TerapeutaService terapeutaService;
 
     @GetMapping
-    public ResponseEntity<?> getAllTerapeutas(int page, int size) {
+    public ResponseEntity<?> getAllTerapeutas(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size) {
         List<TerapeutaOutputDTO> terapeutas = terapeutaService.getAllTerapeutas(page, size);
         if (terapeutas.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
@@ -77,8 +78,7 @@ public class TerapeutaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTerapeuta(@RequestParam("id") Integer id,
-            @RequestParam("terapeutaDTO") TerapeutaInputDTO terapeutaInputDTO) {
+    public ResponseEntity<?> updateTerapeuta(@PathVariable("id") Integer id, @RequestBody TerapeutaInputDTO terapeutaInputDTO) {
 
         try {
             terapeutaService.updateTerapeuta(id, terapeutaInputDTO);

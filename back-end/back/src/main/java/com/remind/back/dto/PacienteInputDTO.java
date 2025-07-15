@@ -36,7 +36,7 @@ public class PacienteInputDTO {
     @NotBlank(message = "La enfermedad no puede estar vacía")
     private String enfermedad;
 
-    @NotBlank(message = "La edad no puede estar vacía")
+    @NotNull(message = "La edad no puede estar vacía")
     private Integer edad;
 
     @NotBlank(message = "El nombre del responsable no puede estar vacío")
