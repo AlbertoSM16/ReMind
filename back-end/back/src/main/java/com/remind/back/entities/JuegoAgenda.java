@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.Entity; 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,10 +32,13 @@ public class JuegoAgenda {
     @JoinColumn(name = "agenda_id")
     private Agenda agenda;
 
+    @NotBlank
     private LocalDateTime fechaAsignacion = LocalDateTime.now();
-
+    
+    @NotBlank
     private Date fechaRealizacion;
 
+    @NotBlank
     private Boolean realizado = false;
 
 }

@@ -10,6 +10,8 @@ public interface AgendaTerapeutaRepository  extends JpaRepository<AgendaTerapeut
     void deleteByTerapeutaId(Integer terapeutaId);
 
     boolean existsByAgendaId(Integer agendaId);
+    
     boolean existsByTerapeutaId(Integer terapeutaId);
 
-}
+    AgendaTerapeuta findByAgendaIdAndTerapeutaId(Integer agendaId, Integer terapeutaId);
+}   

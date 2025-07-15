@@ -4,7 +4,6 @@ import com.remind.back.Mapper.AdministradorMapper;
 import com.remind.back.dto.AdministradorInputDTO;
 import com.remind.back.dto.AdministradorOutputDTO;
 import com.remind.back.entities.Administrador;
-import com.remind.back.entities.TipoUsuario;
 import com.remind.back.repositories.AdministradorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

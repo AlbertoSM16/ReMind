@@ -29,8 +29,6 @@ public class PacienteServiceImpl implements PacienteService {
     @Autowired
     private PacienteMapper pacienteMapper;
     
-    @Autowired
-    private PacienteTerapeutaMapper pacienteTerapeutaMapper;
 
     @Autowired
     private TerapeutaRepository terapeutaRepository;

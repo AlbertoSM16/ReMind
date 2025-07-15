@@ -11,7 +11,6 @@ import java.util.NoSuchElementException;
 
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
-import com.remind.back.entities.PacienteTerapeuta;
 import com.remind.back.entities.Terapeuta;
 import com.remind.back.Mapper.TerapeutaMapper;
 import com.remind.back.repositories.PacienteTerapeutaRepository;

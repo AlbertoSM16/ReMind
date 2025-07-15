@@ -2,6 +2,7 @@ package com.remind.back.services;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -110,31 +111,29 @@ public class AgendaServiceImpl implements AgendaService {
     @Transactional
     public AgendaOutputDTO updateAgenda(Integer id, AgendaInputDTO agendaInputDTO) {
         Agenda existingAgenda = agendaRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Agenda con ID " + id + " no existe."));
+        .orElseThrow(() -> new NoSuchElementException("Agenda con ID " + id + " no existe."));
 
-        existingAgenda.setNombre(agendaInputDTO.getNombre());
+    existingAgenda.setNombre(agendaInputDTO.getNombre());
+    Agenda updatedAgenda = agendaRepository.save(existingAgenda);
 
-        Agenda updatedAgenda = agendaRepository.save(existingAgenda);
+    if (agendaInputDTO.getPaciente_id() != null) {
+        Paciente paciente = pacienteRepository.findById(agendaInputDTO.getPaciente_id())
+            .orElseThrow(() -> new NoSuchElementException("Paciente con ID " + agendaInputDTO.getPaciente_id() + " no existe."));
 
-        if (agendaInputDTO.getPaciente_id() != null) {
-            Paciente paciente = pacienteRepository.findById(agendaInputDTO.getPaciente_id())
-                .orElseThrow(() -> new NoSuchElementException("Paciente con ID " + agendaInputDTO.getPaciente_id() + " no existe."));
-            PacienteAgenda pacienteAgenda = new PacienteAgenda();
-            pacienteAgenda.setPaciente(paciente);
-            pacienteAgenda.setAgenda(updatedAgenda);
-            pacienteAgendaRepository.save(pacienteAgenda);
-        }
+        PacienteAgenda existingPacienteAgenda = pacienteAgendaRepository.findByAgendaIdAndPacienteId(updatedAgenda.getId(), paciente.getId());
 
-        if (agendaInputDTO.getTerapeuta_id() != null) {
-            Terapeuta terapeuta = terapeutaRepository.findById(agendaInputDTO.getTerapeuta_id())
-                .orElseThrow(() -> new NoSuchElementException("Terapeuta con ID " + agendaInputDTO.getTerapeuta_id() + " no existe."));
-            AgendaTerapeuta agendaTerapeuta = new AgendaTerapeuta();
-            agendaTerapeuta.setTerapeuta(terapeuta);
-            agendaTerapeuta.setAgenda(updatedAgenda);
-            agendaTerapeutaRepository.save(agendaTerapeuta);
-        }
+    }
 
-        return agendaMapper.agendaToAgendaOutputDTO(updatedAgenda);
+    if (agendaInputDTO.getTerapeuta_id() != null) {
+        Terapeuta terapeuta = terapeutaRepository.findById(agendaInputDTO.getTerapeuta_id())
+            .orElseThrow(() -> new NoSuchElementException("Terapeuta con ID " + agendaInputDTO.getTerapeuta_id() + " no existe."));
+
+        AgendaTerapeuta existingAgendaTerapeuta = agendaTerapeutaRepository.findByAgendaIdAndTerapeutaId(updatedAgenda.getId(), terapeuta.getId());
+
+
+    }
+
+    return agendaMapper.agendaToAgendaOutputDTO(updatedAgenda);
     }
 
     

@@ -1,7 +1,6 @@
 package com.remind.back.entities;
 
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

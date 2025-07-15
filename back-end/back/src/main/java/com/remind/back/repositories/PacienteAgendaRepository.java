@@ -8,8 +8,8 @@ import com.remind.back.entities.PacienteAgenda;
 
 public interface PacienteAgendaRepository extends JpaRepository<PacienteAgenda, Integer> {
     
-    
     List<PacienteAgenda> findByPacienteId(Integer pacienteId);
     void deleteByAgendaId(Integer agendaId);
     void deleteByPacienteId(Integer pacienteId);
+    PacienteAgenda findByAgendaIdAndPacienteId(Integer agendaId, Integer pacienteId);
 }

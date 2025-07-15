@@ -1,5 +1,7 @@
 package com.remind.back.dto;
 
+
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,4 +21,5 @@ public class AgendaInputDTO {
 
     @NotNull(message = "El ID del terapeuta no puede ser nulo")
     private Integer terapeuta_id;
+    
 }

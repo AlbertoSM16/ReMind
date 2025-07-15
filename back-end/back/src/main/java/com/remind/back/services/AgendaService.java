@@ -2,7 +2,6 @@ package com.remind.back.services;
 
 import com.remind.back.dto.AgendaInputDTO;
 import com.remind.back.dto.AgendaOutputDTO;
-import com.remind.back.entities.Agenda;
 
 import java.util.List;
 

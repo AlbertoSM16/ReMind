@@ -1,7 +1,6 @@
 package com.remind.back.controllers;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.remind.back.services.TerapeutaService;
 
-import jakarta.validation.Valid;
 
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;

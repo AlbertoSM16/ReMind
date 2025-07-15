@@ -27,4 +27,7 @@ public class Juego {
 
     @NotBlank
     private String codigo;
+
+    @NotBlank
+    private String tipo;
 }
