@@ -1,0 +1,14 @@
+.denomination-item {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.denomination-item:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+}
+
+.denomination-item img {
+  object-fit: contain;
+}
