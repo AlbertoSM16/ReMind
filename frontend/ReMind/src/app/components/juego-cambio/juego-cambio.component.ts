@@ -1,19 +1,24 @@
-
-
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Importa CommonModule para el CurrencyPipe
+import { EuroDenominationComponent } from '../euro-denomination-component/euro-denomination-component.component'; // Importa el componente de denominación
+
 interface Denomination {
   value: number;
   imageUrl: string;
 }
+
 @Component({
   selector: 'app-juego-cambio',
-  imports: [],
+  standalone: true, // Es un componente standalone
+  imports: [
+    CommonModule, // Necesario para pipes como 'currency' y directivas como NgClass, NgFor
+    EuroDenominationComponent 
+  ],
   templateUrl: './juego-cambio.component.html',
   styleUrl: './juego-cambio.component.css'
 })
-
 export class JuegoCambioComponent implements OnInit {
-  title = 'Juego de Cambio de Euro'; // Lo dejamos aquí por si quieres un título específico del juego
+  title = 'Juego de Cambio de Euro';
   amountToMatch: number = 0;
   currentAmount: number = 0;
   message: string = '';
@@ -43,7 +48,6 @@ export class JuegoCambioComponent implements OnInit {
   startNewRound() {
     this.currentAmount = 0;
     this.message = '';
-    // Generar un importe aleatorio entre 0.50 y 20.00 para empezar
     this.amountToMatch = parseFloat((Math.random() * (20 - 0.50) + 0.50).toFixed(2));
   }
 
