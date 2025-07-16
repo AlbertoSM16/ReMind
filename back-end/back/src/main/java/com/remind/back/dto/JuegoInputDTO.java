@@ -14,16 +14,17 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor 
 public class JuegoInputDTO {
 
+//esta clase es para asociar un juego a un paciente y agenda 
 
     @NotNull(message = "El ID del terapeuta no puede ser nulo")
     private Integer paciente_id;
-    @NotBlank(message = "Las instrucciones del juego no pueden estar vacías")
-    private String instrucciones;
+    @NotNull(message = "El ID de la agenda no puede ser nulo")
+    private Integer agenda_id;
 
-    @NotBlank (message = "")
-    private Date fechaRealizacion;
+    @NotBlank (message = "la fecha de asignación no puede ser nula")
+    private Date fechaAsignación = new Date(System.currentTimeMillis());
     
-
+    private Date fechaRealizacion = null;
 
     
 }

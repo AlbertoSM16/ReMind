@@ -1,7 +1,6 @@
 package com.remind.back.entities;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,7 +32,7 @@ public class JuegoAgenda {
     private Agenda agenda;
 
     @NotBlank
-    private LocalDateTime fechaAsignacion = LocalDateTime.now();
+    private Date fechaAsignacion = new Date(System.currentTimeMillis());
     
     @NotBlank
     private Date fechaRealizacion;
