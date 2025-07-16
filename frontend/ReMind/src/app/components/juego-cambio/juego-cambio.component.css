@@ -1,0 +1,33 @@
+/* Estilos específicos del juego, movidos desde app.component.css */
+.container {
+  max-width: 1200px;
+}
+
+.card-title {
+  font-weight: 700;
+}
+
+.current-amount-display {
+  font-size: 1.8em;
+}
+
+.message-box {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  transition: all 0.3s ease-in-out;
+}
+
+.message-box.fade:not(.show) {
+  opacity: 0;
+}
+.message-box.show {
+  opacity: 1;
+}
+
+.denominations-grid {
+  gap: 10px;
+}
