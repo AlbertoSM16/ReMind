@@ -19,8 +19,8 @@ export class ImageSequenceGameComponent implements OnInit {
     { id: 6, src: 'assets/gameSequence/image6.png', flipped: false },
 
   ];
-  sequenceLength = 3; // Number of images in the sequence
-  displayDuration = 1500; // milliseconds
+  sequenceLength = 4; 
+  displayDuration = 1700; 
   currentSequence: { id: number; src: string; flipped: boolean }[] = [];
   userSequence: number[] = [];
   message: string = '';

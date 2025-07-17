@@ -5,6 +5,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { JuegoCambioComponent } from '../../components/juego-cambio/juego-cambio.component';
+import { MatchingGameComponent } from '../../components/matching-game/matching-game.component';
 import { ImageSequenceGameComponent } from '../../components/image-sequence-game/image-sequence-game.component';
 
 @Component({
@@ -12,7 +13,7 @@ import { ImageSequenceGameComponent } from '../../components/image-sequence-game
   standalone: true,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [HeaderComponent, NavComponent, DirectAccessComponent,ButtonModule,CommonModule,JuegoCambioComponent,ImageSequenceGameComponent ]
+  imports: [HeaderComponent, NavComponent, DirectAccessComponent,ButtonModule,CommonModule,JuegoCambioComponent,ImageSequenceGameComponent,MatchingGameComponent ]
 })
 export class HomeComponent {
 }
