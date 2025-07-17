@@ -8,7 +8,8 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { JuegoCambioComponent } from '../../components/juego-cambio/juego-cambio.component';
 import { ImageSequenceGameComponent } from '../../components/image-sequence-game/image-sequence-game.component';
-import { MatchingGameComponent } from '../../components/matching-game/matching-game.component'; // <-- AÑADE ESTA LÍNEA
+import { MatchingGameComponent } from '../../components/matching-game/matching-game.component'; 
+import { ClothingGameComponent } from '../../components/clothing-game/clothing-game.component';
 
 @Component({
   selector: 'home-component',
@@ -23,7 +24,8 @@ import { MatchingGameComponent } from '../../components/matching-game/matching-g
     CommonModule,
     JuegoCambioComponent,
     ImageSequenceGameComponent,
-    MatchingGameComponent
+    MatchingGameComponent,
+    ClothingGameComponent
   ]
 })
 export class HomeComponent {}

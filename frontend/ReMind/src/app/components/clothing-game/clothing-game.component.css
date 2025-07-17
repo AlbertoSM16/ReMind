@@ -1,0 +1,132 @@
+.clothing-game-container {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+  max-width: 900px;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.game-area {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+/* Lista de prendas */
+.clothing-list {
+  width: 30%;
+  border: 2px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.clothing-item-wrapper {
+  height: 120px;
+}
+
+.clothing-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: grab;
+  background-color: #fff;
+}
+
+.clothing-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.silhouette-container {
+  position: relative;
+  width: 300px;
+  height: 500px;
+}
+
+.silhouette-img {
+  width: 100%;
+  height: 100%;
+}
+
+.drop-target {
+  position: absolute;
+  transition: background-color 0.2s;
+ 
+  background-color: rgba(255, 255, 0, 0.2);
+}
+
+.drop-target:hover {
+  background-color: rgba(0, 162, 255, 0.3); 
+}
+/* Posicionamiento exacto de las ZONAS para soltar */
+.drop-target.head { top: 0; left: 105px; width: 90px; height: 90px; border-radius: 50%; }
+.drop-target.torso { top: 110px; left: 75px; width: 150px; height: 150px; /* MODIFICADO */ }
+.drop-target.legs { top: 270px; left: 85px; width: 130px; height: 140px; /* MODIFICADO */ }
+.drop-target.feet { top: 415px; left: 75px; width: 150px; height: 80px; }
+
+/* Estilo base para la ropa ya colocada */
+.placed-item {
+  position: absolute;
+  pointer-events: none; 
+  object-fit: contain; 
+}
+
+/* --- Posicionamiento y tamaño de CADA PRENDA (AJUSTADO) --- */
+
+.placed-head {
+  width: 85px; /* MODIFICADO */
+  top: 18px;
+  left: 107px; /* MODIFICADO */
+}
+
+.placed-torso {
+  width: 135px; /* MODIFICADO */
+  top: 110px;   /* MODIFICADO */
+  left: 82px;   /* MODIFICADO */
+}
+
+.placed-legs {
+  width: 115px; /* MODIFICADO */
+  top: 270px;   /* MODIFICADO */
+  left: 93px;   /* MODIFICADO */
+}
+
+.placed-feet {
+  width: 135px; /* MODIFICADO */
+  top: 425px;
+  left: 82px;   /* MODIFICADO */
+}
+
+/* Mensajes */
+.feedback-message, .game-over-message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.feedback-message {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.game-over-message {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
