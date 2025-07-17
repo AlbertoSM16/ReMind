@@ -11,12 +11,12 @@ import { CommonModule } from '@angular/common';
 export class ImageSequenceGameComponent implements OnInit {
   title = 'Juego de Secuencia de Imágenes';
   images = [
-    { id: 1, src: 'assets/img/game/image1.png', flipped: false },
-    { id: 2, src: 'assets/img/game/image2.png', flipped: false },
-    { id: 3, src: 'assets/img/game/image3.png', flipped: false },
-    { id: 4, src: 'assets/img/game/image4.png', flipped: false },
-    { id: 5, src: 'assets/img/game/image5.png', flipped: false },
-    { id: 6, src: 'assets/img/game/image6.png', flipped: false }
+    { id: 1, src: 'assets/gameSequence/image1.png', flipped: false },
+    { id: 2, src: 'assets/gameSequence/image2.png', flipped: false },
+    { id: 3, src: 'assets/gameSequence/image3.png', flipped: false },
+    { id: 4, src: 'assets/gameSequence/image4.png', flipped: false },
+    { id: 5, src: 'assets/gameSequence/image5.png', flipped: false },
+    { id: 6, src: 'assets/gameSequence/image6.png', flipped: false }
   ];
   sequenceLength = 3; // Number of images in the sequence
   displayDuration = 1500; // milliseconds
@@ -38,7 +38,7 @@ export class ImageSequenceGameComponent implements OnInit {
     this.currentSequence = [];
     this.userSequence = [];
     this.message = 'Haz clic en "Empezar" para ver la secuencia.';
-    this.images.forEach(img => img.flipped = true); // All images face down
+    this.images.forEach(img => img.flipped = true);
   }
 
   startGame(): void {
@@ -46,7 +46,6 @@ export class ImageSequenceGameComponent implements OnInit {
     this.gameStarted = true;
     this.message = 'Memoriza la secuencia...';
 
-    // Shuffle images and pick a subset for the sequence
     const shuffledImages = [...this.images].sort(() => 0.5 - Math.random());
     this.currentSequence = shuffledImages.slice(0, this.sequenceLength);
 
@@ -54,19 +53,17 @@ export class ImageSequenceGameComponent implements OnInit {
     let i = 0;
     const interval = setInterval(() => {
       if (i < this.currentSequence.length) {
-        // Find the image in the main `images` array and flip it
         const imgToFlip = this.images.find(img => img.id === this.currentSequence[i].id);
         if (imgToFlip) {
-          imgToFlip.flipped = false; // Show image
+          imgToFlip.flipped = false; 
         }
         i++;
       } else {
         clearInterval(interval);
-        // After displayDuration, flip them back face down
         setTimeout(() => {
-          this.images.forEach(img => img.flipped = true); // All images face down again
+          this.images.forEach(img => img.flipped = true); 
           this.message = 'Ahora, haz clic en las imágenes en el orden correcto.';
-          this.showAllImages = true; // Allow user to click on all images
+          this.showAllImages = true; 
         }, this.displayDuration);
       }
     }, this.displayDuration);
@@ -79,7 +76,6 @@ export class ImageSequenceGameComponent implements OnInit {
 
     this.userSequence.push(imageId);
 
-    // Temporarily flip the selected image to show it
     const selectedImg = this.images.find(img => img.id === imageId);
     if (selectedImg) {
       selectedImg.flipped = false;
@@ -87,7 +83,7 @@ export class ImageSequenceGameComponent implements OnInit {
 
     if (this.userSequence.length === this.sequenceLength) {
       this.checkSequence();
-      this.gameStarted = false; // End of current round
+      this.gameStarted = false; 
     } else {
       this.message = `Seleccionada ${this.userSequence.length} de ${this.sequenceLength} imágenes.`;
     }
@@ -109,7 +105,6 @@ export class ImageSequenceGameComponent implements OnInit {
       this.message = `¡Incorrecto! La secuencia correcta era: ${correctOrderIds.join(', ')}. 😔`;
     }
 
-    // Reveal the correct sequence temporarily for review
     this.currentSequence.forEach(imgInSeq => {
       const originalImg = this.images.find(img => img.id === imgInSeq.id);
       if (originalImg) {
@@ -118,7 +113,7 @@ export class ImageSequenceGameComponent implements OnInit {
     });
 
     setTimeout(() => {
-        this.images.forEach(img => img.flipped = true); // Flip all back down
-    }, 3000); // Keep result visible for a bit
+        this.images.forEach(img => img.flipped = true); 
+    }, 3000); 
   }
 }
