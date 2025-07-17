@@ -16,7 +16,8 @@ export class ImageSequenceGameComponent implements OnInit {
     { id: 3, src: 'assets/gameSequence/image3.png', flipped: false },
     { id: 4, src: 'assets/gameSequence/image4.png', flipped: false },
     { id: 5, src: 'assets/gameSequence/image5.png', flipped: false },
-    { id: 6, src: 'assets/gameSequence/image6.png', flipped: false }
+    { id: 6, src: 'assets/gameSequence/image6.png', flipped: false },
+
   ];
   sequenceLength = 3; // Number of images in the sequence
   displayDuration = 1500; // milliseconds
@@ -24,8 +25,7 @@ export class ImageSequenceGameComponent implements OnInit {
   userSequence: number[] = [];
   message: string = '';
   gameStarted: boolean = false;
-  showAllImages: boolean = false; // To show all images initially for selection
-
+  showAllImages: boolean = false; 
   constructor() {}
 
   ngOnInit(): void {

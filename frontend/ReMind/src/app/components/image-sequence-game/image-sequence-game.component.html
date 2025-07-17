@@ -30,7 +30,7 @@
   <div class="d-flex flex-wrap justify-content-center game-board">
     <div *ngFor="let image of images" class="image-card" (click)="selectImage(image.id)">
       <img
-        [src]="image.flipped ? 'assets/img/back.png' : image.src"
+        [src]="image.flipped ? 'assets/gameSequence/back.png' : image.src"
         alt="Game Image"
         [class.flipped]="image.flipped"
         [class.unflipped]="!image.flipped"
