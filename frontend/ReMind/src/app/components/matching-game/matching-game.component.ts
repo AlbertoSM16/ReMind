@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common'; // Necesario para *ngIf y *ngFor
+
+// Define las interfaces
 interface Image {
   id: number;
   src: string;
@@ -18,18 +19,17 @@ interface DropZone {
 
 @Component({
   selector: 'app-matching-game',
+  standalone: true, // <-- AÑADE ESTO
+  imports: [CommonModule], // <-- AÑADE ESTO
   templateUrl: './matching-game.component.html',
   styleUrls: ['./matching-game.component.css']
 })
 export class MatchingGameComponent implements OnInit {
-
   images: Image[] = [];
   unmatchedImages: Image[] = [];
   dropZones: DropZone[] = [];
   gameOver = false;
   successMessage = '';
-
-  constructor() { }
 
   ngOnInit(): void {
     this.initializeGame();
@@ -39,8 +39,8 @@ export class MatchingGameComponent implements OnInit {
     const pairs = [
       { id: 1, item: 'assets/matching/llave-inglesa.png', person: 'assets/matching/fontanero.png', itemName: 'Llave Inglesa', personName: 'Fontanero' },
       { id: 2, item: 'assets/matching/pizarra.png', person: 'assets/matching/profesor.png', itemName: 'Pizarra', personName: 'Profesor' },
-      { id: 3, item: 'assets/matching/utensilios.png', person: 'assets/matching/cocinero.png', itemName: 'Cocinero', personName: 'Cocinero' },
-      { id: 4, item: 'assets/matching/jeringuilla.png', person: 'assets/matching/medica.png', itemName: 'Jeringuilla', personName: 'Médica' }
+      { id: 3, item: 'assets/matching/utensilios.png', person: 'assets/matching/cocinero.png', itemName: 'Utiles de cocina', personName: 'Cocinero' },
+      { id: 4, item: 'assets/matching/jeringuilla.png', person: 'assets/matching/medica.png', itemName: 'Estetoscopio', personName: 'Médica' }
     ];
 
     this.images = [];
