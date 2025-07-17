@@ -1,0 +1,93 @@
+.sentence-game-container {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+  max-width: 800px;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f7f9fc;
+}
+
+.game-area {
+  margin-top: 25px;
+}
+
+/* Estilo de la oración */
+.sentence-display {
+  font-size: 24px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.placeholder {
+  font-weight: bold;
+  color: #007bff;
+  display: inline-block;
+  min-width: 100px;
+  border-bottom: 2px dashed #ccc;
+  margin: 0 5px;
+}
+
+.options-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 12px 25px;
+  font-size: 18px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+button.correct {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+button.incorrect {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+button.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Feedback y botón de siguiente */
+.feedback-area {
+  margin-top: 20px;
+}
+
+.feedback-area p {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.text-correct { color: #155724; }
+.text-incorrect { color: #721c24; }
+
+.next-button {
+  background-color: #6c757d;
+}
+
+/* Pantalla de fin de juego */
+.game-over-area {
+  margin-top: 20px;
+}

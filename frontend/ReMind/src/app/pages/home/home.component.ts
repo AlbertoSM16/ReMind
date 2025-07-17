@@ -10,7 +10,8 @@ import { JuegoCambioComponent } from '../../components/juego-cambio/juego-cambio
 import { ImageSequenceGameComponent } from '../../components/image-sequence-game/image-sequence-game.component';
 import { MatchingGameComponent } from '../../components/matching-game/matching-game.component'; 
 import { ClothingGameComponent } from '../../components/clothing-game/clothing-game.component';
-
+import { IntruderGameComponent } from '../../components/intruder-game/intruder-game.component';
+import { SentenceCompletionGameComponent } from '../../components/sentence-completion-game/sentence-completion-game.component';
 @Component({
   selector: 'home-component',
   standalone: true,
@@ -25,7 +26,9 @@ import { ClothingGameComponent } from '../../components/clothing-game/clothing-g
     JuegoCambioComponent,
     ImageSequenceGameComponent,
     MatchingGameComponent,
-    ClothingGameComponent
+    ClothingGameComponent,
+    IntruderGameComponent,
+    SentenceCompletionGameComponent 
   ]
 })
 export class HomeComponent {}
