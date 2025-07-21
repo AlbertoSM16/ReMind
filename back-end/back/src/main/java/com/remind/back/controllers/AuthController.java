@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*") // Permite peticiones desde cualquier origen
+@CrossOrigin(origins = "*") 
 public class AuthController {
 
     @Autowired
@@ -35,14 +35,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest login) {
-        String email = login.getEmail();
-        String contraseña = login.getContraseña();
+        String usuario = login.getUsuario();
+        String contrasenia = login.getContraseña();
 
-        // 1. Buscar en la tabla de Administradores
-        Optional<Administrador> adminOpt = administradorRepository.findByEmail(email);
+        Optional<Administrador> adminOpt = administradorRepository.findByUsuario(usuario);
         if (adminOpt.isPresent()) {
             Administrador admin = adminOpt.get();
-            if (passwordEncoder.matches(contraseña, admin.getContrasenia())) {
+            if (passwordEncoder.matches(contrasenia, admin.getContrasenia())) {
                 String rol = "administrador";
                 String token = JwtUtil.generateToken(admin.getEmail(), rol);
                 return ResponseEntity.ok(Map.of(
@@ -55,10 +54,10 @@ public class AuthController {
         }
 
         // 2. Si no es admin, buscar en la tabla de Terapeutas
-        Optional<Terapeuta> terapeutaOpt = terapeutaRepository.findByEmail(email);
+        Optional<Terapeuta> terapeutaOpt = terapeutaRepository.findByUsuario(usuario);
         if (terapeutaOpt.isPresent()) {
             Terapeuta terapeuta = terapeutaOpt.get();
-            if (passwordEncoder.matches(contraseña, terapeuta.getContrasenia())) {
+            if (passwordEncoder.matches(contrasenia, terapeuta.getContrasenia())) {
                 String rol = "terapeuta";
                 String token = JwtUtil.generateToken(terapeuta.getEmail(), rol);
                 return ResponseEntity.ok(Map.of(
@@ -71,10 +70,10 @@ public class AuthController {
         }
 
         // 3. Si no es admin ni terapeuta, buscar en la tabla de Pacientes
-        Optional<Paciente> pacienteOpt = pacienteRepository.findByEmail(email);
+        Optional<Paciente> pacienteOpt = pacienteRepository.findByUsuario(usuario);
         if (pacienteOpt.isPresent()) {
             Paciente paciente = pacienteOpt.get();
-            if (passwordEncoder.matches(contraseña, paciente.getContrasenia())) {
+            if (passwordEncoder.matches(contrasenia, paciente.getContrasenia())) {
                 String rol = "paciente";
                 String token = JwtUtil.generateToken(paciente.getEmail(), rol);
                 return ResponseEntity.ok(Map.of(

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import com.remind.back.dto.TerapeutaInputDTO;
@@ -15,6 +16,7 @@ import com.remind.back.entities.Terapeuta;
 import com.remind.back.Mapper.TerapeutaMapper;
 import com.remind.back.repositories.PacienteTerapeutaRepository;
 import com.remind.back.repositories.TerapeutaRepository;
+import com.remind.back.utils.Utils;
 
 @Service
 public class TerapeutaServiceImpl implements TerapeutaService {
@@ -27,10 +29,23 @@ public class TerapeutaServiceImpl implements TerapeutaService {
 
     @Autowired
     private TerapeutaMapper terapeutaMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private Utils utils;
+
 
     @Override
     @Transactional
     public TerapeutaOutputDTO createTerapeuta(TerapeutaInputDTO terapeutaInputDTO){
+
+        String hashedPassword = passwordEncoder.encode(terapeutaInputDTO.getContrasenia());
+        terapeutaInputDTO.setContrasenia(hashedPassword);
+
+        String usuario = utils.generateRandomUsername(terapeutaInputDTO.getNombre(), terapeutaInputDTO.getApellido());
+        terapeutaInputDTO.setUsuario(usuario);
+
         Terapeuta terapeuta = terapeutaMapper.TerapeutaInputDTOToTerapeuta(terapeutaInputDTO);
 
         return terapeutaMapper.TerapeutaToTerapeutaOutputDTO(terapeutaRepository.save(terapeuta));
@@ -91,7 +106,11 @@ public class TerapeutaServiceImpl implements TerapeutaService {
         if (terapeutaInputDTO.getEspecialidad() != null) {
             terapeuta.setEspecialidad(terapeutaInputDTO.getEspecialidad());
         }
-    
+        if (terapeutaInputDTO.getContrasenia() != null) {
+            String hashedPassword = passwordEncoder.encode(terapeutaInputDTO.getContrasenia());
+            terapeuta.setContrasenia(hashedPassword);
+        }
+        
         return terapeutaMapper.TerapeutaToTerapeutaOutputDTO(terapeutaRepository.save(terapeuta));
     
     }

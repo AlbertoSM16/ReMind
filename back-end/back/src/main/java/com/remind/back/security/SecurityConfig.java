@@ -20,7 +20,10 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF para APIs stateless
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/auth/login").permitAll() // Permitir acceso público al login
+                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/terapeuta/**").permitAll() 
+                .requestMatchers("/api/paciente/**").permitAll() 
+                .requestMatchers("/api/juegos/**").permitAll()
                 .anyRequest().authenticated() // Proteger el resto de endpoints
             )
             .httpBasic(withDefaults());

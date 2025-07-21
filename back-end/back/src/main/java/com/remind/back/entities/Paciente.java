@@ -3,6 +3,8 @@ package com.remind.back.entities;
 import java.util.Date;
 import java.util.Set;
 
+import jakarta.persistence.Column; 
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -46,7 +48,8 @@ public class Paciente {
 
     @NotNull
     private Date fechaNacimiento;
-
+    
+    @Column(unique = true) 
     private String usuario;
 
     @NotBlank
@@ -55,9 +58,9 @@ public class Paciente {
     @NotNull
     private Integer edad;
 
-
     @NotBlank
     private String nombreResponsable;
+    
     @Enumerated(EnumType.STRING)
     private TipoUsuario rol = TipoUsuario.PACIENTE;
     

@@ -3,7 +3,6 @@ package com.remind.back.services;
 import java.util.List;
 
 import com.remind.back.Mapper.PacienteMapper;
-import com.remind.back.Mapper.PacienteTerapeutaMapper;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
 import com.remind.back.entities.Paciente;
@@ -12,6 +11,7 @@ import com.remind.back.entities.Terapeuta;
 import com.remind.back.repositories.PacienteRepository;
 import com.remind.back.repositories.PacienteTerapeutaRepository;
 import com.remind.back.repositories.TerapeutaRepository;
+import com.remind.back.utils.Utils;
 
 import org.springframework.transaction.annotation.Transactional;
 import java.util.NoSuchElementException;
@@ -31,7 +31,9 @@ public class PacienteServiceImpl implements PacienteService {
     @Autowired
     private PacienteMapper pacienteMapper;
     
-
+    @Autowired
+    private Utils utils;
+    
     @Autowired
     private TerapeutaRepository terapeutaRepository;
 
@@ -39,16 +41,19 @@ public class PacienteServiceImpl implements PacienteService {
     private PacienteTerapeutaRepository pacienteTerapeutaRepository;
 
 
-     @Autowired
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
      public PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
 
-         String hashedPassword = passwordEncoder.encode(pacienteInputDTO.getContrasenia());
-        
+        String hashedPassword = passwordEncoder.encode(pacienteInputDTO.getContrasenia());
         pacienteInputDTO.setContrasenia(hashedPassword);
+
+        String usuario = utils.generateRandomUsername(pacienteInputDTO.getNombre(),pacienteInputDTO.getApellido());
+        pacienteInputDTO.setUsuario(usuario);
+
         Paciente paciente = pacienteMapper.PacienteInputDTOToPaciente(pacienteInputDTO);
 
         Paciente savedPaciente = pacienteRepository.save(paciente); 
@@ -126,6 +131,10 @@ public class PacienteServiceImpl implements PacienteService {
         }
         if(pacienteDTO.getFechaNacimiento() != null){
             paciente.setFechaNacimiento(pacienteDTO.getFechaNacimiento());
+        }
+        if(pacienteDTO.getContrasenia() != null){
+            String hashedPassword = passwordEncoder.encode(pacienteDTO.getContrasenia());
+            paciente.setContrasenia(hashedPassword);
         }
         if (pacienteDTO.getTerapeuta_id() != null) {
             Terapeuta terapeuta = terapeutaRepository.findById(pacienteDTO.getTerapeuta_id())

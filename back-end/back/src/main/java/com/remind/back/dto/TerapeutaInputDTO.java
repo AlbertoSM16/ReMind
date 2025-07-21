@@ -28,7 +28,6 @@ public class TerapeutaInputDTO {
     @NotBlank(message = "El email no puede estar vacío")
     private String email;
 
-    @NotBlank(message = "El usuario no puede estar vacío")
     private String usuario;
 
     @NotBlank(message = "La contraseña no puede estar vacía")
