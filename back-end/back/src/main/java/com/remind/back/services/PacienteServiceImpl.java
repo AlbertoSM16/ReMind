@@ -16,6 +16,8 @@ import com.remind.back.repositories.TerapeutaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.NoSuchElementException;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -36,13 +38,20 @@ public class PacienteServiceImpl implements PacienteService {
     @Autowired
     private PacienteTerapeutaRepository pacienteTerapeutaRepository;
 
+
+     @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     @Transactional
      public PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
 
+         String hashedPassword = passwordEncoder.encode(pacienteInputDTO.getContrasenia());
+        
+        pacienteInputDTO.setContrasenia(hashedPassword);
         Paciente paciente = pacienteMapper.PacienteInputDTOToPaciente(pacienteInputDTO);
 
-        Paciente savedPaciente = pacienteRepository.save(paciente); // Save the patient first to get an ID
+        Paciente savedPaciente = pacienteRepository.save(paciente); 
 
         Integer terapeutaId = pacienteInputDTO.getTerapeuta_id();
 
@@ -50,7 +59,6 @@ public class PacienteServiceImpl implements PacienteService {
             Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
                 .orElseThrow(() -> new NoSuchElementException("Terapeuta with ID " + terapeutaId + " not found."));
 
-            // Create PacienteTerapeuta entity directly, setting the Paciente and Terapeuta objects
             PacienteTerapeuta pacienteTerapeuta = new PacienteTerapeuta();
             pacienteTerapeuta.setPaciente(savedPaciente); 
             pacienteTerapeuta.setTerapeuta(terapeuta); 
