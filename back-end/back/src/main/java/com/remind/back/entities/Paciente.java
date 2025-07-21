@@ -53,6 +53,7 @@ public class Paciente {
     @NotNull
     private Integer edad;
 
+
     @NotBlank
     private String nombreResponsable;
     @Enumerated(EnumType.STRING)
