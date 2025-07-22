@@ -10,7 +10,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { importProvidersFrom } from '@angular/core';
 import { NavComponent } from './components/nav/nav.component';
-
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
