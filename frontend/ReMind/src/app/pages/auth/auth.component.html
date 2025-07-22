@@ -2,7 +2,7 @@
   <div class="login-card">
     <img src="assets/img/logo.png" alt="logo" class="logo" />
 
-    <form (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
       <div class="form-group">
         <label for="usuario">Usuario</label>
         <input
@@ -12,6 +12,7 @@
           placeholder="Usuario"
           [(ngModel)]="credentials.usuario"
           required
+          class="form-control"
         />
       </div>
 
@@ -20,10 +21,11 @@
         <input
           type="password"
           id="password"
-          name="contraseña"
+          name="contrasenia"
           placeholder="Contraseña"
-          [(ngModel)]="credentials.contraseña"
+          [(ngModel)]="credentials.contrasenia"
           required
+          class="form-control"
         />
       </div>
 
@@ -31,7 +33,7 @@
         {{ errorMessage }}
       </div>
 
-      <button type="submit">INICIAR SESIÓN</button>
+      <button type="submit" class="btn-login">INICIAR SESIÓN</button>
     </form>
   </div>
 </div>

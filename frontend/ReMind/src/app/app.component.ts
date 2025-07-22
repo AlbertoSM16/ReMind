@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthComponent } from './pages/auth/auth.component';
-import { LadingPageComponent } from './pages/landing-page/landing-page.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NavComponent } from './components/nav/nav.component';
 
@@ -13,7 +12,6 @@ import { NavComponent } from './components/nav/nav.component';
     CommonModule,
     RouterModule,
     AuthComponent,
-    LadingPageComponent,
     HomeComponent,
     NavComponent
   ],

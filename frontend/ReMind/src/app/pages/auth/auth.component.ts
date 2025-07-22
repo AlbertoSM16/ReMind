@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router,RouterModule} from '@angular/router';
 import { AuthService } from '../../services/auth.service'; // Servicio que crearemos
 
 @Component({
@@ -14,7 +14,8 @@ import { AuthService } from '../../services/auth.service'; // Servicio que crear
   imports: [
     FormsModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
@@ -23,7 +24,7 @@ export class AuthComponent {
   // Objeto para vincular los datos del formulario con [(ngModel)]
   credentials = {
     usuario: '',
-    contraseña: ''
+    contrasenia: ''
   };
 
   errorMessage: string = '';
@@ -42,8 +43,8 @@ export class AuthComponent {
       next: (response) => {
         console.log('Login exitoso!', response);
         // Aquí podrías guardar el token y redirigir al usuario
-        // localStorage.setItem('token', response.token);
-        // this.router.navigate(['/home']);
+        localStorage.setItem('token', response.token);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         console.error('Error en el login', err);
