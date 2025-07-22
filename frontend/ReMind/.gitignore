@@ -87,3 +87,5 @@ tmp/
 # Archivos de construcción
 *.js.map
 *.css.map
+
+/node_modules
