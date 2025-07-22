@@ -1,17 +1,14 @@
-// ruta: frontend/ReMind/src/app/pages/auth/auth.component.ts
-
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router'; 
 
 @Component({
   selector: 'auth-component',
   standalone: true,
-  // Importamos los módulos necesarios para el formulario y las peticiones HTTP
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, RouterModule], 
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
@@ -22,7 +19,7 @@ export class AuthComponent {
   };
 
   errorMessage: string = '';
-
+  
   constructor(
     private authService: AuthService,
     private router: Router
@@ -33,9 +30,7 @@ export class AuthComponent {
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
         console.log('Login exitoso!', response);
-        // Aquí puedes guardar el token (ej. en localStorage)
         // localStorage.setItem('token', response.token);
-        // Y redirigir al usuario
         // this.router.navigate(['/home']);
       },
       error: (err) => {
