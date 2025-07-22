@@ -1,40 +1,46 @@
+// ruta: frontend/ReMind/src/app/pages/auth/auth.component.ts
+
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service'; 
-import { Router } from '@angular/router'; 
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-auth',
+  selector: 'auth-component',
+  standalone: true,
+  // Importamos los módulos necesarios para el formulario y las peticiones HTTP
+  imports: [FormsModule, CommonModule, HttpClientModule],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent {
   credentials = {
     usuario: '',
-    codigoAcceso: ''
+    contraseña: ''
   };
 
   errorMessage: string = '';
 
   constructor(
     private authService: AuthService,
-    private router: Router 
-  ) { }
+    private router: Router
+  ) {}
 
- 
   onSubmit(): void {
     this.errorMessage = '';
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
         console.log('Login exitoso!', response);
-        
-        localStorage.setItem('token', response.token);
-
-        // this.router.navigate(['/dashboard']);
+        // Aquí puedes guardar el token (ej. en localStorage)
+        // localStorage.setItem('token', response.token);
+        // Y redirigir al usuario
+        // this.router.navigate(['/home']);
       },
       error: (err) => {
         console.error('Error en el login', err);
-        this.errorMessage = 'Usuario o código de acceso incorrecto. Por favor, inténtalo de nuevo.';
+        this.errorMessage = 'Usuario o contraseña incorrectos.';
       }
     });
   }
