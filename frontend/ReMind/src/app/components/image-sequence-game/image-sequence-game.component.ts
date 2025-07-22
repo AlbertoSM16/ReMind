@@ -49,6 +49,7 @@ export class ImageSequenceGameComponent implements OnInit {
     const shuffledImages = [...this.images].sort(() => 0.5 - Math.random());
     this.currentSequence = shuffledImages.slice(0, this.sequenceLength);
 
+    // Temporarily show the sequence
     let i = 0;
     const interval = setInterval(() => {
       if (i < this.currentSequence.length) {
@@ -70,7 +71,7 @@ export class ImageSequenceGameComponent implements OnInit {
 
   selectImage(imageId: number): void {
     if (!this.gameStarted || !this.showAllImages) {
-      return; 
+      return; // Game not in active selection phase
     }
 
     this.userSequence.push(imageId);
