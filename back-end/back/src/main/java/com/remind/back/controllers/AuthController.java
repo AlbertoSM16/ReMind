@@ -43,7 +43,7 @@ public class AuthController {
             Administrador admin = adminOpt.get();
             if (passwordEncoder.matches(contrasenia, admin.getContrasenia())) {
                 String rol = "administrador";
-                String token = JwtUtil.generateToken(admin.getEmail(), rol);
+                String token = JwtUtil.generateToken(admin.getUsuario(), rol);
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
@@ -59,7 +59,7 @@ public class AuthController {
             Terapeuta terapeuta = terapeutaOpt.get();
             if (passwordEncoder.matches(contrasenia, terapeuta.getContrasenia())) {
                 String rol = "terapeuta";
-                String token = JwtUtil.generateToken(terapeuta.getEmail(), rol);
+                String token = JwtUtil.generateToken(terapeuta.getUsuario(), rol);
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
@@ -75,7 +75,7 @@ public class AuthController {
             Paciente paciente = pacienteOpt.get();
             if (passwordEncoder.matches(contrasenia, paciente.getContrasenia())) {
                 String rol = "paciente";
-                String token = JwtUtil.generateToken(paciente.getEmail(), rol);
+                String token = JwtUtil.generateToken(paciente.getUsuario(), rol);
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
