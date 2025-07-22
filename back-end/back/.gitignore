@@ -47,4 +47,4 @@ hs_err_pid*
 .spring-boot-devtools.properties
 
 #Frontend build artifacts
-/frontend/
+/frontend
