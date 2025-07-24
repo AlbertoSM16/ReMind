@@ -1,6 +1,7 @@
 
 import { Routes } from '@angular/router';
 import { AuthComponent } from './pages/auth/auth.component';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
   // Redirige la ruta vacía a /login
@@ -8,5 +9,5 @@ export const routes: Routes = [
   // Carga el AuthComponent cuando la ruta es /login
   { path: 'login', component: AuthComponent },
   // Aquí puedes añadir más rutas, por ejemplo, al home.
-  // { path: 'home', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
 ];

@@ -10,6 +10,7 @@ import { JuegoCambioComponent } from '../../components/juego-cambio/juego-cambio
 import { ImageSequenceGameComponent } from '../../components/image-sequence-game/image-sequence-game.component';
 import { MatchingGameComponent } from '../../components/matching-game/matching-game.component'; 
 import { ClothingGameComponent } from '../../components/clothing-game/clothing-game.component';
+import { EuroDenominationComponent } from "../../components/euro-denomination-component/euro-denomination-component.component";
 
 @Component({
   selector: 'home-component',
@@ -25,7 +26,12 @@ import { ClothingGameComponent } from '../../components/clothing-game/clothing-g
     JuegoCambioComponent,
     ImageSequenceGameComponent,
     MatchingGameComponent,
-    ClothingGameComponent
-  ]
+    ClothingGameComponent,
+    
+]
 })
-export class HomeComponent {}
+export class HomeComponent {
+
+  
+
+}

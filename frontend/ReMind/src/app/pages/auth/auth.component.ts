@@ -21,7 +21,6 @@ import { AuthService } from '../../services/auth.service'; // Servicio que crear
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent {
-  // Objeto para vincular los datos del formulario con [(ngModel)]
   credentials = {
     usuario: '',
     contrasenia: ''
@@ -34,15 +33,12 @@ export class AuthComponent {
     private router: Router
   ) {}
 
-  /**
-   * Se ejecuta al enviar el formulario para iniciar sesión.
-   */
-  onSubmit(): void {
-    this.errorMessage = ''; // Limpiar errores previos
+
+  onLogin(): void {
+    this.errorMessage = ''; 
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
-        console.log('Login exitoso!', response);
-        // Aquí podrías guardar el token y redirigir al usuario
+        localStorage.setItem('rol',response.rol);
         localStorage.setItem('token', response.token);
         this.router.navigate(['/home']);
       },
