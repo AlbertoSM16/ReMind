@@ -36,7 +36,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest login) {
         String usuario = login.getUsuario();
-        String contrasenia = login.getContraseña();
+        String contrasenia = login.getContrasenia();
 
         Optional<Administrador> adminOpt = administradorRepository.findByUsuario(usuario);
         if (adminOpt.isPresent()) {

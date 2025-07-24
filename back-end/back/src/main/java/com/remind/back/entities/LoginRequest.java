@@ -9,5 +9,5 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class LoginRequest {
     private String usuario;
-    private String contraseña;
+    private String contrasenia;
 }

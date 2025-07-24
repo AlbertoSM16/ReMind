@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -18,15 +21,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF para APIs stateless
-            .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/auth/login").permitAll()
-                .requestMatchers("/api/terapeuta/**").permitAll() 
-                .requestMatchers("/api/paciente/**").permitAll() 
-                .requestMatchers("/api/juegos/**").permitAll()
-                .anyRequest().authenticated() // Proteger el resto de endpoints
-            )
-            .httpBasic(withDefaults());
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/terapeuta/**").permitAll()
+                        .requestMatchers("/api/paciente/**").permitAll()
+                        .requestMatchers("/api/juegos/**").permitAll()
+                        .anyRequest().authenticated())
+                .httpBasic(withDefaults());
         return http.build();
     }
 
@@ -36,7 +38,21 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("*")
+                        .allowedHeaders("*");
+            }
+        };
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
