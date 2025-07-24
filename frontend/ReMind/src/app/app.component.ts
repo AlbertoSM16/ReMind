@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { AuthComponent } from './pages/auth/auth.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NavComponent } from './components/nav/nav.component';
-
+import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -13,7 +13,8 @@ import { NavComponent } from './components/nav/nav.component';
     RouterModule,
     AuthComponent,
     HomeComponent,
-    NavComponent
+    NavComponent,
+    NgIf
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

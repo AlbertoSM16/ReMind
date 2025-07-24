@@ -1,0 +1,96 @@
+/* General Styling */
+.container {
+  max-width: 960px; /* Adjust as needed */
+}
+
+h2 {
+  color: #333; /* Darker text for heading */
+  font-weight: bold;
+}
+
+/* Add Patient Button */
+.add-patient-btn {
+  background-color: #61b369; /* Greenish background */
+  color: white;
+  border-radius: 20px; /* Rounded corners */
+  padding: 10px 30px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.add-patient-btn:hover {
+  background-color: #4a9151; /* Darker green on hover */
+  color: white; /* Ensure text color stays white on hover */
+}
+
+
+/* Patient Card */
+.patient-card {
+  background-color: #fff; /* White background */
+  border-radius: 15px; /* Slightly rounded corners for the card */
+  padding: 20px;
+  border: 1px solid #e0e0e0; /* Light border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%; /* Circular avatar */
+  object-fit: cover;
+  border: 2px solid #ddd; /* Light border around avatar */
+}
+
+/* Placeholders for text lines (to mimic the image) */
+.patient-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.name-placeholder {
+  height: 18px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  width: 80%; /* Shorter for name */
+}
+
+.line-placeholder {
+  height: 12px;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  margin-bottom: 6px;
+  width: 95%; /* Longer for details */
+}
+
+.line-placeholder:last-child {
+  margin-bottom: 0;
+}
+
+/* Icons */
+.edit-icon {
+  font-size: 1.4rem;
+  color: #61b369; /* Green for edit icon */
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.edit-icon:hover {
+  color: #4a9151; /* Darker green on hover */
+}
+
+.delete-icon {
+  font-size: 1.4rem;
+  color: #dc3545; /* Red for delete icon (Bootstrap danger color) */
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.delete-icon:hover {
+  color: #bd2130; /* Darker red on hover */
+}

@@ -1,0 +1,95 @@
+/* Overall container and background */
+.main-container {
+  background-color: #e6f7ff; /* A very light blue/gray background to match the image */
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px; /* Padding top/bottom and sides */
+  font-family: Arial, sans-serif; /* A clean font */
+}
+
+/* Header (Logo and Title) */
+.header {
+  text-align: center;
+  margin-bottom: 40px; /* Space below header */
+}
+
+.logo {
+  width: 80px; /* Adjust size of the logo */
+  height: 80px;
+  margin-bottom: 10px;
+  /* Placeholder image, replace with your actual logo */
+}
+
+.form-title {
+  font-size: 1.8rem;
+  color: #333; /* Darker text */
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-weight: 600; /* Slightly bolder */
+}
+
+/* Form Container */
+.patient-form {
+  width: 100%;
+  max-width: 450px; /* Limit form width */
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* Space between form groups */
+}
+
+/* Form Group Styling */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Labels aligned to the left */
+}
+
+.form-group label {
+  font-size: 1.1rem;
+  color: #555; /* Slightly lighter label text */
+  margin-bottom: 8px; /* Space between label and input */
+  font-weight: 500;
+}
+
+/* Custom Input Fields */
+.custom-input {
+  background-color: #a4f0ed; /* Turquoise-like background from the image */
+  border: none; /* No border */
+  border-radius: 25px; /* Highly rounded corners */
+  padding: 12px 20px; /* Padding inside the input */
+  font-size: 1.1rem;
+  color: #333; /* Input text color */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+}
+
+.custom-input::placeholder {
+  color: rgba(0, 0, 0, 0.5); /* Placeholder text color */
+}
+
+.custom-input:focus {
+  background-color: #90e0db; /* Slightly darker on focus */
+  box-shadow: 0 0 0 0.25rem rgba(164, 240, 237, 0.5), inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Custom focus ring */
+  border-color: transparent; /* Ensure no default blue border */
+  outline: none; /* Remove default outline */
+}
+
+/* Edit Button */
+.edit-btn {
+  background-color: #61b369; /* Greenish button background */
+  color: white; /* White text */
+  border-radius: 25px; /* Rounded corners */
+  padding: 12px 50px; /* Padding */
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.edit-btn:hover {
+  background-color: #4a9151; /* Darker green on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+  color: white; /* Keep text white on hover */
+}

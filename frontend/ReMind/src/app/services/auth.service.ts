@@ -21,4 +21,8 @@ export class AuthService {
 
     this.router.navigate(['/login']);
   }
+
+   getRole(): string | null {
+    return localStorage.getItem('rol');
+  }
 }

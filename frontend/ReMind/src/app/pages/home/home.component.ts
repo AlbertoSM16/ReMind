@@ -1,6 +1,6 @@
 // src/app/pages/home/home.component.ts
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavComponent } from '../../components/nav/nav.component';
 import { DirectAccessComponent } from '../../components/direct-access/direct-access.component';
 import { HeaderComponent } from '../../components/header/header.component';
@@ -10,7 +10,9 @@ import { JuegoCambioComponent } from '../../components/juego-cambio/juego-cambio
 import { ImageSequenceGameComponent } from '../../components/image-sequence-game/image-sequence-game.component';
 import { MatchingGameComponent } from '../../components/matching-game/matching-game.component'; 
 import { ClothingGameComponent } from '../../components/clothing-game/clothing-game.component';
-import { EuroDenominationComponent } from "../../components/euro-denomination-component/euro-denomination-component.component";
+import { IntruderGameComponent } from '../../components/intruder-game/intruder-game.component';
+import { SentenceCompletionGameComponent } from '../../components/sentence-completion-game/sentence-completion-game.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'home-component',
@@ -27,11 +29,20 @@ import { EuroDenominationComponent } from "../../components/euro-denomination-co
     ImageSequenceGameComponent,
     MatchingGameComponent,
     ClothingGameComponent,
+    IntruderGameComponent,
+    SentenceCompletionGameComponent
     
 ]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  
+  userRole: string | null = null;
 
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.userRole = this.authService.getRole();
+  }
 }
+
+

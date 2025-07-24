@@ -1,0 +1,62 @@
+<div class="main-container">
+  <div class="header">
+    <img src="https://via.placeholder.com/60" alt="Remind Logo" class="logo">
+    <h1 class="form-title">Crear Paciente</h1>
+  </div>
+
+  <form class="patient-form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" class="form-control custom-input" placeholder="Nombre" [(ngModel)]="pacient.nombre" name="nombre" required>
+    </div>
+
+    <div class="form-group">
+      <label for="apellido">Apellido</label>
+      <input type="text" id="apellido" class="form-control custom-input" placeholder="Apellido" [(ngModel)]="pacient.apellido" name="apellido" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" class="form-control custom-input" placeholder="Email" [(ngModel)]="pacient.email" name="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="contrasenia">Contraseña</label>
+      <input type="password" id="contrasenia" class="form-control custom-input" placeholder="Contraseña" [(ngModel)]="pacient.contrasenia" name="contrasenia" required>
+    </div>
+
+    <div class="form-group">
+      <label for="telefono">Teléfono</label>
+      <input type="tel" id="telefono" class="form-control custom-input" placeholder="Teléfono" [(ngModel)]="pacient.telefono" name="telefono" required>
+    </div>
+
+    <div class="form-group">
+      <label for="enfermedad">Enfermedad (Diagnóstico)</label>
+      <input type="text" id="enfermedad" class="form-control custom-input" placeholder="Enfermedad o Diagnóstico" [(ngModel)]="pacient.enfermedad" name="enfermedad" required>
+    </div>
+
+    <div class="form-group">
+      <label for="edad">Edad</label>
+      <input type="number" id="edad" class="form-control custom-input" placeholder="Edad" [(ngModel)]="pacient.edad" name="edad" required>
+    </div>
+
+    <div class="form-group">
+      <label for="nombreResponsable">Nombre del Responsable</label>
+      <input type="text" id="nombreResponsable" class="form-control custom-input" placeholder="Nombre del Responsable" [(ngModel)]="pacient.nombreResponsable" name="nombreResponsable" required>
+    </div>
+
+    <div class="form-group">
+      <label for="fechaNacimiento">Fecha de Nacimiento</label>
+      <input type="date" id="fechaNacimiento" class="form-control custom-input" [(ngModel)]="pacient.fechaNacimiento" name="fechaNacimiento" required>
+    </div>
+
+    <div class="form-group">
+      <label for="terapeuta_id">ID del Terapeuta</label>
+      <input type="number" id="terapeuta_id" class="form-control custom-input" placeholder="ID del Terapeuta" [(ngModel)]="pacient.terapeuta_id" name="terapeuta_id" required>
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+      <button type="submit" class="btn edit-btn">Crear</button>
+    </div>
+  </form>
+</div>
