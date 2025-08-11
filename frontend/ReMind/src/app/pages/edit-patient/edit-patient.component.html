@@ -1,0 +1,33 @@
+<div class="main-container">
+  <div class="header">
+    <img src="https://via.placeholder.com/60" alt="Remind Logo" class="logo">
+    <h1 class="form-title">Editar Paciente</h1>
+  </div>
+
+  <form class="patient-form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" class="form-control custom-input" [(ngModel)]="patient.nombre" name="nombre" required>
+    </div>
+    <div class="form-group">
+      <label for="apellido">Apellido</label>
+      <input type="text" id="apellido" class="form-control custom-input" [(ngModel)]="patient.apellido" name="apellido" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control custom-input" placeholder="Email" [(ngModel)]="patient.email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" class="form-control custom-input" placeholder="Teléfono" [(ngModel)]="patient.telefono" name="telefono" required>
+    </div>
+    <div class="form-group">
+        <label for="enfermedad">Enfermedad (Diagnóstico)</label>
+        <input type="text" id="enfermedad" class="form-control custom-input" placeholder="Enfermedad o Diagnóstico" [(ngModel)]="patient.enfermedad" name="enfermedad" required>
+    </div>
+    
+    <div class="d-flex justify-content-center mt-5">
+      <button type="submit" class="btn edit-btn">Actualizar</button>
+    </div>
+  </form>
+</div>

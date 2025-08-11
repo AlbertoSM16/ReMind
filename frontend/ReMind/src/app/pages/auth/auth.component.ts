@@ -38,12 +38,12 @@ export class AuthComponent {
     this.errorMessage = ''; 
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
-        localStorage.setItem('rol',response.rol);
-        localStorage.setItem('token', response.token);
+        sessionStorage.setItem('rol',response.rol);
+        sessionStorage.setItem('token', response.token);
+        sessionStorage.setItem('id', response.id);
         this.router.navigate(['/home']);
       },
       error: (err) => {
-        console.error('Error en el login', err);
         this.errorMessage = 'Usuario o contraseña incorrectos.';
       }
     });
