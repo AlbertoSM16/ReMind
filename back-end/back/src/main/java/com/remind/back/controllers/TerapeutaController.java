@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.remind.back.services.TerapeutaService;
-
-
+import com.remind.back.dto.AgendaOutputDTO;
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
 
@@ -33,7 +32,7 @@ public class TerapeutaController {
 
     @GetMapping
     public ResponseEntity<?> getAllTerapeutas(@RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size) {
         List<TerapeutaOutputDTO> terapeutas = terapeutaService.getAllTerapeutas(page, size);
         if (terapeutas.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
@@ -52,7 +51,6 @@ public class TerapeutaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente no encontrado");
         }
     }
-
 
     @PostMapping
     public ResponseEntity<?> createTerapeuta(@RequestBody TerapeutaInputDTO terapeutaInputDTO) {
@@ -73,12 +71,14 @@ public class TerapeutaController {
             terapeutaService.deleteTerapeuta(id);
             return ResponseEntity.status(HttpStatus.OK).body("El terapeuta ha sido eliminado de la base de datos");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede eliminar el terapeuta con id: " + id);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("No se puede eliminar el terapeuta con id: " + id);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTerapeuta(@PathVariable("id") Integer id, @RequestBody TerapeutaInputDTO terapeutaInputDTO) {
+    public ResponseEntity<?> updateTerapeuta(@PathVariable("id") Integer id,
+            @RequestBody TerapeutaInputDTO terapeutaInputDTO) {
 
         try {
             terapeutaService.updateTerapeuta(id, terapeutaInputDTO);
@@ -87,6 +87,20 @@ public class TerapeutaController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede editar el terapeuta" + id);
 
+        }
+    }
+
+    @GetMapping("/{id}/agendas")
+    public ResponseEntity<?> getAgendasDelTerapeuta(@PathVariable Integer id) {
+        try {
+            List<AgendaOutputDTO> agendas = terapeutaService.getAgendasByTerapeutaId(id);
+            if (agendas.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontraron agendas para este terapeuta.");
+            }
+            return ResponseEntity.ok(agendas);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al recuperar las agendas.");
         }
     }
 

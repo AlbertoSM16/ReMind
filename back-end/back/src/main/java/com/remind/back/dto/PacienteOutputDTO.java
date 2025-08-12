@@ -11,8 +11,9 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor 
 @AllArgsConstructor 
 
-//para mostrar solo los datos necesarios
 public class PacienteOutputDTO {
+    
+    private int id;
 
     private String nombre;
 

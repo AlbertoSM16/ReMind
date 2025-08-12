@@ -52,7 +52,6 @@ public class AuthController {
                 ));
             }
         }
-
         // 2. Si no es admin, buscar en la tabla de Terapeutas
         Optional<Terapeuta> terapeutaOpt = terapeutaRepository.findByUsuario(usuario);
         if (terapeutaOpt.isPresent()) {
@@ -68,7 +67,6 @@ public class AuthController {
                 ));
             }
         }
-
         // 3. Si no es admin ni terapeuta, buscar en la tabla de Pacientes
         Optional<Paciente> pacienteOpt = pacienteRepository.findByUsuario(usuario);
         if (pacienteOpt.isPresent()) {

@@ -2,6 +2,7 @@ package com.remind.back.controllers;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,15 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.remind.back.dto.AgendaOutputDTO;
+import com.remind.back.entities.Juego;
 import com.remind.back.dto.AgendaInputDTO;
 
 import com.remind.back.services.AgendaService;
 
-
-
 @RestController
 @RequestMapping("/api/agenda")
-@CrossOrigin(origins = "*") 
+@CrossOrigin(origins = "*")
 public class AgendaController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class AgendaController {
 
     @GetMapping
     public ResponseEntity<?> getAllAgendas(@RequestParam(defaultValue = "0") int page,
-                                           @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size) {
         List<AgendaOutputDTO> agendas = agendaService.getAllAgendas(page, size);
         if (agendas.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
@@ -87,6 +87,41 @@ public class AgendaController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la agenda");
+        }
+    }
+
+    @PostMapping("/{agendaId}/juego/{juegoId}")
+    public ResponseEntity<?> assignJuegoToAgenda(@PathVariable Integer agendaId, @PathVariable Integer juegoId) {
+        try {
+            agendaService.assignJuegoToAgenda(agendaId, juegoId);
+            return ResponseEntity.ok().body("Juego asignado correctamente a la agenda.");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al asignar el juego.");
+        }
+    }
+
+    @GetMapping("/{agendaId}/juegos")
+    public ResponseEntity<?> getJuegosDeLaAgenda(@PathVariable Integer agendaId) {
+        try {
+            List<Juego> juegos = agendaService.getJuegosByAgendaId(agendaId);
+            return ResponseEntity.ok(juegos);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{agendaId}/juego/{juegoId}")
+    public ResponseEntity<?> removeJuegoDeAgenda(@PathVariable Integer agendaId, @PathVariable Integer juegoId) {
+        try {
+            agendaService.removeJuegoFromAgenda(agendaId, juegoId);
+            return ResponseEntity.ok().body("Juego eliminado de la agenda correctamente.");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el juego de la agenda.");
         }
     }
 }

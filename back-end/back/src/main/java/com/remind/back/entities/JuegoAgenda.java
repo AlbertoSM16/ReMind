@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Entity; 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,5 +40,8 @@ public class JuegoAgenda {
 
     @NotBlank
     private Boolean realizado = false;
+
+    @NotNull
+    private int dificultad;
 
 }

@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
+import com.remind.back.dto.AgendaOutputDTO;
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
+import com.remind.back.entities.Agenda;
+import com.remind.back.entities.PacienteAgenda;
 import com.remind.back.entities.Terapeuta;
 import com.remind.back.Mapper.TerapeutaMapper;
+import com.remind.back.repositories.PacienteAgendaRepository;
 import com.remind.back.repositories.PacienteTerapeutaRepository;
 import com.remind.back.repositories.TerapeutaRepository;
 import com.remind.back.utils.Utils;
@@ -22,7 +27,7 @@ import com.remind.back.utils.Utils;
 public class TerapeutaServiceImpl implements TerapeutaService {
 
     @Autowired
-    private  TerapeutaRepository terapeutaRepository;
+    private TerapeutaRepository terapeutaRepository;
 
     @Autowired
     private PacienteTerapeutaRepository pacienteTerapeutaRepository;
@@ -31,14 +36,16 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     private TerapeutaMapper terapeutaMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+
     @Autowired
     private Utils utils;
 
+    @Autowired
+    private PacienteAgendaRepository pacienteAgendaRepository;
 
     @Override
     @Transactional
-    public TerapeutaOutputDTO createTerapeuta(TerapeutaInputDTO terapeutaInputDTO){
+    public TerapeutaOutputDTO createTerapeuta(TerapeutaInputDTO terapeutaInputDTO) {
 
         String hashedPassword = passwordEncoder.encode(terapeutaInputDTO.getContrasenia());
         terapeutaInputDTO.setContrasenia(hashedPassword);
@@ -53,44 +60,45 @@ public class TerapeutaServiceImpl implements TerapeutaService {
 
     @Override
     @Transactional(readOnly = true)
-    public TerapeutaOutputDTO getTerapeutaById(Integer id){
+    public TerapeutaOutputDTO getTerapeutaById(Integer id) {
         Terapeuta terapeuta = terapeutaRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con ese id" + id));
+                .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con ese id" + id));
 
         return terapeutaMapper.TerapeutaToTerapeutaOutputDTO(terapeuta);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<TerapeutaOutputDTO>getAllTerapeutas(int page,int size){
-        List<Terapeuta> terapeutas = terapeutaRepository.findAll(PageRequest.of(page,size)).getContent();
-        return terapeutaRepository.findAll(PageRequest.of(page,size))
-            .getContent()
-            .stream()
-            .map(terapeutaMapper::TerapeutaToTerapeutaOutputDTO)
-            .toList();
+    public List<TerapeutaOutputDTO> getAllTerapeutas(int page, int size) {
+        List<Terapeuta> terapeutas = terapeutaRepository.findAll(PageRequest.of(page, size)).getContent();
+        return terapeutaRepository.findAll(PageRequest.of(page, size))
+                .getContent()
+                .stream()
+                .map(terapeutaMapper::TerapeutaToTerapeutaOutputDTO)
+                .toList();
     }
 
     @Override
     @Transactional
-    public void deleteTerapeuta(Integer id){
-        if(!terapeutaRepository.existsById(id)){
+    public void deleteTerapeuta(Integer id) {
+        if (!terapeutaRepository.existsById(id)) {
             throw new NoSuchElementException("No existe un terapeuta con ese id y no se puede eliminar");
         }
-        if(pacienteTerapeutaRepository.findByTerapeutaId(id).isPresent()){
-            throw new NoSuchElementException("El terapeuta con id " + id + " no se puede eliminar porque tiene pacientes asociados");
+        if (pacienteTerapeutaRepository.findByTerapeutaId(id).isPresent()) {
+            throw new NoSuchElementException(
+                    "El terapeuta con id " + id + " no se puede eliminar porque tiene pacientes asociados");
         }
         pacienteTerapeutaRepository.deleteByTerapeutaId(id);
         terapeutaRepository.deleteById(id);
-    
+
     }
 
     @Override
     @Transactional
-    public TerapeutaOutputDTO updateTerapeuta(Integer id, TerapeutaInputDTO terapeutaInputDTO){
+    public TerapeutaOutputDTO updateTerapeuta(Integer id, TerapeutaInputDTO terapeutaInputDTO) {
         Terapeuta terapeuta = terapeutaRepository.findById(id)
-            .orElseThrow(() ->  new NoSuchElementException("El terapeuta con id " + id + " no existe"));
-    
+                .orElseThrow(() -> new NoSuchElementException("El terapeuta con id " + id + " no existe"));
+
         if (terapeutaInputDTO.getNombre() != null) {
             terapeuta.setNombre(terapeutaInputDTO.getNombre());
         }
@@ -110,8 +118,34 @@ public class TerapeutaServiceImpl implements TerapeutaService {
             String hashedPassword = passwordEncoder.encode(terapeutaInputDTO.getContrasenia());
             terapeuta.setContrasenia(hashedPassword);
         }
-        
+
         return terapeutaMapper.TerapeutaToTerapeutaOutputDTO(terapeutaRepository.save(terapeuta));
-    
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AgendaOutputDTO> getAgendasByTerapeutaId(Integer id) {
+        Terapeuta terapeuta = terapeutaRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con el id " + id));
+
+        List<Agenda> agendas = terapeuta.getAgendaConexiones()
+                .stream()
+                .map(agendaConexion -> agendaConexion.getAgenda())
+                .collect(Collectors.toList());
+
+        return agendas.stream().map(agenda -> {
+            PacienteAgenda pa = pacienteAgendaRepository.findByAgendaIdAndPacienteId(agenda.getId(), null);
+
+            String nombrePaciente = "Paciente no asignado";
+            if (pa != null && pa.getPaciente() != null) {
+                nombrePaciente = pa.getPaciente().getNombre() + " " + pa.getPaciente().getApellido();
+            }
+
+            return new AgendaOutputDTO(
+                    agenda.getNombre(),
+                    nombrePaciente,
+                    terapeuta.getNombre() + " " + terapeuta.getApellido());
+        }).collect(Collectors.toList());
     }
 }

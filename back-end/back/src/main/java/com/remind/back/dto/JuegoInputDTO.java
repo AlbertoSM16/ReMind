@@ -26,5 +26,4 @@ public class JuegoInputDTO {
     
     private Date fechaRealizacion = null;
 
-    
 }

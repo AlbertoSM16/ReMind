@@ -2,9 +2,9 @@ package com.remind.back.services;
 
 import com.remind.back.dto.AgendaInputDTO;
 import com.remind.back.dto.AgendaOutputDTO;
+import com.remind.back.entities.Juego;
 
 import java.util.List;
-
 
 public interface AgendaService {
 
@@ -16,5 +16,11 @@ public interface AgendaService {
 
     void deleteAgenda(Integer id);
 
+    void assignJuegoToAgenda(Integer agendaId, Integer juegoId);
+
     AgendaOutputDTO updateAgenda(Integer id, AgendaInputDTO agendaInputDTO);
+
+    void removeJuegoFromAgenda(Integer agendaId, Integer juegoId);
+
+    List<Juego> getJuegosByAgendaId(Integer agendaId);
 }

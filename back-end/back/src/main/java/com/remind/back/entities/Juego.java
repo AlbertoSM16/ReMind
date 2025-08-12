@@ -26,13 +26,7 @@ public class Juego {
     private String nombre;
 
     @NotBlank
-    private String instrucciones;
-
-    @NotBlank
     private String codigo;
-
-    @NotBlank
-    private String tipo;
 
     @OneToMany(mappedBy = "juego", cascade = CascadeType.ALL)
     private Set<JuegoPaciente> juegoPacientes;
