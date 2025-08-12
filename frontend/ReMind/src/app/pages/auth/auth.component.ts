@@ -10,7 +10,6 @@ import { AuthService } from '../../services/auth.service'; // Servicio que crear
 @Component({
   selector: 'auth-component',
   standalone: true,
-  // Importamos los módulos necesarios para que funcionen ngModel, ngIf y HttpClient
   imports: [
     FormsModule,
     CommonModule,
@@ -38,6 +37,7 @@ export class AuthComponent {
     this.errorMessage = ''; 
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
+        console.log(response);
         sessionStorage.setItem('rol',response.rol);
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('id', response.id);

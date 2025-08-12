@@ -8,19 +8,19 @@ import Swal from 'sweetalert2';
 
 export interface Patient {
   nombre: string;
-  apellido: string; // Changed from 'apellidos' to 'apellido'
+  apellido: string;   
   email: string;
   contrasenia: string;
   telefono: string;
-  enfermedad: string; // Changed from 'diagnostico' to 'enfermedad'
+  enfermedad: string; 
   edad: number;
   nombreResponsable: string;
-  fechaNacimiento: string; // Use string for date input (YYYY-MM-DD format)
+  fechaNacimiento: string; 
   terapeuta_id: number;
 }
 
 @Component({
-  selector: 'app-edit-patient-form', // Keeping the original selector as requested
+  selector: 'app-edit-patient-form', 
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './create-pacient-form.component.html',

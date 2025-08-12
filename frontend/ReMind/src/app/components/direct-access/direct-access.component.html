@@ -3,7 +3,7 @@
     <div class="icons gap-5">
 
         <div *ngIf="userRole === 'terapeuta'">
-            <agenda-card></agenda-card>
+            <agenda-card (click) = "toAgenda()"></agenda-card>
         </div>
         <div *ngIf="userRole === 'terapeuta'">
             <app-pacientes-card (click)="toPacients()"></app-pacientes-card >

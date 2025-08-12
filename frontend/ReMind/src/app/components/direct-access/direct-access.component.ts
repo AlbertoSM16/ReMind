@@ -27,7 +27,7 @@ export class DirectAccessComponent implements OnInit {
     this.router.navigate(['/pacients']);
   }
   toAgenda(){
-    this.router.navigate(['/agenda']);
+    this.router.navigate(['/agendas']);
   }
   toDoctors(){
     this.router.navigate(['/doctors']);

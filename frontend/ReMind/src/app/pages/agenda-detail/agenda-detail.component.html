@@ -1,0 +1,37 @@
+<header-component></header-component>
+<div class="container my-5">
+  <h2 class="text-center mb-4">Gestionar Agenda: {{ agenda?.nombre }}</h2>
+  <p class="text-center text-muted">Paciente: {{ agenda?.pacienteNombre }}</p>
+
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <h4>Juegos Asignados</h4>
+      <ul class="list-group">
+        <li *ngFor="let juego of juegosAsignados" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ juego.nombre }}
+          <button class="btn btn-sm btn-danger" (click)="quitarJuego(juego.id)">Quitar</button>
+        </li>
+      </ul>
+      <p *ngIf="juegosAsignados.length === 0" class="text-muted mt-3">No hay juegos asignados a esta agenda.</p>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Juegos Disponibles para Asignar</h4>
+      <div class="input-group">
+        <select class="form-select" [(ngModel)]="juegoSeleccionadoId">
+          <option [ngValue]="null" disabled>-- Selecciona un juego --</option>
+          <option *ngFor="let juego of juegosDisponibles" [value]="juego.id">
+            {{ juego.nombre }}
+          </option>
+        </select>
+        <button class="btn btn-success" (click)="agregarJuego()" [disabled]="!juegoSeleccionadoId">
+          Añadir
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-5">
+      <button class="btn btn-secondary" (click)="volver()">Volver al Listado</button>
+  </div>
+</div>
