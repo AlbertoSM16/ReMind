@@ -15,9 +15,12 @@ export class AgendaService {
     return this.http.get<any[]>(`${this.terapeutaApiUrl}/${terapeutaId}/agendas`);
   }
 
-  assignJuego(agendaId: number, juegoId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${agendaId}/juego/${juegoId}`, {});
+  assignJuego(agendaId: number, juegoId: number, dificultad: number): Observable<any> {
+    const body = { juegoId, dificultad };
+    // La URL ya no incluye el ID del juego
+    return this.http.post(`${this.apiUrl}/${agendaId}/juego`, body);
   }
+
    // OBTENER los juegos de UNA agenda
   getJuegosByAgendaId(agendaId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${agendaId}/juegos`);

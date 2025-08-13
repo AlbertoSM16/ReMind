@@ -37,8 +37,7 @@ export class AuthComponent {
     this.errorMessage = ''; 
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
-        console.log(response);
-        sessionStorage.setItem('rol',response.rol);
+        sessionStorage.setItem('role',response.rol);
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('id', response.id);
         this.router.navigate(['/home']);

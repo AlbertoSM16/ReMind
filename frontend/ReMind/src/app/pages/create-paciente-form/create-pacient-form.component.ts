@@ -39,7 +39,7 @@ export class CreatePatientFormComponent implements OnInit {
 
   onSubmit(): void {
 
-    const terapeutaId = localStorage.getItem('id');
+    const terapeutaId = sessionStorage.getItem('id');
     if (!terapeutaId) {
       return;
     }

@@ -6,22 +6,25 @@ import { PacientListComponent } from './pages/pacient-list/pacient-list.componen
 import { CreatePatientFormComponent } from './pages/create-paciente-form/create-pacient-form.component';
 import { AgendaListComponent } from './pages/agenda-list/agenda-list.component';
 import { AgendaDetailComponent } from './pages/agenda-detail/agenda-detail.component';
+import { EditPatientFormComponent } from './pages/edit-patient/edit-patient.component';
 
 
 
 export const routes: Routes = [
-  // Redirige la ruta vacía a /login
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  // Carga el AuthComponent cuando la ruta es /login
+
   { path: 'login', component: AuthComponent },
-  // Aquí puedes añadir más rutas, por ejemplo, al home.
+  
   { path: 'home', component: HomeComponent },
 
-  {path: 'pacients', component: PacientListComponent},
-  
-  {path : 'create-patient', component: CreatePatientFormComponent},
+  { path: 'pacients', component: PacientListComponent },
+
+  { path: 'create-patient', component: CreatePatientFormComponent },
 
   { path: 'agendas', component: AgendaListComponent },
+
+  { path: 'edit-patient/:id', component: EditPatientFormComponent },
+
 
   { path: 'agenda/:id', component: AgendaDetailComponent }
 ];

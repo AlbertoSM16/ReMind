@@ -19,11 +19,11 @@ export class AuthService {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('rol');
     sessionStorage.removeItem('id');
-
+    
     this.router.navigate(['/login']);
   }
 
    getRole(): string | null {
-    return sessionStorage.getItem('rol');
+    return sessionStorage.getItem('role');
   }
 }

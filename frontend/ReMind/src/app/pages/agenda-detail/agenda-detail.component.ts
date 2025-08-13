@@ -1,29 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // <-- IMPORTANTE: Añadir FormsModule
+import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AgendaService } from '../../services/agenda.service';
 import { JuegoService } from '../../services/juego.service';
 import Swal from 'sweetalert2';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-agenda-detail',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FormsModule], // <-- Añadir FormsModule a los imports
+  imports: [CommonModule, HeaderComponent, FormsModule],
   templateUrl: './agenda-detail.component.html',
   styleUrls: ['./agenda-detail.component.css']
 })
 export class AgendaDetailComponent implements OnInit {
 
   agendaId!: number;
-  agenda: any;
   juegosAsignados: any[] = [];
   juegosDisponibles: any[] = [];
   todosLosJuegos: any[] = [];
-
-  // Propiedad para vincular con el <select>
   juegoSeleccionadoId: number | null = null;
+  dificultadSeleccionada: number = 1;
+  isLoading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,12 +38,21 @@ export class AgendaDetailComponent implements OnInit {
   }
 
   cargarDatos(): void {
-    this.juegoService.getJuegos().subscribe(juegos => {
-      this.todosLosJuegos = juegos;
-      this.agendaService.getJuegosByAgendaId(this.agendaId).subscribe(asignados => {
+    this.isLoading = true;
+    forkJoin({
+      todos: this.juegoService.getJuegos(),
+      asignados: this.agendaService.getJuegosByAgendaId(this.agendaId)
+    }).subscribe({
+      next: ({ todos, asignados }) => {
+        this.todosLosJuegos = todos;
         this.juegosAsignados = asignados;
         this.actualizarJuegosDisponibles();
-      });
+        this.isLoading = false;
+      },
+      error: (err) => {
+        Swal.fire('Error', 'No se pudieron cargar los datos de la agenda.', 'error');
+        this.isLoading = false;
+      }
     });
   }
 
@@ -52,35 +61,60 @@ export class AgendaDetailComponent implements OnInit {
     this.juegosDisponibles = this.todosLosJuegos.filter(j => !idsAsignados.includes(j.id));
   }
 
-  // MÉTODO "agregarJuego" ACTUALIZADO
   agregarJuego(): void {
-    if (!this.juegoSeleccionadoId) {
-      Swal.fire('Atención', 'Por favor, selecciona un juego de la lista.', 'warning');
-      return;
-    }
-
-    this.agendaService.assignJuego(this.agendaId, this.juegoSeleccionadoId).subscribe({
+    if (!this.juegoSeleccionadoId) return;
+    
+    const juegoId = this.juegoSeleccionadoId;
+    const dificultad = this.dificultadSeleccionada;
+    
+    // Reset selection immediately
+    this.juegoSeleccionadoId = null;
+    
+    this.agendaService.assignJuego(this.agendaId, juegoId, dificultad).subscribe({
       next: () => {
-        Swal.fire('¡Añadido!', 'El juego se ha asignado a la agenda.', 'success');
-        this.juegoSeleccionadoId = null; // Reiniciar el desplegable
-        this.cargarDatos(); // Recargar las listas
+        this.cargarDatos();
       },
-      error: () => Swal.fire('Error', 'No se pudo añadir el juego.', 'error')
+      error: (err) => {
+        if (err.status === 409) {
+          Swal.fire('Juego Duplicado', 'Este juego ya está en la agenda', 'warning');
+        } else {
+          console.log(err);
+        }
+        // Re-enable the game in dropdown
+        this.juegoSeleccionadoId = juegoId;
+      }
     });
   }
 
-  // El método quitarJuego no necesita cambios
   quitarJuego(juegoId: number): void {
     this.agendaService.removeJuegoFromAgenda(this.agendaId, juegoId).subscribe({
       next: () => {
-        Swal.fire('¡Eliminado!', 'El juego se ha quitado de la agenda.', 'success');
+        // Reload data from server
         this.cargarDatos();
       },
-      error: () => Swal.fire('Error', 'No se pudo quitar el juego.', 'error')
+      error: (err) => Swal.fire('Error', 'No se pudo quitar el juego.', 'error')
     });
   }
   
   volver(): void {
     this.router.navigate(['/agendas']);
+  }
+
+  getDificultadTexto(dificultad: number): string {
+    switch (dificultad) {
+      case 1: return 'Fácil';
+      case 2: return 'Medio';
+      case 3: return 'Difícil';
+      default: return '';
+    }
+  }
+
+  getDificultadClass(dificultad: number): string {
+    switch (dificultad) {
+      case 1: return 'bg-success';
+      case 2: return 'bg-warning';
+      case 3: return 'bg-danger';
+      default: return 'bg-secondary';
+    }
   }
 }

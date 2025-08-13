@@ -52,17 +52,11 @@ export class AgendaListComponent implements OnInit {
   // Métodos de ejemplo para los botones
   editAgenda(id: number): void {
     console.log('Editar agenda:', id);
-    // this.router.navigate(['/edit-agenda', id]);
+    this.router.navigate(['/edit-agenda', id]);
   }
 
-  deleteAgenda(id: number): void {
-    console.log('Eliminar agenda:', id);
-    // Lógica con SweetAlert2 como en tu PacientListComponent
-  }
 
   viewAgenda(id: number): void {
-    console.log('Ver y asignar juegos a la agenda:', id);
-    // Aquí navegarías a la página para asignar juegos a esta agenda específica
-    // this.router.navigate(['/assign-game-to-agenda', id]);
+    this.router.navigate(['/agenda', id]);
   }
 }

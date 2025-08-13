@@ -21,7 +21,6 @@ export class DirectAccessComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.authService.getRole();
-    console.log(this.userRole);
   }
   toPacients(){
     this.router.navigate(['/pacients']);
