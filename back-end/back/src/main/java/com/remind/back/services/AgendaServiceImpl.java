@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.remind.back.Mapper.AgendaMapper;
 import com.remind.back.dto.AgendaInputDTO;
 import com.remind.back.dto.AgendaOutputDTO;
+import com.remind.back.dto.JuegoAsignadoDTO;
 import com.remind.back.entities.Agenda;
 import com.remind.back.entities.AgendaTerapeuta;
 import com.remind.back.entities.Juego;
@@ -26,6 +27,7 @@ import com.remind.back.repositories.JuegoRepository;
 import com.remind.back.repositories.PacienteAgendaRepository;
 import com.remind.back.repositories.PacienteRepository;
 import com.remind.back.repositories.TerapeutaRepository;
+import com.remind.back.dto.JuegoAsignadoDTO;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -152,8 +154,28 @@ public class AgendaServiceImpl implements AgendaService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<JuegoAsignadoDTO> getJuegosByAgendaId(Integer agendaId) {
+        if (!agendaRepository.existsById(agendaId)) {
+            throw new NoSuchElementException("Agenda con ID " + agendaId + " no existe.");
+        }
+        return juegoAgendaRepository.findByAgendaId(agendaId)
+                .stream()
+                .map(juegoAgenda -> new JuegoAsignadoDTO(
+                        juegoAgenda.getJuego().getId(),
+                        juegoAgenda.getJuego().getNombre(),
+                        juegoAgenda.getJuego().getCodigo(),
+                        juegoAgenda.getDificultad()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
-    public void assignJuegoToAgenda(Integer agendaId, Integer juegoId) {
+    public void assignJuegoToAgenda(Integer agendaId, Integer juegoId, Integer dificultad) {
+        if (juegoAgendaRepository.findByAgendaIdAndJuegoId(agendaId, juegoId).isPresent()) {
+            throw new IllegalStateException("Este juego ya ha sido asignado a la agenda.");
+        }
+
         Agenda agenda = agendaRepository.findById(agendaId)
                 .orElseThrow(() -> new NoSuchElementException("Agenda con ID " + agendaId + " no existe."));
 
@@ -163,20 +185,13 @@ public class AgendaServiceImpl implements AgendaService {
         JuegoAgenda nuevaAsignacion = new JuegoAgenda();
         nuevaAsignacion.setAgenda(agenda);
         nuevaAsignacion.setJuego(juego);
+        nuevaAsignacion.setDificultad(dificultad);
 
         juegoAgendaRepository.save(nuevaAsignacion);
     }
+    
 
-    @Transactional(readOnly = true)
-    public List<Juego> getJuegosByAgendaId(Integer agendaId) {
-        if (!agendaRepository.existsById(agendaId)) {
-            throw new NoSuchElementException("Agenda con ID " + agendaId + " no existe.");
-        }
-        return juegoAgendaRepository.findByAgendaId(agendaId)
-                .stream()
-                .map(JuegoAgenda::getJuego)
-                .collect(Collectors.toList());
-    }
+    
 
     @Transactional
     public void removeJuegoFromAgenda(Integer agendaId, Integer juegoId) {

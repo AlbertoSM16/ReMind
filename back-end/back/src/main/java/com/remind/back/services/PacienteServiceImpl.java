@@ -47,13 +47,13 @@ public class PacienteServiceImpl implements PacienteService {
     private PacienteTerapeutaRepository pacienteTerapeutaRepository;
 
     @Autowired
-    private AgendaRepository agendaRepository; // <-- AÑADIR
+    private AgendaRepository agendaRepository;
 
     @Autowired
-    private PacienteAgendaRepository pacienteAgendaRepository; // <-- AÑADIR
+    private PacienteAgendaRepository pacienteAgendaRepository;
 
     @Autowired
-    private AgendaTerapeutaRepository agendaTerapeutaRepository; // <-- AÑADIR
+    private AgendaTerapeutaRepository agendaTerapeutaRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -81,7 +81,6 @@ public class PacienteServiceImpl implements PacienteService {
             pacienteTerapeuta.setPaciente(savedPaciente);
             pacienteTerapeuta.setTerapeuta(terapeuta);
             pacienteTerapeutaRepository.save(pacienteTerapeuta);
-
 
             Agenda nuevaAgenda = new Agenda();
             nuevaAgenda.setNombre("Agenda de " + savedPaciente.getNombre());
@@ -125,10 +124,29 @@ public class PacienteServiceImpl implements PacienteService {
     @Transactional
     public void deletePaciente(Integer id) {
 
-        if (!pacienteRepository.existsById(id)) {
-            throw new NoSuchElementException("No existe un paciente con ese id y no se puede eliminar");
+        Paciente paciente = pacienteRepository.findById(id)
+                .orElseThrow(
+                        () -> new NoSuchElementException("No existe un paciente con ese id y no se puede eliminar"));
+
+        List<PacienteAgenda> pacienteAgendas = pacienteAgendaRepository.findByPacienteId(id);
+
+        for (PacienteAgenda pa : pacienteAgendas) {
+            Agenda agenda = pa.getAgenda();
+            if (agenda != null) {
+                Integer agendaId = agenda.getId();
+
+                agendaTerapeutaRepository.deleteByAgendaId(agendaId);
+
+                pacienteAgendaRepository.delete(pa);
+                
+                agendaRepository.delete(agenda);
+            }
         }
+
+        // 3. Eliminar la relación principal Paciente-Terapeuta
         pacienteTerapeutaRepository.deleteByPacienteId(id);
+
+        // 4. Ahora sí, eliminar el paciente
         pacienteRepository.deleteById(id);
 
     }

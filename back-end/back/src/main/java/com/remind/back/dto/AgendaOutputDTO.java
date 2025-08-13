@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor 
 @AllArgsConstructor 
 public class AgendaOutputDTO {
-    
+    private int id;
     private String nombre; 
     
     private String pacienteNombre;

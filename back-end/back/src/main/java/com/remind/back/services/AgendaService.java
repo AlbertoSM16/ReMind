@@ -2,7 +2,7 @@ package com.remind.back.services;
 
 import com.remind.back.dto.AgendaInputDTO;
 import com.remind.back.dto.AgendaOutputDTO;
-import com.remind.back.entities.Juego;
+import com.remind.back.dto.JuegoAsignadoDTO;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public interface AgendaService {
 
     void deleteAgenda(Integer id);
 
-    void assignJuegoToAgenda(Integer agendaId, Integer juegoId);
+    void assignJuegoToAgenda(Integer agendaId, Integer juegoId,Integer dificultad);
 
     AgendaOutputDTO updateAgenda(Integer id, AgendaInputDTO agendaInputDTO);
 
     void removeJuegoFromAgenda(Integer agendaId, Integer juegoId);
 
-    List<Juego> getJuegosByAgendaId(Integer agendaId);
+    List<JuegoAsignadoDTO> getJuegosByAgendaId(Integer agendaId);
 }

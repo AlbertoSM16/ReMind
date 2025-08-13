@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,4 +38,7 @@ public class JuegoPaciente {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "fecha_asignacion")
     private Date fechaAsignacion = new Date();
+
+    @NotNull
+    private int dificultad;
 }

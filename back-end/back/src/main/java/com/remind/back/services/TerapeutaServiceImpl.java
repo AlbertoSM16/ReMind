@@ -143,6 +143,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
             }
 
             return new AgendaOutputDTO(
+                    agenda.getId(),
                     agenda.getNombre(),
                     nombrePaciente,
                     terapeuta.getNombre() + " " + terapeuta.getApellido());

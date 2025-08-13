@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 
-
 @Entity 
 @Data
 @NoArgsConstructor
@@ -32,13 +31,13 @@ public class JuegoAgenda {
     @JoinColumn(name = "agenda_id")
     private Agenda agenda;
 
-    @NotBlank
+    @NotNull
     private Date fechaAsignacion = new Date(System.currentTimeMillis());
     
-    @NotBlank
+    
     private Date fechaRealizacion;
 
-    @NotBlank
+    @NotNull
     private Boolean realizado = false;
 
     @NotNull

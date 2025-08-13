@@ -23,4 +23,7 @@ public class JuegoOutputDTO {
     
     private String nombre;
 
+    private int dificultad;
+
+
 }

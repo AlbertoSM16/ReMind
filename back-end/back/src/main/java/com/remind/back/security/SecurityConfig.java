@@ -27,6 +27,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/terapeuta/**").permitAll()
                         .requestMatchers("/api/paciente/**").permitAll()
                         .requestMatchers("/api/juegos/**").permitAll()
+                        .requestMatchers("/api/agenda/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(withDefaults());
         return http.build();
