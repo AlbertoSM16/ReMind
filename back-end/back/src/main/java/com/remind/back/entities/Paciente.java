@@ -67,7 +67,5 @@ public class Paciente {
     @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PacienteTerapeuta pacienteTerapeuta;
 
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private Set<JuegoPaciente> juegosPacientes;
 
 }

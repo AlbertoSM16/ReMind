@@ -1,18 +1,18 @@
 package com.remind.back.dto;
 
-import lombok.Data; 
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-import lombok.AllArgsConstructor; 
+import lombok.AllArgsConstructor;
 
-@Data 
-@NoArgsConstructor 
-@AllArgsConstructor 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class PacienteOutputDTO {
-    
+
     private int id;
 
     private String nombre;
@@ -33,5 +33,7 @@ public class PacienteOutputDTO {
 
     private Date fechaNacimiento;
 
-    private Integer terapeuta_id; 
+    private Integer terapeuta_id;
+    
+    private String contrasenia;
 }

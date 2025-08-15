@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
 import com.remind.back.services.PacienteService;
 
 @RestController
 @RequestMapping("/api/paciente")
-@CrossOrigin(origins = "*") 
+@CrossOrigin(origins = "*")
 public class PacienteController {
 
     @Autowired
@@ -31,7 +32,7 @@ public class PacienteController {
 
     @GetMapping
     public ResponseEntity<?> getAllPacientes(@RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size) {
         List<PacienteOutputDTO> pacientes = pacienteService.getAllPacientes(page, size);
         if (pacientes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
@@ -52,11 +53,11 @@ public class PacienteController {
 
     @PostMapping
     public ResponseEntity<?> createPaciente(@RequestBody PacienteInputDTO pacienteInputDTO) {
-        try {           
+        try {
 
-            PacienteOutputDTO createdPaciente = pacienteService.createPaciente(pacienteInputDTO);
+            PacienteCreatedDTO createdPaciente = pacienteService.createPaciente(pacienteInputDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPaciente);
-        
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el paciente: " + e.getMessage());
@@ -77,15 +78,12 @@ public class PacienteController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePaciente(@PathVariable Integer id, @RequestBody PacienteInputDTO pacienteInputDTO) {
         try {
-            pacienteService.updatePaciente(id, pacienteInputDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("Los datos el paciente han sido modificados");
-            
+            PacienteOutputDTO updatedPaciente = pacienteService.updatePaciente(id, pacienteInputDTO);
+            return ResponseEntity.ok(updatedPaciente);
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede editar el paciente" +id );
-
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede editar el paciente " + id);
         }
+
     }
-
-    
-
 }

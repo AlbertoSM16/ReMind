@@ -28,6 +28,5 @@ public class Juego {
     @NotBlank
     private String codigo;
 
-    @OneToMany(mappedBy = "juego", cascade = CascadeType.ALL)
-    private Set<JuegoPaciente> juegoPacientes;
+    
 }

@@ -3,6 +3,7 @@ package com.remind.back.services;
 import java.util.List;
 
 import com.remind.back.Mapper.PacienteMapper;
+import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
 import com.remind.back.entities.Agenda;
@@ -60,11 +61,13 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Override
     @Transactional
-    public PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
+    public PacienteCreatedDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
 
-        String hashedPassword = passwordEncoder.encode(pacienteInputDTO.getContrasenia());
+        String passwordPlano = utils.generateRandomPassword(pacienteInputDTO.getNombre(), pacienteInputDTO.getApellido());
+        String hashedPassword = passwordEncoder.encode(passwordPlano);
         pacienteInputDTO.setContrasenia(hashedPassword);
-
+        
+        // 2. Genera el nombre de usuario
         String usuario = utils.generateRandomUsername(pacienteInputDTO.getNombre(), pacienteInputDTO.getApellido());
         pacienteInputDTO.setUsuario(usuario);
 
@@ -95,10 +98,10 @@ public class PacienteServiceImpl implements PacienteService {
             agendaTerapeuta.setAgenda(savedAgenda);
             agendaTerapeuta.setTerapeuta(terapeuta);
             agendaTerapeutaRepository.save(agendaTerapeuta);
-
+            
         }
 
-        return pacienteMapper.PacienteToPacienteOutputDTO(savedPaciente);
+        return new PacienteCreatedDTO(usuario, passwordPlano);
     }
 
     @Override

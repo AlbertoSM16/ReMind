@@ -2,13 +2,14 @@ package com.remind.back.services;
 
 import java.util.List;
 
+import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
 
 
 public interface PacienteService {
 
-    PacienteOutputDTO createPaciente(PacienteInputDTO pacienteInputDTO);
+    PacienteCreatedDTO createPaciente(PacienteInputDTO pacienteInputDTO);
 
     PacienteOutputDTO getPacienteById(Integer id);
 

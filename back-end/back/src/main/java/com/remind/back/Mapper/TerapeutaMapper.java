@@ -10,5 +10,7 @@ public interface TerapeutaMapper {
 
     Terapeuta TerapeutaInputDTOToTerapeuta(TerapeutaInputDTO terapeuta);
     TerapeutaOutputDTO TerapeutaToTerapeutaOutputDTO(Terapeuta terapeuta);
+
+    
     
 }
