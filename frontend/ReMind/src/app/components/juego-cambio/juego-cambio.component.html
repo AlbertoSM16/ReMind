@@ -8,7 +8,18 @@
     <div class="col-md-8 col-lg-6">
       <div class="card shadow-sm p-3">
         <div class="card-body text-center">
-          <p class="fs-4 mb-2">Cantidad a devolver: <strong class="text-info">{{ amountToMatch | currency:'EUR':'symbol' }}</strong></p>
+
+          <div *ngIf="dificultad === 3">
+            <p class="fs-4 mb-2">Precio del artículo: <strong class="text-danger">{{ precioArticulo | currency:'EUR':'symbol' }}</strong></p>
+            <p class="fs-4 mb-2">Dinero entregado: <strong class="text-success">{{ dineroEntregado | currency:'EUR':'symbol' }}</strong></p>
+            <hr>
+            <p class="fs-4 mb-2">Calcula el cambio que debes devolver: <strong class="text-info">{{ amountToMatch | currency:'EUR':'symbol' }}</strong></p>
+          </div>
+
+          <div *ngIf="dificultad < 3">
+            <p class="fs-4 mb-2">Cantidad a devolver: <strong class="text-info">{{ amountToMatch | currency:'EUR':'symbol' }}</strong></p>
+          </div>
+
           <p class="fs-4 mb-3">
             Cantidad actual:
             <strong [class.text-success]="currentAmount === amountToMatch"
@@ -17,7 +28,14 @@
               {{ currentAmount | currency:'EUR':'symbol' }}
             </strong>
           </p>
-          <div [ngClass]="{
+
+          <div *ngIf="dificultad > 1 && (currentAmount > 0 && currentAmount < amountToMatch)" 
+               class="alert alert-info" role="alert">
+            Sigue añadiendo dinero...
+          </div>
+
+          <div *ngIf="dificultad === 1 || currentAmount >= amountToMatch" 
+               [ngClass]="{
                   'alert alert-success': currentAmount === amountToMatch,
                   'alert alert-danger': currentAmount > amountToMatch,
                   'alert alert-info': currentAmount < amountToMatch && currentAmount !== 0,
@@ -26,6 +44,7 @@
                role="alert" class="message-box fade show">
             {{ message }}
           </div>
+
           <button (click)="resetGame()" class="btn btn-success btn-lg mt-3">
             <i class="bi bi-arrow-clockwise me-2"></i> Nueva Partida
           </button>

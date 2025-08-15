@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Importa CommonModule para el CurrencyPipe
-import { EuroDenominationComponent } from '../euro-denomination-component/euro-denomination-component.component'; // Importa el componente de denominación
+import { Component, OnInit, Input } from '@angular/core'; // Importa Input
+import { CommonModule } from '@angular/common';
+import { EuroDenominationComponent } from '../euro-denomination-component/euro-denomination-component.component';
 
 interface Denomination {
   value: number;
@@ -9,19 +9,27 @@ interface Denomination {
 
 @Component({
   selector: 'app-juego-cambio',
-  standalone: true, // Es un componente standalone
+  standalone: true,
   imports: [
-    CommonModule, // Necesario para pipes como 'currency' y directivas como NgClass, NgFor
-    EuroDenominationComponent 
+    CommonModule,
+    EuroDenominationComponent
   ],
   templateUrl: './juego-cambio.component.html',
-  styleUrl: './juego-cambio.component.css'
+  styleUrls: ['./juego-cambio.component.css']
 })
 export class JuegoCambioComponent implements OnInit {
+  
+  // AÑADIDO: Recibe la dificultad como un parámetro de entrada
+  @Input() dificultad: number = 1;
+
   title = 'Juego de Cambio de Euro';
-  amountToMatch: number = 0;
+  amountToMatch: number = 0; // Para dificultad 1 y 2: el total a devolver. Para dificultad 3: el cambio a calcular.
   currentAmount: number = 0;
   message: string = '';
+  
+  // AÑADIDO: Variables para la dificultad 3
+  precioArticulo: number = 0;
+  dineroEntregado: number = 0;
 
   euroDenominations: Denomination[] = [
     { value: 0.01, imageUrl: 'assets/euros/1-cent.png' },
@@ -36,9 +44,6 @@ export class JuegoCambioComponent implements OnInit {
     { value: 10, imageUrl: 'assets/euros/10-euro-bill.png' },
     { value: 20, imageUrl: 'assets/euros/20-euro-bill.png' },
     { value: 50, imageUrl: 'assets/euros/50-euro-bill.png' },
-    { value: 100, imageUrl: 'assets/euros/100-euro-bill.png' },
-    { value: 200, imageUrl: 'assets/euros/200-euro-bill.png' },
-    { value: 500, imageUrl: 'assets/euros/500-euro-bill.png' },
   ];
 
   ngOnInit() {
@@ -48,18 +53,40 @@ export class JuegoCambioComponent implements OnInit {
   startNewRound() {
     this.currentAmount = 0;
     this.message = '';
-    this.amountToMatch = parseFloat((Math.random() * (20 - 0.50) + 0.50).toFixed(2));
+
+    if (this.dificultad === 3) {
+      // Dificultad 3: Calcular el cambio
+      this.precioArticulo = parseFloat((Math.random() * (15 - 1) + 1).toFixed(2));
+      const dineroExtra = parseFloat((Math.random() * (10 - 1) + 1).toFixed(2));
+      this.dineroEntregado = this.precioArticulo + dineroExtra;
+      this.amountToMatch = parseFloat((this.dineroEntregado - this.precioArticulo).toFixed(2));
+      
+    } else {
+      // Dificultad 1 y 2: Devolver una cantidad fija
+      this.amountToMatch = parseFloat((Math.random() * (20 - 0.50) + 0.50).toFixed(2));
+    }
   }
 
   addAmount(value: number) {
     this.currentAmount = parseFloat((this.currentAmount + value).toFixed(2));
-
+    this.checkAmount();
+  }
+  
+  // MODIFICADO: Lógica de comprobación separada
+  checkAmount() {
     if (this.currentAmount === this.amountToMatch) {
       this.message = '¡Felicidades! Has devuelto la cantidad exacta. 🎉';
     } else if (this.currentAmount > this.amountToMatch) {
       this.message = '¡Te has pasado! Vuelve a intentarlo. 😔';
     } else {
-      this.message = `Te faltan ${ (this.amountToMatch - this.currentAmount).toFixed(2) } €`;
+      // Lógica condicional para el mensaje
+      if (this.dificultad === 1) {
+        // Dificultad 1: Muestra cuánto falta
+        this.message = `Te faltan ${(this.amountToMatch - this.currentAmount).toFixed(2)} €`;
+      } else {
+        // Dificultad 2 y 3: Mensaje genérico
+        this.message = 'Sigue añadiendo dinero...';
+      }
     }
   }
 

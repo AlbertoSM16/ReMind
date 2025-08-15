@@ -80,7 +80,6 @@ export class AgendaDetailComponent implements OnInit {
         } else {
           console.log(err);
         }
-        // Re-enable the game in dropdown
         this.juegoSeleccionadoId = juegoId;
       }
     });

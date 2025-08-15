@@ -8,19 +8,19 @@ import Swal from 'sweetalert2';
 
 export interface Patient {
   nombre: string;
-  apellido: string;   
+  apellido: string;
   email: string;
   contrasenia: string;
   telefono: string;
-  enfermedad: string; 
+  enfermedad: string;
   edad: number;
   nombreResponsable: string;
-  fechaNacimiento: string; 
+  fechaNacimiento: string;
   terapeuta_id: number;
 }
 
 @Component({
-  selector: 'app-edit-patient-form', 
+  selector: 'app-edit-patient-form',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './create-pacient-form.component.html',
@@ -41,21 +41,40 @@ export class CreatePatientFormComponent implements OnInit {
 
     const terapeutaId = sessionStorage.getItem('id');
     if (!terapeutaId) {
+      Swal.fire('Error', 'No se pudo identificar al terapeuta. Por favor, inicie sesión de nuevo.', 'error');
       return;
     }
     this.pacient.terapeuta_id = +terapeutaId;
+
+    // Llama al servicio para crear el paciente
     this.pacientService.createPatient(this.pacient).subscribe({
       next: (response) => {
-        Swal.fire(
-          '¡Paciente creado!',
-          'El paciente ha sido creado.',
-          'success'
-        ); this.router.navigate(['/pacients']);
+        // Muestra los datos de acceso en un diálogo de SweetAlert2
+        Swal.fire({
+          title: '¡Paciente Creado!',
+          html: `
+            <p>El paciente ha sido creado con éxito. Sus datos de acceso son:</p>
+            <div style="text-align: left; margin-left: 20px;">
+              <strong>Usuario:</strong> ${response.usuario}<br>
+              <strong>Contraseña:</strong> ${response.contrasenia}
+            </div>
+            <br>
+            <p>Por favor, guarde estas credenciales en un lugar seguro.</p>
+          `,
+          icon: 'success',
+          confirmButtonText: 'Entendido'
+        }).then(() => {
+          // Redirige a la lista de pacientes después de cerrar el diálogo
+          this.router.navigate(['/pacients']);
+        });
       },
       error: (error) => {
         console.error('Error al crear paciente:', error);
-        const errorMessage = error.error && error.error.message ? error.error.message : 'Error al crear paciente. Por favor, intente de nuevo.';
-        alert(errorMessage);
+        Swal.fire(
+          'Error',
+          'Hubo un problema al crear el paciente.',
+          'error'
+        );
       }
     });
   }
