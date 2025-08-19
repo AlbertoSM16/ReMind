@@ -11,25 +11,28 @@
   </div>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-  <div class="col" *ngFor="let patient of patients">
-    <div class="patient-card shadow-sm">
-      <div class="d-flex justify-content-between mb-2">
-        <i class="pi pi-pencil edit-icon" (click)="editPatient(patient.id)"></i>
-        <i class="pi pi-trash delete-icon" (click)="deletePatient(patient.id)"></i>
-      </div>
-      <div class="d-flex align-items-center">
-        <img src="assets/img/user_logo.png" alt="Patient Avatar" class="patient-avatar me-3">
-        <div class="patient-details flex-grow-1">
-          <h5 class="patient-name mb-2">{{ patient.nombre }} {{ patient.apellido }}</h5>
-          <p class="patient-info mb-1"><strong>Diagnóstico:</strong> {{ patient.enfermedad }}</p>
-          <p class="patient-info mb-0"><strong>Email:</strong> {{ patient.email }}</p>
+    <div class="col" *ngFor="let patient of patients">
+      <div class="patient-card shadow-sm">
+        <div class="d-flex justify-content-between mb-2">
+          <i class="pi pi-pencil edit-icon" (click)="editPatient(patient.id)"></i>
+          <i class="pi pi-key credentials-icon" (click)="showCredentials(patient.id)" title="Mostrar credenciales"></i>
+          <i class="pi pi-sync reset-password-icon"
+            (click)="resetPassword(patient.id, patient.nombre + ' ' + patient.apellido)"
+            title="Reiniciar contraseña"></i>
+          <i class="pi pi-trash delete-icon" (click)="deletePatient(patient.id)"></i>
+        </div>
+        <div class="d-flex align-items-center">
+          <img src="assets/img/user_logo.png" alt="Patient Avatar" class="patient-avatar me-3">
+          <div class="patient-details flex-grow-1">
+            <h5 class="patient-name mb-2">{{ patient.nombre }} {{ patient.apellido }}</h5>
+            <p class="patient-info mb-1"><strong>Diagnóstico:</strong> {{ patient.enfermedad }}</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
   <div *ngIf="!patients || patients.length === 0" class="text-center mt-5">
-      <p>No hay pacientes registrados por el momento.</p>
+    <p>No hay pacientes registrados por el momento.</p>
   </div>
 </div>

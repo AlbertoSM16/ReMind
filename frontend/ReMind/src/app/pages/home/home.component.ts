@@ -8,6 +8,8 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 
 import { AuthService } from '../../services/auth.service';
+import { MatchingGameComponent } from "../../components/matching-game/matching-game.component";
+import { JuegoCambioComponent } from "../../components/juego-cambio/juego-cambio.component";
 
 @Component({
   selector: 'home-component',
@@ -20,7 +22,8 @@ import { AuthService } from '../../services/auth.service';
     DirectAccessComponent,
     ButtonModule,
     CommonModule,
-    
+    MatchingGameComponent,
+    JuegoCambioComponent
 ]
 })
 export class HomeComponent implements OnInit {
@@ -31,7 +34,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.authService.getRole();
-    console.log('Rol del usuario:', this.userRole);
   }
 }
 

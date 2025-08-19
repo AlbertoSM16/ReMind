@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+// app/components/sentence-completion-game/sentence-completion-game.component.ts
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// Interfaz para definir la estructura de cada ronda
 interface SentenceRound {
-  start: string; // Parte inicial de la oración
-  end: string;   // Parte final de la oración
+  start: string;
+  end: string;
   options: {
     word: string;
     isCorrect: boolean;
@@ -19,32 +19,33 @@ interface SentenceRound {
   styleUrls: ['./sentence-completion-game.component.css']
 })
 export class SentenceCompletionGameComponent implements OnInit {
+  @Input() dificultad: number = 1;
+  @Output() gameCompleted = new EventEmitter<void>();
 
-  // Lista de todas las oraciones del juego
   private allRounds: SentenceRound[] = [
     {
       start: 'El perro',
-      options: [{ word: 'ladra', isCorrect: true }, { word: 'vuela', isCorrect: false }],
+      options: [{ word: 'ladra', isCorrect: true }, { word: 'vuela', isCorrect: false }, { word: 'escribe', isCorrect: false }, { word: 'canta', isCorrect: false }],
       end: 'muy fuerte por la noche.'
     },
     {
       start: 'Para el desayuno, me gusta beber un vaso de',
-      options: [{ word: 'leche', isCorrect: true }, { word: 'piedra', isCorrect: false }],
+      options: [{ word: 'leche', isCorrect: true }, { word: 'piedra', isCorrect: false }, { word: 'arena', isCorrect: false }, { word: 'cemento', isCorrect: false }],
       end: '.'
     },
     {
       start: 'El sol brilla durante el',
-      options: [{ word: 'día', isCorrect: true }, { word: 'lago', isCorrect: false }],
+      options: [{ word: 'día', isCorrect: true }, { word: 'lago', isCorrect: false }, { word: 'cielo', isCorrect: false }, { word: 'mar', isCorrect: false }],
       end: '.'
     },
     {
       start: 'Los pájaros construyen sus',
-      options: [{ word: 'nidos', isCorrect: true }, { word: 'coches', isCorrect: false }],
+      options: [{ word: 'nidos', isCorrect: true }, { word: 'coches', isCorrect: false }, { word: 'casas', isCorrect: false }, { word: 'barcos', isCorrect: false }],
       end: 'en los árboles.'
     },
     {
       start: 'En invierno hace mucho',
-      options: [{ word: 'frío', isCorrect: true }, { word: 'calor', isCorrect: false }],
+      options: [{ word: 'frío', isCorrect: true }, { word: 'calor', isCorrect: false }, { word: 'sol', isCorrect: false }, { word: 'viento', isCorrect: false }],
       end: '.'
     }
   ];
@@ -68,14 +69,19 @@ export class SentenceCompletionGameComponent implements OnInit {
     this.roundIndex = 0;
     this.score = 0;
     this.gameOver = false;
-    this.allRounds = this.shuffleArray(this.allRounds); // Baraja el orden de las oraciones
+    this.allRounds = this.shuffleArray(this.allRounds);
     this.loadNextRound();
   }
 
   loadNextRound(): void {
     if (this.roundIndex < this.allRounds.length) {
       this.currentRoundData = this.allRounds[this.roundIndex];
-      this.shuffledOptions = this.shuffleArray([...this.currentRoundData.options]); // Baraja las opciones
+      
+      const optionsCount = this.dificultad + 1;
+      const correctOption = this.currentRoundData.options.find(o => o.isCorrect)!;
+      const incorrectOptions = this.shuffleArray(this.currentRoundData.options.filter(o => !o.isCorrect)).slice(0, optionsCount - 1);
+      this.shuffledOptions = this.shuffleArray([correctOption, ...incorrectOptions]);
+
       this.selectedOption = null;
       this.isAnswerCorrect = null;
       this.feedbackMessage = '';
@@ -83,11 +89,12 @@ export class SentenceCompletionGameComponent implements OnInit {
     } else {
       this.gameOver = true;
       this.feedbackMessage = `¡Juego terminado! Has acertado ${this.score} de ${this.allRounds.length} oraciones.`;
+      this.gameCompleted.emit();
     }
   }
 
   selectOption(option: { word: string; isCorrect: boolean }): void {
-    if (this.selectedOption) return; // Evita que se pueda cambiar la respuesta
+    if (this.selectedOption) return;
 
     this.selectedOption = option;
     this.isAnswerCorrect = option.isCorrect;

@@ -20,15 +20,24 @@
 .left-icon, .right-icon {
   position: absolute;
   top: 50%;
+  transform: translateY(-50%); /* Centra verticalmente los iconos */
+  cursor: pointer; /* Cambia el cursor a una mano para indicar que es clickeable */
+  transition: transform 0.2s ease-in-out; /* Añade una transición suave */
 }
 
 .left-icon {
-  left: 10px;
-transform: translateY(-50%) translateX(-30%);
-
+  left: 12%; /* Ajusta la distancia desde la izquierda */
+  font-size: 360%; /* Aumenta significativamente el tamaño del icono */
+  color: #555; /* Define un color base para el icono */
 }
+
+.left-icon:hover {
+  transform: translateY(-50%) scale(1.1); /* Agranda ligeramente el icono al pasar el ratón */
+  color: #007bff; /* Cambia de color al pasar el ratón */
+}
+
 
 .right-icon {
   right: 10px;
-transform: translateY(-50%) translateX(20%);
+  transform: translateY(-50%) translateX(20%);
 }

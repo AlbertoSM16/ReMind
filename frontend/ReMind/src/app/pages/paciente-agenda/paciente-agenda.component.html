@@ -1,0 +1,27 @@
+<header-component></header-component>
+<div class="container my-5">
+  <h2 class="text-center mb-5 display-4">Mis Juegos Asignados</h2>
+
+  <div *ngIf="juegosAsignados.length > 0; else noJuegos" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col" *ngFor="let juego of juegosAsignados">
+      <div class="game-card" [class.completed]="juego.realizado">
+        <i class="game-icon" [ngClass]="getGameIcon(juego.codigo)"></i>
+        <h5 class="game-title mt-3">{{ juego.nombre }}</h5>
+        
+        <div *ngIf="juego.realizado; else jugarButton" class="completed-badge mt-3">
+          <i class="pi pi-check-circle"></i> Completado
+        </div>
+
+        <ng-template #jugarButton>
+          <button class="btn btn-primary play-button mt-3" (click)="jugarJuego(juego.codigo, juego.dificultad, juego.id)">Jugar</button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noJuegos>
+    <div class="text-center mt-5">
+      <p class="fs-4 text-muted">Aún no tienes juegos asignados en tu agenda.</p>
+    </div>
+  </ng-template>
+</div>

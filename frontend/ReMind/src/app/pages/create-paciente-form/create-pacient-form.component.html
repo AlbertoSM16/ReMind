@@ -4,55 +4,74 @@
     <h1 class="form-title">Crear Paciente</h1>
   </div>
 
-  <form class="patient-form" (ngSubmit)="onSubmit()">
+  <form class="patient-form" #pacientForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" class="form-control custom-input" placeholder="Nombre" [(ngModel)]="pacient.nombre" name="nombre" required>
+      <input type="text" id="nombre" class="form-control custom-input" placeholder="Nombre" 
+             [(ngModel)]="pacient.nombre" name="nombre" #nombre="ngModel" required>
+      <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger mt-1 p-2">
+        El nombre es obligatorio.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="apellido">Apellido</label>
-      <input type="text" id="apellido" class="form-control custom-input" placeholder="Apellido" [(ngModel)]="pacient.apellido" name="apellido" required>
+      <input type="text" id="apellido" class="form-control custom-input" placeholder="Apellido" 
+             [(ngModel)]="pacient.apellido" name="apellido" #apellido="ngModel" required>
+      <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger mt-1 p-2">
+        El apellido es obligatorio.
+      </div>
     </div>
-
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" class="form-control custom-input" placeholder="Email" [(ngModel)]="pacient.email" name="email" required>
-    </div>
-
 
     <div class="form-group">
       <label for="telefono">Teléfono</label>
-      <input type="tel" id="telefono" class="form-control custom-input" placeholder="Teléfono" [(ngModel)]="pacient.telefono" name="telefono" required>
+      <input type="tel" id="telefono" class="form-control custom-input" placeholder="Teléfono de 9 dígitos" 
+             [(ngModel)]="pacient.telefono" name="telefono" #telefono="ngModel" 
+             required pattern="^\d{9}$" maxlength="9" minlength="9">
+      <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger mt-1 p-2">
+        <div *ngIf="telefono.errors?.['required']">El teléfono es obligatorio.</div>
+        <div *ngIf="telefono.errors?.['pattern'] || telefono.errors?.['minlength']">El teléfono debe tener exactamente 9 dígitos.</div>
+      </div>
     </div>
 
     <div class="form-group">
       <label for="enfermedad">Enfermedad (Diagnóstico)</label>
-      <input type="text" id="enfermedad" class="form-control custom-input" placeholder="Enfermedad o Diagnóstico" [(ngModel)]="pacient.enfermedad" name="enfermedad" required>
+      <input type="text" id="enfermedad" class="form-control custom-input" placeholder="Enfermedad o Diagnóstico" 
+             [(ngModel)]="pacient.enfermedad" name="enfermedad" #enfermedad="ngModel" required>
+      <div *ngIf="enfermedad.invalid && (enfermedad.dirty || enfermedad.touched)" class="alert alert-danger mt-1 p-2">
+        El diagnóstico es obligatorio.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="edad">Edad</label>
-      <input type="number" id="edad" class="form-control custom-input" placeholder="Edad" [(ngModel)]="pacient.edad" name="edad" required>
+      <input type="number" id="edad" class="form-control custom-input" placeholder="Edad" 
+             [(ngModel)]="pacient.edad" name="edad" #edad="ngModel" required>
+      <div *ngIf="edad.invalid && (edad.dirty || edad.touched)" class="alert alert-danger mt-1 p-2">
+        La edad es obligatoria.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="nombreResponsable">Nombre del Responsable</label>
-      <input type="text" id="nombreResponsable" class="form-control custom-input" placeholder="Nombre del Responsable" [(ngModel)]="pacient.nombreResponsable" name="nombreResponsable" required>
+      <input type="text" id="nombreResponsable" class="form-control custom-input" placeholder="Nombre del Responsable" 
+             [(ngModel)]="pacient.nombreResponsable" name="nombreResponsable" #nombreResponsable="ngModel" required>
+      <div *ngIf="nombreResponsable.invalid && (nombreResponsable.dirty || nombreResponsable.touched)" class="alert alert-danger mt-1 p-2">
+        El nombre del responsable es obligatorio.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="fechaNacimiento">Fecha de Nacimiento</label>
-      <input type="date" id="fechaNacimiento" class="form-control custom-input" [(ngModel)]="pacient.fechaNacimiento" name="fechaNacimiento" required>
+      <input type="date" id="fechaNacimiento" class="form-control custom-input" 
+             [(ngModel)]="pacient.fechaNacimiento" name="fechaNacimiento" #fechaNacimiento="ngModel" required>
+      <div *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)" class="alert alert-danger mt-1 p-2">
+        La fecha de nacimiento es obligatoria.
+      </div>
     </div>
 
-    <!-- <div class="form-group">
-      <label for="terapeuta_id">ID del Terapeuta</label>
-      <input type="number" id="terapeuta_id" class="form-control custom-input" placeholder="ID del Terapeuta" [(ngModel)]="pacient.terapeuta_id" name="terapeuta_id" required>
-    </div> -->
-
     <div class="d-flex justify-content-center mt-5">
-      <button type="submit" class="btn edit-btn">Crear</button>
+      <button type="submit" class="btn edit-btn" [disabled]="pacientForm.invalid">Crear</button>
     </div>
   </form>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'; // Se importa Input
 import { CommonModule } from '@angular/common';
 
 interface WordSet {
@@ -15,27 +15,59 @@ interface WordSet {
 })
 export class IntruderGameComponent implements OnInit {
 
-  // Lista de todas las posibles rondas del juego
+  @Input() dificultad: number = 1;
+  @Output() gameCompleted = new EventEmitter<void>();
+
   private allSets: WordSet[] = [
     {
-      options: [{ word: 'Manzana', isIntruder: false }, { word: 'Pera', isIntruder: false }, { word: 'Coche', isIntruder: true }],
-      explanation: '"Manzana" y "Pera" son frutas.'
+      options: [
+        { word: 'Coche', isIntruder: true }, 
+        { word: 'Manzana', isIntruder: false }, 
+        { word: 'Pera', isIntruder: false },
+        { word: 'Plátano', isIntruder: false },
+        { word: 'Uva', isIntruder: false }
+      ],
+      explanation: '"Manzana", "Pera", "Plátano" y "Uva" son frutas.'
     },
     {
-      options: [{ word: 'Rojo', isIntruder: false }, { word: 'Lápiz', isIntruder: true }, { word: 'Azul', isIntruder: false }],
-      explanation: '"Rojo" y "Azul" son colores.'
+      options: [
+        { word: 'Lápiz', isIntruder: true },
+        { word: 'Rojo', isIntruder: false },
+        { word: 'Azul', isIntruder: false },
+        { word: 'Verde', isIntruder: false },
+        { word: 'Amarillo', isIntruder: false }
+      ],
+      explanation: '"Rojo", "Azul", "Verde" y "Amarillo" son colores.'
     },
     {
-      options: [{ word: 'Perro', isIntruder: false }, { word: 'Gato', isIntruder: false }, { word: 'Mesa', isIntruder: true }],
-      explanation: '"Perro" y "Gato" son animales.'
+      options: [
+        { word: 'Mesa', isIntruder: true },
+        { word: 'Perro', isIntruder: false },
+        { word: 'Gato', isIntruder: false },
+        { word: 'León', isIntruder: false },
+        { word: 'Tigre', isIntruder: false }
+      ],
+      explanation: '"Perro", "Gato", "León" y "Tigre" son animales.'
     },
     {
-      options: [{ word: 'Correr', isIntruder: false }, { word: 'Nadar', isIntruder: false }, { word: 'Libro', isIntruder: true }],
-      explanation: '"Correr" y "Nadar" son acciones (verbos).'
+      options: [
+        { word: 'Libro', isIntruder: true },
+        { word: 'Correr', isIntruder: false },
+        { word: 'Nadar', isIntruder: false },
+        { word: 'Saltar', isIntruder: false },
+        { word: 'Caminar', isIntruder: false }
+      ],
+      explanation: '"Correr", "Nadar", "Saltar" y "Caminar" son acciones (verbos).'
     },
     {
-      options: [{ word: 'Sol', isIntruder: true }, { word: 'Río', isIntruder: false }, { word: 'Mar', isIntruder: false }],
-      explanation: '"Río" y "Mar" son masas de agua.'
+      options: [
+        { word: 'Sol', isIntruder: true },
+        { word: 'Río', isIntruder: false },
+        { word: 'Mar', isIntruder: false },
+        { word: 'Lago', isIntruder: false },
+        { word: 'Océano', isIntruder: false }
+      ],
+      explanation: '"Río", "Mar", "Lago" y "Océano" son masas de agua.'
     }
   ];
 
@@ -58,14 +90,27 @@ export class IntruderGameComponent implements OnInit {
     this.currentRound = 0;
     this.score = 0;
     this.gameOver = false;
-    this.allSets = this.shuffleArray(this.allSets); // Baraja las rondas
+    this.allSets = this.shuffleArray(this.allSets);
     this.loadNextRound();
   }
 
   loadNextRound(): void {
     if (this.currentRound < this.allSets.length) {
       this.currentSet = this.allSets[this.currentRound];
-      this.shuffledOptions = this.shuffleArray([...this.currentSet.options]); // Baraja las opciones de la ronda actual
+      
+      let optionsToShow = 3;
+      if (this.dificultad === 2) {
+        optionsToShow = 4;
+      } else if (this.dificultad === 3) {
+        optionsToShow = 5; 
+      }
+
+      const intruder = this.currentSet.options.find(o => o.isIntruder)!;
+      const nonIntruders = this.currentSet.options.filter(o => !o.isIntruder);
+      const selectedNonIntruders = this.shuffleArray(nonIntruders).slice(0, optionsToShow - 1);
+      
+      this.shuffledOptions = this.shuffleArray([intruder, ...selectedNonIntruders]);
+      
       this.selectedOption = null;
       this.isCorrect = null;
       this.feedbackMessage = '';
@@ -73,11 +118,12 @@ export class IntruderGameComponent implements OnInit {
     } else {
       this.gameOver = true;
       this.feedbackMessage = `¡Juego terminado! Tu puntuación final es: ${this.score} de ${this.allSets.length}.`;
+      this.gameCompleted.emit();
     }
   }
 
   selectOption(option: { word: string; isIntruder: boolean }): void {
-    if (this.selectedOption) return; // Si ya se eligió una opción, no hacer nada
+    if (this.selectedOption) return;
 
     this.selectedOption = option;
     if (option.isIntruder) {
@@ -86,12 +132,11 @@ export class IntruderGameComponent implements OnInit {
       this.score++;
     } else {
       this.isCorrect = false;
-      const intruder = this.currentSet?.options.find(o => o.isIntruder)?.word;
-      this.feedbackMessage = `Incorrecto. La palabra intrusa era "${intruder}". ${this.currentSet?.explanation}`;
+      const intruderWord = this.currentSet?.options.find(o => o.isIntruder)?.word;
+      this.feedbackMessage = `Incorrecto. La palabra intrusa era "${intruderWord}". ${this.currentSet?.explanation}`;
     }
   }
 
-  // Función genérica para barajar un array
   private shuffleArray(array: any[]): any[] {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));

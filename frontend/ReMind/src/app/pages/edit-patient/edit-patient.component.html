@@ -4,30 +4,46 @@
     <h1 class="form-title">Editar Paciente</h1>
   </div>
 
-  <form class="patient-form" (ngSubmit)="onSubmit()">
+  <form class="patient-form" #editForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" class="form-control custom-input" [(ngModel)]="patient.nombre" name="nombre" required>
+      <input type="text" id="nombre" class="form-control custom-input" [(ngModel)]="patient.nombre" 
+             name="nombre" #nombre="ngModel" required>
+      <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger mt-1">
+        El nombre es obligatorio.
+      </div>
     </div>
+
     <div class="form-group">
       <label for="apellido">Apellido</label>
-      <input type="text" id="apellido" class="form-control custom-input" [(ngModel)]="patient.apellido" name="apellido" required>
+      <input type="text" id="apellido" class="form-control custom-input" [(ngModel)]="patient.apellido" 
+             name="apellido" #apellido="ngModel" required>
+      <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger mt-1">
+        El apellido es obligatorio.
+      </div>
     </div>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" class="form-control custom-input" placeholder="Email" [(ngModel)]="patient.email" name="email" required>
-    </div>
+    
     <div class="form-group">
         <label for="telefono">Teléfono</label>
-        <input type="tel" id="telefono" class="form-control custom-input" placeholder="Teléfono" [(ngModel)]="patient.telefono" name="telefono" required>
+        <input type="tel" id="telefono" class="form-control custom-input" placeholder="Teléfono" 
+               [(ngModel)]="patient.telefono" name="telefono" #telefono="ngModel" required pattern="\\d{9}">
+        <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger mt-1">
+          <div *ngIf="telefono.errors?.['required']">El teléfono es obligatorio.</div>
+          <div *ngIf="telefono.errors?.['pattern']">El teléfono debe tener 9 dígitos.</div>
+        </div>
     </div>
+
     <div class="form-group">
         <label for="enfermedad">Enfermedad (Diagnóstico)</label>
-        <input type="text" id="enfermedad" class="form-control custom-input" placeholder="Enfermedad o Diagnóstico" [(ngModel)]="patient.enfermedad" name="enfermedad" required>
+        <input type="text" id="enfermedad" class="form-control custom-input" placeholder="Enfermedad o Diagnóstico" 
+               [(ngModel)]="patient.enfermedad" name="enfermedad" #enfermedad="ngModel" required>
+        <div *ngIf="enfermedad.invalid && (enfermedad.dirty || enfermedad.touched)" class="alert alert-danger mt-1">
+          La enfermedad es obligatoria.
+        </div>
     </div>
     
     <div class="d-flex justify-content-center mt-5">
-      <button type="submit" class="btn edit-btn">Actualizar</button>
+      <button type="submit" class="btn edit-btn" [disabled]="editForm.invalid">Actualizar</button>
     </div>
   </form>
 </div>

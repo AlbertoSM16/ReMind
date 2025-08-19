@@ -1,0 +1,101 @@
+/* Contenedor principal que abarca toda la página */
+.main-container {
+  background-color: #f4f7f6; /* Fondo gris claro como en la imagen */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Encabezado con logo y título */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 15%;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.form-title {
+  font-size: 2rem;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Estructura del formulario */
+.patient-form {
+  width: 100%;
+  max-width: 500px; /* Ancho máximo del formulario */
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espacio entre cada campo del formulario */
+}
+
+/* Grupo de etiqueta e input */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.form-group label {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: 500;
+  padding-left: 15px; /* Pequeño margen para alinear con el input */
+}
+
+/* Campos de entrada personalizados */
+.custom-input {
+  background-color: #a4f0ed; /* Color turquesa de la imagen */
+  border: none;
+  border-radius: 25px; /* Bordes completamente redondeados */
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  color: #333;
+  width: 100%;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  text-align: left; /* Alineación del texto del placeholder y del input */
+}
+
+.custom-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-input:focus {
+  background-color: #92e3e0;
+  box-shadow: 0 0 0 0.2rem rgba(136, 188, 163, 0.5);
+  outline: none;
+}
+
+.edit-btn {
+  background-color: #88bca3;
+  color: white;
+  border-radius: 25px;
+  padding: 12px 60px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-self: center;
+}
+
+.edit-btn:hover:not(:disabled) {
+  background-color: #72a188;
+  transform: translateY(-2px);
+}
+
+/* AÑADIDO: Estilo para cuando el botón está deshabilitado */
+.edit-btn:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+}

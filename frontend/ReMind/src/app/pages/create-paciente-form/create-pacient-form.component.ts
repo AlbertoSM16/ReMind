@@ -1,32 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { PacientService } from '../../services/pacient.service'; // Ensure this path is correct
+import { FormsModule, NgForm } from '@angular/forms';
+import { PacientService } from '../../services/pacient.service';
 import { Router } from '@angular/router';
 import { Paciente } from '../../models/paciente.model';
 import Swal from 'sweetalert2';
 
-export interface Patient {
-  nombre: string;
-  apellido: string;
-  email: string;
-  contrasenia: string;
-  telefono: string;
-  enfermedad: string;
-  edad: number;
-  nombreResponsable: string;
-  fechaNacimiento: string;
-  terapeuta_id: number;
-}
-
 @Component({
-  selector: 'app-edit-patient-form',
+  selector: 'app-create-patient-form', // Corregido el selector
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './create-pacient-form.component.html',
   styleUrls: ['./create-pacient-form.component.css']
 })
 export class CreatePatientFormComponent implements OnInit {
+  @ViewChild('pacientForm') pacientForm!: NgForm;
   pacient: Paciente = {} as Paciente;
 
   constructor(
@@ -38,6 +26,13 @@ export class CreatePatientFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.pacientForm.invalid) {
+      Object.values(this.pacientForm.controls).forEach(control => {
+        control.markAsTouched();
+      });
+      Swal.fire('Formulario incompleto', 'Por favor, rellene todos los campos correctamente.', 'warning');
+      return;
+    }
 
     const terapeutaId = sessionStorage.getItem('id');
     if (!terapeutaId) {
@@ -46,10 +41,8 @@ export class CreatePatientFormComponent implements OnInit {
     }
     this.pacient.terapeuta_id = +terapeutaId;
 
-    // Llama al servicio para crear el paciente
     this.pacientService.createPatient(this.pacient).subscribe({
       next: (response) => {
-        // Muestra los datos de acceso en un diálogo de SweetAlert2
         Swal.fire({
           title: '¡Paciente Creado!',
           html: `
@@ -64,17 +57,12 @@ export class CreatePatientFormComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Entendido'
         }).then(() => {
-          // Redirige a la lista de pacientes después de cerrar el diálogo
           this.router.navigate(['/pacients']);
         });
       },
       error: (error) => {
         console.error('Error al crear paciente:', error);
-        Swal.fire(
-          'Error',
-          'Hubo un problema al crear el paciente.',
-          'error'
-        );
+        Swal.fire('Error', 'Hubo un problema al crear el paciente.', 'error');
       }
     });
   }

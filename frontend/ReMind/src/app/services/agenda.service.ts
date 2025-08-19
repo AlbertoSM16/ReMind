@@ -1,3 +1,5 @@
+// app/services/agenda.service.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -24,6 +26,14 @@ export class AgendaService {
    // OBTENER los juegos de UNA agenda
   getJuegosByAgendaId(agendaId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${agendaId}/juegos`);
+  }
+  
+   getJuegosByPacienteId(pacienteId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/paciente/${pacienteId}`);
+  }
+
+  completarJuego(agendaId: number, juegoId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${agendaId}/juego/${juegoId}/completar`, {});
   }
 
   // ELIMINAR un juego de una agenda

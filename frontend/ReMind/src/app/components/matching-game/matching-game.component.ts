@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Necesario para *ngIf y *ngFor
+// app/components/matching-game/matching-game.component.ts
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-// Define las interfaces
 interface Image {
   id: number;
   src: string;
@@ -19,12 +19,16 @@ interface DropZone {
 
 @Component({
   selector: 'app-matching-game',
-  standalone: true, // <-- AÑADE ESTO
-  imports: [CommonModule], // <-- AÑADE ESTO
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './matching-game.component.html',
   styleUrls: ['./matching-game.component.css']
 })
 export class MatchingGameComponent implements OnInit {
+
+  @Input() dificultad: number = 1;
+  @Output() gameCompleted = new EventEmitter<void>(); // Añadido
+
   images: Image[] = [];
   unmatchedImages: Image[] = [];
   dropZones: DropZone[] = [];
@@ -36,27 +40,39 @@ export class MatchingGameComponent implements OnInit {
   }
 
   initializeGame(): void {
-    const pairs = [
+    const allPairs = [
       { id: 1, item: 'assets/matching/llave-inglesa.png', person: 'assets/matching/fontanero.png', itemName: 'Llave Inglesa', personName: 'Fontanero' },
       { id: 2, item: 'assets/matching/pizarra.png', person: 'assets/matching/profesor.png', itemName: 'Pizarra', personName: 'Profesor' },
       { id: 3, item: 'assets/matching/utensilios.png', person: 'assets/matching/cocinero.png', itemName: 'Utiles de cocina', personName: 'Cocinero' },
-      { id: 4, item: 'assets/matching/jeringuilla.png', person: 'assets/matching/medica.png', itemName: 'Estetoscopio', personName: 'Médica' }
+      { id: 4, item: 'assets/matching/jeringuilla.png', person: 'assets/matching/medica.png', itemName: 'Estetoscopio', personName: 'Médica' },
+      { id: 5, item: 'assets/matching/paleta.png', person: 'assets/matching/pintor.png', itemName: 'Paleta', personName: 'Pintor' },
+      { id: 6, item: 'assets/matching/casco.png', person: 'assets/matching/constructor.png', itemName: 'Casco', personName: 'Constructor' }
     ];
 
+    let pairsToUse = 4;
+    if (this.dificultad === 2) {
+      pairsToUse = 5;
+    } else if (this.dificultad === 3) {
+      pairsToUse = 6;
+    }
+
+    const selectedPairs = this.shuffleArray(allPairs).slice(0, pairsToUse);
+
     this.images = [];
-    pairs.forEach(pair => {
+    selectedPairs.forEach(pair => {
       this.images.push({ id: pair.id * 2 - 1, src: pair.item, pairId: pair.id, type: 'item', name: pair.itemName });
       this.images.push({ id: pair.id * 2, src: pair.person, pairId: pair.id, type: 'person', name: pair.personName });
     });
 
     this.unmatchedImages = this.shuffleArray([...this.images]);
 
-    this.dropZones = [
-      { id: 1, person: null, item: null, correct: false },
-      { id: 2, person: null, item: null, correct: false },
-      { id: 3, person: null, item: null, correct: false },
-      { id: 4, person: null, item: null, correct: false }
-    ];
+    this.dropZones = selectedPairs.map(pair => ({
+      id: pair.id,
+      person: null,
+      item: null,
+      correct: false
+    }));
+    
     this.gameOver = false;
     this.successMessage = '';
   }
@@ -115,9 +131,10 @@ export class MatchingGameComponent implements OnInit {
 
   checkGameOver(): void {
     const allCorrect = this.dropZones.every(dz => dz.correct);
-    if (allCorrect) {
+    if (this.dropZones.length > 0 && allCorrect) {
       this.gameOver = true;
       this.successMessage = '¡Felicidades! Has unido todas las parejas correctamente.';
+      this.gameCompleted.emit(); 
     }
   }
 

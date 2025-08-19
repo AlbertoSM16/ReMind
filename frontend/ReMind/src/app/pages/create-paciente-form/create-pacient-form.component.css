@@ -1,11 +1,10 @@
 /* Overall container and background */
 .main-container {
-  background-color: #e6f7ff; /* A very light blue/gray background to match the image */
   min-height: 100vh; /* Full viewport height */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px; /* Padding top/bottom and sides */
+  padding: 40px 20px; 
   font-family: Arial, sans-serif; /* A clean font */
 }
 
@@ -74,13 +73,13 @@
   border-color: transparent; /* Ensure no default blue border */
   outline: none; /* Remove default outline */
 }
+/* ... otros estilos ... */
 
-/* Edit Button */
 .edit-btn {
-  background-color: #61b369; /* Greenish button background */
-  color: white; /* White text */
-  border-radius: 25px; /* Rounded corners */
-  padding: 12px 50px; /* Padding */
+  background-color: #61b369;
+  color: white;
+  border-radius: 25px;
+  padding: 12px 50px;
   font-size: 1.2rem;
   font-weight: bold;
   border: none;
@@ -88,8 +87,16 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.edit-btn:hover {
-  background-color: #4a9151; /* Darker green on hover */
-  transform: translateY(-2px); /* Slight lift effect */
-  color: white; /* Keep text white on hover */
+.edit-btn:hover:not(:disabled) {
+  background-color: #4a9151;
+  transform: translateY(-2px);
+  color: white;
+}
+
+/* AÑADIDO: Estilo para cuando el botón está deshabilitado */
+.edit-btn:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
 }

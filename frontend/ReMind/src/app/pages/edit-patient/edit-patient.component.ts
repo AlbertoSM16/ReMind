@@ -25,7 +25,6 @@ export class EditPatientFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Captura el ID del paciente de la URL
     this.patientId = +this.route.snapshot.paramMap.get('id')!;
     if (this.patientId) {
       this.loadPatientData();
@@ -59,7 +58,6 @@ export class EditPatientFormComponent implements OnInit {
           alert('Paciente actualizado con éxito!');
           this.router.navigate(['/pacients']);
         } else {
-          console.error('Error al actualizar el paciente:', error);
           alert('Hubo un error al actualizar el paciente.');
         }
       }

@@ -25,7 +25,6 @@ h2 {
   color: white; /* Ensure text color stays white on hover */
 }
 
-
 /* Patient Card */
 .patient-card {
   background-color: #fff; /* White background */
@@ -93,4 +92,37 @@ h2 {
 
 .delete-icon:hover {
   color: #bd2130; /* Darker red on hover */
+}
+
+.edit-icon,
+.delete-icon,
+.credentials-icon,
+.reset-password-icon {
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  margin: 0 5px; /* Espacio entre iconos */
+}
+
+.edit-icon:hover,
+.delete-icon:hover,
+.credentials-icon:hover,
+.reset-password-icon:hover {
+  transform: scale(1.2); /* Efecto de zoom al pasar el ratón */
+}
+
+/* ... (estilos de otros iconos) ... */
+
+.credentials-icon {
+  color: #007bff; /* Azul para credenciales */
+}
+.credentials-icon:hover {
+  color: #0056b3;
+}
+
+.reset-password-icon {
+  color: #ffc107; /* Naranja para reiniciar */
+}
+.reset-password-icon:hover {
+  color: #e0a800;
 }

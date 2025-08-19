@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core'; // Importa Input
+// app/components/juego-cambio/juego-cambio.component.ts
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EuroDenominationComponent } from '../euro-denomination-component/euro-denomination-component.component';
 
@@ -19,15 +20,14 @@ interface Denomination {
 })
 export class JuegoCambioComponent implements OnInit {
   
-  // AÑADIDO: Recibe la dificultad como un parámetro de entrada
   @Input() dificultad: number = 1;
+  @Output() gameCompleted = new EventEmitter<void>();
 
   title = 'Juego de Cambio de Euro';
-  amountToMatch: number = 0; // Para dificultad 1 y 2: el total a devolver. Para dificultad 3: el cambio a calcular.
+  amountToMatch: number = 0;
   currentAmount: number = 0;
   message: string = '';
   
-  // AÑADIDO: Variables para la dificultad 3
   precioArticulo: number = 0;
   dineroEntregado: number = 0;
 
@@ -55,14 +55,12 @@ export class JuegoCambioComponent implements OnInit {
     this.message = '';
 
     if (this.dificultad === 3) {
-      // Dificultad 3: Calcular el cambio
       this.precioArticulo = parseFloat((Math.random() * (15 - 1) + 1).toFixed(2));
       const dineroExtra = parseFloat((Math.random() * (10 - 1) + 1).toFixed(2));
       this.dineroEntregado = this.precioArticulo + dineroExtra;
       this.amountToMatch = parseFloat((this.dineroEntregado - this.precioArticulo).toFixed(2));
       
     } else {
-      // Dificultad 1 y 2: Devolver una cantidad fija
       this.amountToMatch = parseFloat((Math.random() * (20 - 0.50) + 0.50).toFixed(2));
     }
   }
@@ -72,19 +70,16 @@ export class JuegoCambioComponent implements OnInit {
     this.checkAmount();
   }
   
-  // MODIFICADO: Lógica de comprobación separada
   checkAmount() {
     if (this.currentAmount === this.amountToMatch) {
       this.message = '¡Felicidades! Has devuelto la cantidad exacta. 🎉';
+      this.gameCompleted.emit();
     } else if (this.currentAmount > this.amountToMatch) {
       this.message = '¡Te has pasado! Vuelve a intentarlo. 😔';
     } else {
-      // Lógica condicional para el mensaje
       if (this.dificultad === 1) {
-        // Dificultad 1: Muestra cuánto falta
         this.message = `Te faltan ${(this.amountToMatch - this.currentAmount).toFixed(2)} €`;
       } else {
-        // Dificultad 2 y 3: Mensaje genérico
         this.message = 'Sigue añadiendo dinero...';
       }
     }

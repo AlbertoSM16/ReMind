@@ -9,8 +9,9 @@
             <app-pacientes-card (click)="toPacients()"></app-pacientes-card >
         </div>
         <div *ngIf="userRole === 'paciente'">
-            <doctor-card></doctor-card>
+            <tareas-card (click)="toPacienteAgenda()"></tareas-card>
         </div>
+        
 
     </div>
 

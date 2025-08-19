@@ -50,6 +50,10 @@ export class PacientService { // As per your component's import
    deletePatient(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, { responseType: 'text' });
   }
+
+  resetPassword(id: number): Observable<{ nuevaContrasenia: string }> {
+    return this.http.post<{ nuevaContrasenia: string }>(`${this.apiUrl}/${id}/reset-password`, {});
+  }
 }
 
 

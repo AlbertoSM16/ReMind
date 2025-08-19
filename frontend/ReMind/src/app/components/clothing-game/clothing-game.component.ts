@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+// app/components/clothing-game/clothing-game.component.ts
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// Interfaces para definir la estructura de los datos
 interface ClothingItem {
   id: number;
   name: string;
@@ -24,6 +24,9 @@ interface DropTarget {
 })
 export class ClothingGameComponent implements OnInit {
 
+  @Input() dificultad: number = 1; // Añadido para consistencia
+  @Output() gameCompleted = new EventEmitter<void>(); // Añadido
+
   clothingItems: ClothingItem[] = [];
   dropTargets: { [key: string]: DropTarget } = {};
   score = 0;
@@ -37,26 +40,19 @@ export class ClothingGameComponent implements OnInit {
   }
 
   initializeGame(): void {
-    // Definimos las prendas y a qué parte del cuerpo pertenecen
     this.clothingItems = [
       { id: 1, name: 'Gorro', src: 'assets/clothing/gorro.png', target: 'head', placed: false },
       { id: 2, name: 'Camiseta', src: 'assets/clothing/camiseta.png', target: 'torso', placed: false },
       { id: 3, name: 'Pantalón', src: 'assets/clothing/pantalon.png', target: 'legs', placed: false },
       { id: 4, name: 'Zapatos', src: 'assets/clothing/zapatos.png', target: 'feet', placed: false },
     ];
-
-    // Desordenamos las prendas para que aparezcan en un orden aleatorio
     this.clothingItems = this.shuffleArray(this.clothingItems);
-
-    // Inicializamos las zonas del cuerpo donde se puede soltar la ropa
     this.dropTargets = {
       head: { id: 'head', item: null },
       torso: { id: 'torso', item: null },
       legs: { id: 'legs', item: null },
       feet: { id: 'feet', item: null },
     };
-
-    // Reiniciamos el estado del juego
     this.score = 0;
     this.gameOver = false;
     this.feedbackMessage = '';
@@ -70,14 +66,12 @@ export class ClothingGameComponent implements OnInit {
     return array;
   }
 
-  // Eventos de Drag & Drop
-
   onDragStart(event: DragEvent, item: ClothingItem): void {
     event.dataTransfer?.setData('itemId', item.id.toString());
   }
 
   onDragOver(event: DragEvent): void {
-    event.preventDefault(); // Permite que se pueda soltar el elemento
+    event.preventDefault();
   }
 
   onDrop(event: DragEvent, targetId: 'head' | 'torso' | 'legs' | 'feet'): void {
@@ -89,14 +83,12 @@ export class ClothingGameComponent implements OnInit {
 
       if (item && !item.placed && !target.item) {
         if (item.target === targetId) {
-          // Acierto
           item.placed = true;
           target.item = item;
           this.score++;
           this.feedbackMessage = `¡Bien hecho! Has colocado la ${item.name.toLowerCase()}.`;
           this.checkGameOver();
         } else {
-          // Fallo
           this.feedbackMessage = '¡Ups! Esa prenda no va en esa parte del cuerpo. Inténtalo de nuevo.';
         }
       }
@@ -107,6 +99,7 @@ export class ClothingGameComponent implements OnInit {
     if (this.score === this.clothingItems.length) {
       this.gameOver = true;
       this.feedbackMessage = '¡Felicidades! Has vestido completamente la silueta.';
+      this.gameCompleted.emit(); 
     }
   }
 

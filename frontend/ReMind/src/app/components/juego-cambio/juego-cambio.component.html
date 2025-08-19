@@ -13,7 +13,6 @@
             <p class="fs-4 mb-2">Precio del artículo: <strong class="text-danger">{{ precioArticulo | currency:'EUR':'symbol' }}</strong></p>
             <p class="fs-4 mb-2">Dinero entregado: <strong class="text-success">{{ dineroEntregado | currency:'EUR':'symbol' }}</strong></p>
             <hr>
-            <p class="fs-4 mb-2">Calcula el cambio que debes devolver: <strong class="text-info">{{ amountToMatch | currency:'EUR':'symbol' }}</strong></p>
           </div>
 
           <div *ngIf="dificultad < 3">
