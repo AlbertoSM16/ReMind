@@ -11,4 +11,7 @@ public interface JuegoAgendaRepository extends JpaRepository<JuegoAgenda, Long> 
     List<JuegoAgenda> findByAgendaId(Integer agendaId);
 
     Optional<JuegoAgenda> findByAgendaIdAndJuegoId(Integer agendaId, Integer juegoId);
+
+    void deleteByAgendaId(Integer agendaId);
+
 }

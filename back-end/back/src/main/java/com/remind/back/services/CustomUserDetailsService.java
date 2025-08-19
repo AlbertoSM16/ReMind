@@ -29,34 +29,28 @@ public class CustomUserDetailsService implements UserDetailsService {
     private AdministradorRepository administradorRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Primero busca en Pacientes
-        Optional<Paciente> pacienteOpt = pacienteRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Paciente> pacienteOpt = pacienteRepository.findByUsuario(username);
         if (pacienteOpt.isPresent()) {
             Paciente paciente = pacienteOpt.get();
-            // IMPORTANTE: La contraseña aquí DEBE ser la contraseña ENCRIPTADA de tu base de datos.
-            // Los roles se añaden como GrantedAuthority.
-            return new User(paciente.getEmail(), paciente.getContrasenia(),
-                    Collections.singletonList(() -> "ROLE_" + paciente.getRol().name())); // Asigna el rol
+            return new User(paciente.getUsuario(), paciente.getContrasenia(),
+                    Collections.singletonList(() -> "ROLE_" + paciente.getRol().name()));
         }
 
-        // Luego busca en Terapeutas
-        Optional<Terapeuta> terapeutaOpt = terapeutaRepository.findByEmail(email);
+        Optional<Terapeuta> terapeutaOpt = terapeutaRepository.findByUsuario(username);
         if (terapeutaOpt.isPresent()) {
             Terapeuta terapeuta = terapeutaOpt.get();
-            return new User(terapeuta.getEmail(), terapeuta.getContrasenia(),
-                    Collections.singletonList(() -> "ROLE_" + terapeuta.getRol().name())); // Asigna el rol
+            return new User(terapeuta.getUsuario(), terapeuta.getContrasenia(),
+                    Collections.singletonList(() -> "ROLE_" + terapeuta.getRol().name()));
         }
 
-        // Finalmente busca en Administradores
-        Optional<Administrador> administradorOpt = administradorRepository.findByEmail(email);
+        Optional<Administrador> administradorOpt = administradorRepository.findByUsuario(username);
         if (administradorOpt.isPresent()) {
             Administrador administrador = administradorOpt.get();
-            return new User(administrador.getEmail(), administrador.getContrasenia(),
-                    Collections.singletonList(() -> "ROLE_" + administrador.getRol().name())); // Asigna el rol
+            return new User(administrador.getUsuario(), administrador.getContrasenia(),
+                    Collections.singletonList(() -> "ROLE_" + administrador.getRol().name()));
         }
 
-        // Si no se encuentra en ninguna de las tablas
-        throw new UsernameNotFoundException("Usuario no encontrado con email: " + email);
+        throw new UsernameNotFoundException("Usuario no encontrado con el nombre de usuario: " + username);
     }
 }

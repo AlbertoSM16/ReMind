@@ -19,8 +19,6 @@ public class PacienteOutputDTO {
 
     private String apellido;
 
-    private String email;
-
     private String telefono;
 
     private String enfermedad;

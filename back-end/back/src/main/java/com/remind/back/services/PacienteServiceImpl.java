@@ -6,6 +6,7 @@ import com.remind.back.Mapper.PacienteMapper;
 import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
+import com.remind.back.dto.PasswordResetDTO;
 import com.remind.back.entities.Agenda;
 import com.remind.back.entities.AgendaTerapeuta;
 import com.remind.back.entities.Paciente;
@@ -14,6 +15,7 @@ import com.remind.back.entities.PacienteTerapeuta;
 import com.remind.back.entities.Terapeuta;
 import com.remind.back.repositories.AgendaRepository;
 import com.remind.back.repositories.AgendaTerapeutaRepository;
+import com.remind.back.repositories.JuegoAgendaRepository;
 import com.remind.back.repositories.PacienteAgendaRepository;
 import com.remind.back.repositories.PacienteRepository;
 import com.remind.back.repositories.PacienteTerapeutaRepository;
@@ -42,6 +44,9 @@ public class PacienteServiceImpl implements PacienteService {
     private Utils utils;
 
     @Autowired
+    private JuegoAgendaRepository juegoAgendaRepository;
+    
+    @Autowired
     private TerapeutaRepository terapeutaRepository;
 
     @Autowired
@@ -63,10 +68,11 @@ public class PacienteServiceImpl implements PacienteService {
     @Transactional
     public PacienteCreatedDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
 
-        String passwordPlano = utils.generateRandomPassword(pacienteInputDTO.getNombre(), pacienteInputDTO.getApellido());
+        String passwordPlano = utils.generateRandomPassword(pacienteInputDTO.getNombre(),
+                pacienteInputDTO.getApellido());
         String hashedPassword = passwordEncoder.encode(passwordPlano);
         pacienteInputDTO.setContrasenia(hashedPassword);
-        
+
         // 2. Genera el nombre de usuario
         String usuario = utils.generateRandomUsername(pacienteInputDTO.getNombre(), pacienteInputDTO.getApellido());
         pacienteInputDTO.setUsuario(usuario);
@@ -98,7 +104,7 @@ public class PacienteServiceImpl implements PacienteService {
             agendaTerapeuta.setAgenda(savedAgenda);
             agendaTerapeuta.setTerapeuta(terapeuta);
             agendaTerapeutaRepository.save(agendaTerapeuta);
-            
+
         }
 
         return new PacienteCreatedDTO(usuario, passwordPlano);
@@ -127,7 +133,7 @@ public class PacienteServiceImpl implements PacienteService {
     @Transactional
     public void deletePaciente(Integer id) {
 
-        Paciente paciente = pacienteRepository.findById(id)
+        pacienteRepository.findById(id)
                 .orElseThrow(
                         () -> new NoSuchElementException("No existe un paciente con ese id y no se puede eliminar"));
 
@@ -138,10 +144,13 @@ public class PacienteServiceImpl implements PacienteService {
             if (agenda != null) {
                 Integer agendaId = agenda.getId();
 
+                // LÍNEA AÑADIDA: Eliminar juegos asignados a la agenda ANTES de continuar
+                juegoAgendaRepository.deleteByAgendaId(agendaId);
+
                 agendaTerapeutaRepository.deleteByAgendaId(agendaId);
 
                 pacienteAgendaRepository.delete(pa);
-                
+
                 agendaRepository.delete(agenda);
             }
         }
@@ -175,9 +184,7 @@ public class PacienteServiceImpl implements PacienteService {
         if (pacienteDTO.getTelefono() != null) {
             paciente.setTelefono(pacienteDTO.getTelefono());
         }
-        if (pacienteDTO.getEmail() != null) {
-            paciente.setEmail(pacienteDTO.getEmail());
-        }
+        
         if (pacienteDTO.getFechaNacimiento() != null) {
             paciente.setFechaNacimiento(pacienteDTO.getFechaNacimiento());
         }
@@ -199,6 +206,21 @@ public class PacienteServiceImpl implements PacienteService {
 
         return pacienteMapper.PacienteToPacienteOutputDTO(pacienteRepository.save(paciente));
 
+    }
+
+    @Override
+    @Transactional
+    public PasswordResetDTO resetPassword(Integer id) {
+        Paciente paciente = pacienteRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("El paciente con id " + id + " no existe"));
+
+        String newPasswordPlano = utils.generateRandomPassword(paciente.getNombre(), paciente.getApellido());
+        String hashedPassword = passwordEncoder.encode(newPasswordPlano);
+
+        paciente.setContrasenia(hashedPassword);
+        pacienteRepository.save(paciente);
+
+        return new PasswordResetDTO(newPasswordPlano);
     }
 
 }

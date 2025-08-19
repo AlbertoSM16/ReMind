@@ -5,6 +5,7 @@ import java.util.List;
 import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
+import com.remind.back.dto.PasswordResetDTO;
 
 
 public interface PacienteService {
@@ -18,4 +19,5 @@ public interface PacienteService {
     void deletePaciente(Integer id);
 
     PacienteOutputDTO updatePaciente(Integer id, PacienteInputDTO pacienteDTO);
+    PasswordResetDTO resetPassword(Integer id);
 }

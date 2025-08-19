@@ -8,7 +8,6 @@ import com.remind.back.entities.Paciente;
 
 public interface PacienteRepository extends JpaRepository<Paciente, Integer> {
 
-    Optional<Paciente> findByEmail(String email);
     Optional<Paciente> findByUsuario(String usuario);
 
 }

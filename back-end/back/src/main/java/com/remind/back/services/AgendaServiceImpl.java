@@ -1,6 +1,9 @@
 package com.remind.back.services;
 
+import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,7 +30,6 @@ import com.remind.back.repositories.JuegoRepository;
 import com.remind.back.repositories.PacienteAgendaRepository;
 import com.remind.back.repositories.PacienteRepository;
 import com.remind.back.repositories.TerapeutaRepository;
-import com.remind.back.dto.JuegoAsignadoDTO;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -165,7 +167,9 @@ public class AgendaServiceImpl implements AgendaService {
                         juegoAgenda.getJuego().getId(),
                         juegoAgenda.getJuego().getNombre(),
                         juegoAgenda.getJuego().getCodigo(),
-                        juegoAgenda.getDificultad()))
+                        juegoAgenda.getDificultad(),
+                        juegoAgenda.getRealizado()
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -189,9 +193,47 @@ public class AgendaServiceImpl implements AgendaService {
 
         juegoAgendaRepository.save(nuevaAsignacion);
     }
-    
 
-    
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Object> getJuegosByPacienteId(Integer pacienteId) {
+        PacienteAgenda pacienteAgenda = pacienteAgendaRepository.findByPacienteId(pacienteId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException(
+                        "No se encontró agenda para el paciente con ID " + pacienteId));
+
+        Integer agendaId = pacienteAgenda.getAgenda().getId();
+
+        List<JuegoAsignadoDTO> juegos = juegoAgendaRepository.findByAgendaId(agendaId)
+                .stream()
+                .map(juegoAgenda -> new JuegoAsignadoDTO(
+                        juegoAgenda.getJuego().getId(),
+                        juegoAgenda.getJuego().getNombre(),
+                        juegoAgenda.getJuego().getCodigo(),
+                        juegoAgenda.getDificultad(),
+                        juegoAgenda.getRealizado()
+                ))
+                .collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("agendaId", agendaId);
+        response.put("juegos", juegos);
+
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public void completarJuego(Integer agendaId, Integer juegoId) {
+        JuegoAgenda asignacion = juegoAgendaRepository.findByAgendaIdAndJuegoId(agendaId, juegoId)
+                .orElseThrow(() -> new NoSuchElementException(
+                        "No se encontró la asignación del juego " + juegoId + " en la agenda " + agendaId));
+
+        asignacion.setRealizado(true);
+        asignacion.setFechaRealizacion(new Date(System.currentTimeMillis())); 
+        juegoAgendaRepository.save(asignacion);
+    }
 
     @Transactional
     public void removeJuegoFromAgenda(Integer agendaId, Integer juegoId) {

@@ -21,12 +21,8 @@ public class PacienteInputDTO {
     @NotBlank(message = "El apellido no puede estar vacío")
     private String apellido;
 
-    @NotBlank(message = "El email no puede estar vacío")
-    private String email;
-
     private String usuario;
 
-   
     private String contrasenia;
 
     @NotBlank(message = "El teléfono no puede estar vacío")

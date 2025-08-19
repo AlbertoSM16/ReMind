@@ -1,3 +1,4 @@
+
 package com.remind.back.controllers;
 
 import java.util.Collections;
@@ -52,6 +53,30 @@ public class AgendaController {
             return ResponseEntity.ok(agendaOpt);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Agenda no encontrada");
+        }
+    }
+
+    @GetMapping("/paciente/{pacienteId}")
+    public ResponseEntity<?> getJuegosDelPaciente(@PathVariable Integer pacienteId) {
+        try {
+            Map<String, Object> response = agendaService.getJuegosByPacienteId(pacienteId);
+            return ResponseEntity.ok(response);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PutMapping("/{agendaId}/juego/{juegoId}/completar")
+    public ResponseEntity<?> completarJuego(@PathVariable Integer agendaId, @PathVariable Integer juegoId) {
+        try {
+            agendaService.completarJuego(agendaId, juegoId);
+            return ResponseEntity.ok().body(Map.of("message", "Juego marcado como completado."));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error al marcar el juego como completado."));
         }
     }
 

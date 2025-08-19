@@ -2,6 +2,7 @@ package com.remind.back.controllers;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
+import com.remind.back.dto.PasswordResetDTO;
 import com.remind.back.services.PacienteService;
 
 @RestController
@@ -63,6 +65,18 @@ public class PacienteController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el paciente: " + e.getMessage());
         }
 
+    }
+
+    @PostMapping("/{id}/reset-password")
+    public ResponseEntity<?> resetPassword(@PathVariable Integer id) {
+        try {
+            PasswordResetDTO newPassword = pacienteService.resetPassword(id);
+            return ResponseEntity.ok(newPassword);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al reiniciar la contraseña");
+        }
     }
 
     @DeleteMapping("/{id}")

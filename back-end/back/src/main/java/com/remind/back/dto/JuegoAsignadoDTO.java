@@ -12,4 +12,5 @@ public class JuegoAsignadoDTO {
     private String nombre;
     private String codigo;
     private int dificultad;
+    private boolean realizado;
 }

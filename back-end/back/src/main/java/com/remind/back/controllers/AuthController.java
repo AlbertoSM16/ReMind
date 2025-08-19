@@ -47,12 +47,12 @@ public class AuthController {
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
-                        "id", admin.getId(),
-                        "nombre", admin.getNombre()
+                        "id", admin.getId()
+                        
                 ));
             }
         }
-        // 2. Si no es admin, buscar en la tabla de Terapeutas
+        
         Optional<Terapeuta> terapeutaOpt = terapeutaRepository.findByUsuario(usuario);
         if (terapeutaOpt.isPresent()) {
             Terapeuta terapeuta = terapeutaOpt.get();
@@ -62,12 +62,11 @@ public class AuthController {
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
-                        "id", terapeuta.getId(),
-                        "nombre", terapeuta.getNombre()
+                        "id", terapeuta.getId()
                 ));
             }
         }
-        // 3. Si no es admin ni terapeuta, buscar en la tabla de Pacientes
+        
         Optional<Paciente> pacienteOpt = pacienteRepository.findByUsuario(usuario);
         if (pacienteOpt.isPresent()) {
             Paciente paciente = pacienteOpt.get();
@@ -77,13 +76,11 @@ public class AuthController {
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
-                        "id", paciente.getId(),
-                        "nombre", paciente.getNombre()
+                        "id", paciente.getId()
                 ));
             }
         }
         
-        // Si la contraseña es incorrecta para un usuario encontrado o el usuario no existe
         return ResponseEntity.status(401).body("Credenciales incorrectas");
     }
 }
