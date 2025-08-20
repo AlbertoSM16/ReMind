@@ -44,9 +44,9 @@ public class Terapeuta {
 
     @NotNull
     private Date fechaNacimiento;
-    
+
     @NotBlank
-    @Column(unique = true) 
+    @Column(unique = true)
     private String usuario;
 
     @NotBlank
@@ -57,4 +57,6 @@ public class Terapeuta {
     @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AgendaTerapeuta> agendaConexiones = new ArrayList<>();
 
+    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Paciente> pacientes = new ArrayList<>();
 }

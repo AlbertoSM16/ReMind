@@ -2,6 +2,7 @@ package com.remind.back.controllers;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ import com.remind.back.services.TerapeutaService;
 import com.remind.back.dto.AgendaOutputDTO;
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
+import com.remind.back.dto.TerapeutaSeguimientoDTO;
 
 @RestController
 @RequestMapping("/api/terapeuta")
@@ -49,6 +51,17 @@ public class TerapeutaController {
             return ResponseEntity.ok(terapuetaOpt);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente no encontrado");
+        }
+    }
+
+    // NUEVO ENDPOINT AÑADIDO
+     @GetMapping("/{id}/seguimiento")
+    public ResponseEntity<TerapeutaSeguimientoDTO> getSeguimientoIndividual(@PathVariable Integer id) {
+        try {
+            TerapeutaSeguimientoDTO seguimientoData = terapeutaService.getSeguimientoByTerapeutaId(id);
+            return ResponseEntity.ok(seguimientoData);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 

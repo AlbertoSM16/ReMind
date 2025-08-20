@@ -3,6 +3,7 @@ package com.remind.back.services;
 import com.remind.back.dto.AgendaOutputDTO;
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
+import com.remind.back.dto.TerapeutaSeguimientoDTO;
 
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface TerapeutaService {
     TerapeutaOutputDTO updateTerapeuta(Integer id, TerapeutaInputDTO terapeutaInputDTO);
 
     List<AgendaOutputDTO> getAgendasByTerapeutaId(Integer id);
+
+    TerapeutaSeguimientoDTO getSeguimientoByTerapeutaId(Integer terapeutaId);
+
 }

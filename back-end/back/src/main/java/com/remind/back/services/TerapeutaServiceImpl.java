@@ -12,12 +12,18 @@ import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.remind.back.dto.AgendaOutputDTO;
+import com.remind.back.dto.JuegoAsignadoDTO;
+import com.remind.back.dto.PacienteSeguimientoDTO;
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
+import com.remind.back.dto.TerapeutaSeguimientoDTO;
 import com.remind.back.entities.Agenda;
+import com.remind.back.entities.JuegoAgenda;
+import com.remind.back.entities.Paciente;
 import com.remind.back.entities.PacienteAgenda;
 import com.remind.back.entities.Terapeuta;
 import com.remind.back.Mapper.TerapeutaMapper;
+import com.remind.back.repositories.JuegoAgendaRepository;
 import com.remind.back.repositories.PacienteAgendaRepository;
 import com.remind.back.repositories.PacienteTerapeutaRepository;
 import com.remind.back.repositories.TerapeutaRepository;
@@ -33,15 +39,19 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     private PacienteTerapeutaRepository pacienteTerapeutaRepository;
 
     @Autowired
+    private JuegoAgendaRepository juegoAgendaRepository;
+
+    @Autowired
+    private PacienteAgendaRepository pacienteAgendaRepository;
+
+    @Autowired
     private TerapeutaMapper terapeutaMapper;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private Utils utils;
-
-    @Autowired
-    private PacienteAgendaRepository pacienteAgendaRepository;
 
     @Override
     @Transactional
@@ -81,16 +91,16 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     @Override
     @Transactional
     public void deleteTerapeuta(Integer id) {
-        if (!terapeutaRepository.existsById(id)) {
-            throw new NoSuchElementException("No existe un terapeuta con ese id y no se puede eliminar");
-        }
-        if (pacienteTerapeutaRepository.findByTerapeutaId(id).isPresent()) {
-            throw new NoSuchElementException(
-                    "El terapeuta con id " + id + " no se puede eliminar porque tiene pacientes asociados");
-        }
-        pacienteTerapeutaRepository.deleteByTerapeutaId(id);
-        terapeutaRepository.deleteById(id);
+        Terapeuta terapeuta = terapeutaRepository.findById(id)
+                .orElseThrow(
+                        () -> new NoSuchElementException("No existe un terapeuta con ese id y no se puede eliminar"));
 
+        if (!terapeuta.getPacientes().isEmpty()) {
+            throw new IllegalStateException(
+                    "No se puede eliminar el terapeuta con id " + id + " porque tiene pacientes asociados.");
+        }
+
+        terapeutaRepository.deleteById(id);
     }
 
     @Override
@@ -149,4 +159,58 @@ public class TerapeutaServiceImpl implements TerapeutaService {
                     terapeuta.getNombre() + " " + terapeuta.getApellido());
         }).collect(Collectors.toList());
     }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public TerapeutaSeguimientoDTO getSeguimientoByTerapeutaId(Integer terapeutaId) {
+        Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
+                .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con el id " + terapeutaId));
+
+        List<PacienteSeguimientoDTO> pacientesDelTerapeuta = terapeuta.getPacientes()
+                .stream()
+                .map(paciente -> {
+                    Integer agendaId = pacienteAgendaRepository.findByPacienteId(paciente.getId())
+                            .stream()
+                            .map(pacienteAgenda -> pacienteAgenda.getAgenda().getId())
+                            .findFirst()
+                            .orElse(null);
+
+                    long juegosCompletados = 0;
+                    long juegosTotales = 0;
+
+                    List<JuegoAsignadoDTO> juegosAsignadosDto = new java.util.ArrayList<>();
+
+                    if (agendaId != null) {
+                        List<JuegoAgenda> juegosAsignados = juegoAgendaRepository.findByAgendaId(agendaId);
+                        juegosTotales = juegosAsignados.size();
+                        juegosCompletados = juegosAsignados.stream()
+                                .filter(juego -> juego.getRealizado() != null && juego.getRealizado())
+                                .count();
+
+                        juegosAsignadosDto = juegosAsignados.stream()
+                                .map(juegoAgenda -> new JuegoAsignadoDTO(
+                                        juegoAgenda.getJuego().getId(),
+                                        juegoAgenda.getJuego().getNombre(),
+                                        juegoAgenda.getJuego().getCodigo(),
+                                        juegoAgenda.getDificultad(),
+                                        juegoAgenda.getRealizado() != null && juegoAgenda.getRealizado()))
+                                .collect(Collectors.toList());
+                    }
+
+                    return new PacienteSeguimientoDTO(
+                            paciente.getId(),
+                            paciente.getNombre() + " " + paciente.getApellido(),
+                            juegosCompletados,
+                            juegosTotales,
+                            juegosAsignadosDto // Se pasa la lista
+                    );
+                }).collect(Collectors.toList());
+
+        return new TerapeutaSeguimientoDTO(
+                terapeuta.getId(),
+                terapeuta.getNombre() + " " + terapeuta.getApellido(),
+                pacientesDelTerapeuta);
+    }
+
 }

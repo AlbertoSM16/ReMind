@@ -45,7 +45,7 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Autowired
     private JuegoAgendaRepository juegoAgendaRepository;
-    
+
     @Autowired
     private TerapeutaRepository terapeutaRepository;
 
@@ -67,30 +67,28 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     @Transactional
     public PacienteCreatedDTO createPaciente(PacienteInputDTO pacienteInputDTO) {
-
         String passwordPlano = utils.generateRandomPassword(pacienteInputDTO.getNombre(),
                 pacienteInputDTO.getApellido());
         String hashedPassword = passwordEncoder.encode(passwordPlano);
         pacienteInputDTO.setContrasenia(hashedPassword);
 
-        // 2. Genera el nombre de usuario
         String usuario = utils.generateRandomUsername(pacienteInputDTO.getNombre(), pacienteInputDTO.getApellido());
         pacienteInputDTO.setUsuario(usuario);
 
         Paciente paciente = pacienteMapper.PacienteInputDTOToPaciente(pacienteInputDTO);
-        Paciente savedPaciente = pacienteRepository.save(paciente);
-        Integer terapeutaId = pacienteInputDTO.getTerapeuta_id();
 
+        Integer terapeutaId = pacienteInputDTO.getTerapeuta_id();
         if (terapeutaId != null) {
             Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
                     .orElseThrow(
                             () -> new NoSuchElementException("Terapeuta con ID " + terapeutaId + " no encontrado."));
+            paciente.setTerapeuta(terapeuta); // Asignación directa
+        }
 
-            PacienteTerapeuta pacienteTerapeuta = new PacienteTerapeuta();
-            pacienteTerapeuta.setPaciente(savedPaciente);
-            pacienteTerapeuta.setTerapeuta(terapeuta);
-            pacienteTerapeutaRepository.save(pacienteTerapeuta);
+        Paciente savedPaciente = pacienteRepository.save(paciente);
 
+        // Crear agenda y asociarla (si se asignó un terapeuta)
+        if (savedPaciente.getTerapeuta() != null) {
             Agenda nuevaAgenda = new Agenda();
             nuevaAgenda.setNombre("Agenda de " + savedPaciente.getNombre());
             Agenda savedAgenda = agendaRepository.save(nuevaAgenda);
@@ -102,9 +100,8 @@ public class PacienteServiceImpl implements PacienteService {
 
             AgendaTerapeuta agendaTerapeuta = new AgendaTerapeuta();
             agendaTerapeuta.setAgenda(savedAgenda);
-            agendaTerapeuta.setTerapeuta(terapeuta);
+            agendaTerapeuta.setTerapeuta(savedPaciente.getTerapeuta());
             agendaTerapeutaRepository.save(agendaTerapeuta);
-
         }
 
         return new PacienteCreatedDTO(usuario, passwordPlano);
@@ -132,80 +129,54 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     @Transactional
     public void deletePaciente(Integer id) {
-
-        pacienteRepository.findById(id)
-                .orElseThrow(
-                        () -> new NoSuchElementException("No existe un paciente con ese id y no se puede eliminar"));
+        if (!pacienteRepository.existsById(id)) {
+            throw new NoSuchElementException("No existe un paciente con ese id y no se puede eliminar");
+        }
 
         List<PacienteAgenda> pacienteAgendas = pacienteAgendaRepository.findByPacienteId(id);
-
         for (PacienteAgenda pa : pacienteAgendas) {
             Agenda agenda = pa.getAgenda();
             if (agenda != null) {
-                Integer agendaId = agenda.getId();
-
-                // LÍNEA AÑADIDA: Eliminar juegos asignados a la agenda ANTES de continuar
-                juegoAgendaRepository.deleteByAgendaId(agendaId);
-
-                agendaTerapeutaRepository.deleteByAgendaId(agendaId);
-
+                juegoAgendaRepository.deleteByAgendaId(agenda.getId());
+                agendaTerapeutaRepository.deleteByAgendaId(agenda.getId());
                 pacienteAgendaRepository.delete(pa);
-
                 agendaRepository.delete(agenda);
             }
         }
 
-        // 3. Eliminar la relación principal Paciente-Terapeuta
-        pacienteTerapeutaRepository.deleteByPacienteId(id);
-
-        // 4. Ahora sí, eliminar el paciente
         pacienteRepository.deleteById(id);
-
     }
 
     @Override
     @Transactional
     public PacienteOutputDTO updatePaciente(Integer id, PacienteInputDTO pacienteDTO) {
-
         Paciente paciente = pacienteRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("El paciente con id " + id + " no existe"));
-        if (pacienteDTO.getNombre() != null) {
+
+        if (pacienteDTO.getNombre() != null)
             paciente.setNombre(pacienteDTO.getNombre());
-        }
-        if (pacienteDTO.getEnfermedad() != null) {
+        if (pacienteDTO.getEnfermedad() != null)
             paciente.setEnfermedad(pacienteDTO.getEnfermedad());
-        }
-        if (pacienteDTO.getApellido() != null) {
+        if (pacienteDTO.getApellido() != null)
             paciente.setApellido(pacienteDTO.getApellido());
-        }
-        if (pacienteDTO.getEdad() != null) {
+        if (pacienteDTO.getEdad() != null)
             paciente.setEdad(pacienteDTO.getEdad());
-        }
-        if (pacienteDTO.getTelefono() != null) {
+        if (pacienteDTO.getTelefono() != null)
             paciente.setTelefono(pacienteDTO.getTelefono());
-        }
-        
-        if (pacienteDTO.getFechaNacimiento() != null) {
+        if (pacienteDTO.getFechaNacimiento() != null)
             paciente.setFechaNacimiento(pacienteDTO.getFechaNacimiento());
-        }
         if (pacienteDTO.getContrasenia() != null) {
-            String hashedPassword = passwordEncoder.encode(pacienteDTO.getContrasenia());
-            paciente.setContrasenia(hashedPassword);
+            paciente.setContrasenia(passwordEncoder.encode(pacienteDTO.getContrasenia()));
         }
+
         if (pacienteDTO.getTerapeuta_id() != null) {
             Terapeuta terapeuta = terapeutaRepository.findById(pacienteDTO.getTerapeuta_id())
                     .orElseThrow(() -> new NoSuchElementException(
                             "Terapeuta with ID " + pacienteDTO.getTerapeuta_id() + " not found."));
-
-            PacienteTerapeuta pacienteTerapeuta = pacienteTerapeutaRepository.findByPacienteId(id)
-                    .orElse(new PacienteTerapeuta(id, paciente, null));
-
-            pacienteTerapeuta.setTerapeuta(terapeuta);
-            pacienteTerapeutaRepository.save(pacienteTerapeuta);
+            paciente.setTerapeuta(terapeuta);
         }
 
         return pacienteMapper.PacienteToPacienteOutputDTO(pacienteRepository.save(paciente));
-
     }
 
     @Override

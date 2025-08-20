@@ -13,7 +13,7 @@ public interface PacienteMapper {
 
     Paciente PacienteInputDTOToPaciente(PacienteInputDTO paciente);
 
-    @Mapping(source = "pacienteTerapeuta.terapeuta.id", target = "terapeuta_id") 
+    @Mapping(source = "terapeuta.id", target = "terapeuta_id") 
     PacienteOutputDTO PacienteToPacienteOutputDTO(Paciente paciente);
 
     
