@@ -1,18 +1,17 @@
 <header-component></header-component>
 <main class="gameplay-container">
   <div class="container">
-    <h1 class="text-center pb-5">Juego: {{ codigoJuego }}</h1>
     <div [ngSwitch]="codigoJuego">
-      <app-matching-game *ngSwitchCase="'matching-game'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-matching-game>
-      <app-clothing-game *ngSwitchCase="'clothing-game'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-clothing-game>
-      <app-image-sequence-game *ngSwitchCase="'sequence-game'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-image-sequence-game>
-      <intruder-game *ngSwitchCase="'intruder-game'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></intruder-game>
-      <app-sentence-completion-game *ngSwitchCase="'sentence-game'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-sentence-completion-game>
-      <app-juego-cambio *ngSwitchCase="'juego-cambio'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-juego-cambio>
-      <div *ngSwitchDefault>
-        <h2>Juego no encontrado</h2>
-        <p>El juego que intentas cargar no está disponible.</p>
-      </div>
-    </div>
+  <app-matching-game *ngSwitchCase="'matching-game'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-matching-game>
+  <app-clothing-game *ngSwitchCase="'clothing-game'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-clothing-game>
+  <app-image-sequence-game *ngSwitchCase="'image-sequence-game'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-image-sequence-game>
+  <intruder-game *ngSwitchCase="'intruder-game'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></intruder-game>
+  <app-sentence-completion-game *ngSwitchCase="'sentence-complete'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-sentence-completion-game>
+  <app-juego-cambio *ngSwitchCase="'juego-cambio'" [dificultad]="dificultad" (gameCompleted)="onGameComplete()"></app-juego-cambio>
+  <div *ngSwitchDefault>
+    <h2>Juego no encontrado</h2>
+    <p>El juego que intentas cargar no está disponible.</p>
+  </div>
+</div>
   </div>
 </main>

@@ -10,6 +10,7 @@ import { EditPatientFormComponent } from './pages/edit-patient/edit-patient.comp
 import { PacienteAgendaComponent } from './pages/paciente-agenda/paciente-agenda.component';
 import { Gameplay } from './pages/gameplay/gameplay.component';
 import { LadingPageComponent } from './pages/landing-page/landing-page.component';
+import { FollowComponent } from './pages/follow/follow.component';
 
 
 
@@ -33,6 +34,8 @@ export const routes: Routes = [
 
   { path: 'paciente-agenda', component: PacienteAgendaComponent },
 
-  { path: 'juego/:codigo/:dificultad/:agendaId/:juegoId', component: Gameplay }
+  { path: 'juego/:codigo/:dificultad/:agendaId/:juegoId', component: Gameplay },
+
+  {path: 'follow', component: FollowComponent} 
 
 ];

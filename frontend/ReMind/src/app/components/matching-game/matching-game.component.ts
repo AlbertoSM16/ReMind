@@ -27,7 +27,7 @@ interface DropZone {
 export class MatchingGameComponent implements OnInit {
 
   @Input() dificultad: number = 1;
-  @Output() gameCompleted = new EventEmitter<void>(); // Añadido
+  @Output() gameCompleted = new EventEmitter<void>(); // Evento para notificar la finalización
 
   images: Image[] = [];
   unmatchedImages: Image[] = [];
@@ -134,6 +134,7 @@ export class MatchingGameComponent implements OnInit {
     if (this.dropZones.length > 0 && allCorrect) {
       this.gameOver = true;
       this.successMessage = '¡Felicidades! Has unido todas las parejas correctamente.';
+      // **CAMBIO AÑADIDO**: Notificar que el juego ha terminado
       this.gameCompleted.emit(); 
     }
   }

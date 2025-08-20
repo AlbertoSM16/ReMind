@@ -36,7 +36,12 @@ export class EditPatientFormComponent implements OnInit {
       next: (data) => {
         this.patient = data;
       },
-      error: (error) => console.error('Error al cargar datos del paciente', error)
+      error: (error) =>  Swal.fire({
+            title: 'Error',
+            text: 'Error al obtener los datos del paciente!',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          })
     });
   }
 

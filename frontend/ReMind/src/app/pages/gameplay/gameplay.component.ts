@@ -46,7 +46,7 @@ export class Gameplay implements OnInit {
     this.agendaId = Number(this.route.snapshot.paramMap.get('agendaId'));
     this.juegoId = Number(this.route.snapshot.paramMap.get('juegoId'));
   }
-
+  
   onGameComplete(): void {
     if (this.agendaId && this.juegoId) {
       this.agendaService.completarJuego(this.agendaId, this.juegoId).subscribe({

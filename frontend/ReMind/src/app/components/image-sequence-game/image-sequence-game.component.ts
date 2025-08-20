@@ -1,6 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// Se añade la propiedad 'audioSrc' para guardar la ruta del sonido
+interface Image {
+  id: number;
+  src: string;
+  flipped: boolean;
+  audioSrc: string; 
+}
+
 @Component({
   selector: 'app-image-sequence-game',
   standalone: true,
@@ -13,17 +21,20 @@ export class ImageSequenceGameComponent implements OnInit {
   @Output() gameCompleted = new EventEmitter<void>();
 
   title = 'Juego de Secuencia de Imágenes';
-  images = [
-    { id: 1, src: 'assets/gameSequence/image1.png', flipped: false },
-    { id: 2, src: 'assets/gameSequence/image2.png', flipped: false },
-    { id: 3, src: 'assets/gameSequence/image3.png', flipped: false },
-    { id: 4, src: 'assets/gameSequence/image4.png', flipped: false },
-    { id: 5, src: 'assets/gameSequence/image5.png', flipped: false },
-    { id: 6, src: 'assets/gameSequence/image6.png', flipped: false },
+  
+  // AÑADIDO: Se agrega la ruta del audio a cada imagen
+  images: Image[] = [
+    { id: 1, src: 'assets/gameSequence/image1.png', flipped: false, audioSrc: 'assets/gameSequence/audio/coche.mp3' },
+    { id: 2, src: 'assets/gameSequence/image2.png', flipped: false, audioSrc: 'assets/gameSequence/audio/moto.mp3' },
+    { id: 3, src: 'assets/gameSequence/image3.png', flipped: false, audioSrc: 'assets/gameSequence/audio/avion.mp3' },
+    { id: 4, src: 'assets/gameSequence/image4.png', flipped: false, audioSrc: 'assets/gameSequence/audio/helicoptero.mp3' },
+    { id: 5, src: 'assets/gameSequence/image5.png', flipped: false, audioSrc: 'assets/gameSequence/audio/barco.mp3' },
+    { id: 6, src: 'assets/gameSequence/image6.png', flipped: false, audioSrc: 'assets/gameSequence/audio/bus.mp3' },
   ];
+
   sequenceLength: number = 4;
   displayDuration: number = 2500; 
-  currentSequence: { id: number; src: string; flipped: boolean }[] = [];
+  currentSequence: Image[] = [];
   userSequence: number[] = [];
   message: string = '';
   gameStarted: boolean = false;
@@ -71,6 +82,7 @@ export class ImageSequenceGameComponent implements OnInit {
         const imgToFlip = this.images.find(img => img.id === this.currentSequence[i].id);
         if (imgToFlip) {
           imgToFlip.flipped = false;
+          this.playAudio(imgToFlip.audioSrc);
         }
         i++;
       } else {
@@ -89,11 +101,13 @@ export class ImageSequenceGameComponent implements OnInit {
       return;
     }
 
-    this.userSequence.push(imageId);
-
     const selectedImg = this.images.find(img => img.id === imageId);
     if (selectedImg) {
-      selectedImg.flipped = false;
+      // Evita añadir la misma imagen dos veces si se hace doble clic rápido
+      if (this.userSequence.length < this.sequenceLength && !this.userSequence.includes(imageId)) {
+        this.userSequence.push(imageId);
+        selectedImg.flipped = false; // Muestra la imagen al seleccionarla
+      }
     }
 
     if (this.userSequence.length === this.sequenceLength) {
@@ -130,5 +144,13 @@ export class ImageSequenceGameComponent implements OnInit {
     setTimeout(() => {
         this.images.forEach(img => img.flipped = true);
     }, 3000);
+  }
+
+  // **NUEVO**: Función para reproducir el audio
+  playAudio(audioSrc: string): void {
+    if (audioSrc) {
+      const audio = new Audio(audioSrc);
+      audio.play();
+    }
   }
 }
