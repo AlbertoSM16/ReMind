@@ -19,8 +19,8 @@ export class AuthService {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('rol');
     sessionStorage.removeItem('id');
-    
-    this.router.navigate(['/login']);
+    sessionStorage.removeItem('nombre');
+    this.router.navigate(['/landing']);
   }
 
    getRole(): string | null {

@@ -1,7 +1,17 @@
 <div class="matching-game-container">
-  <h1>Juego de Unir Parejas</h1>
-  <p>Arrastra cada objeto a la persona correspondiente para formar una pareja.</p>
-
+  <div class="card shadow-lg p-4 mb-4 bg-primary text-white text-center">
+    <h1 class="card-title display-4">{{ title }}</h1>
+    <button class="btn instructions-button" (click)="reproducirInstrucciones()">
+          <i class="pi pi-volume-up"></i> Escuchar Instrucciones
+        </button>
+      <p class = "instrucciones">
+        En este juego como vemos tenemos a la parte izquierda varias imágenes de personas trabajando y diferentes objetos
+        que pueden usar a la hora de realizar su trabajo, el objetivo es que relaciones
+        cada profesión con su objeto.
+      </p>
+        
+      
+  </div>
   <div class="game-area">
     <div class="unmatched-images" cdkDropList>
         <h2>Imágenes para unir</h2>
@@ -36,10 +46,6 @@
     </div>
   </div>
 
-  <div *ngIf="gameOver" class="game-over">
-    <h2>{{ successMessage }}</h2>
-    <button (click)="resetGame()">Jugar de nuevo</button>
-  </div>
 
   <div *ngIf="!gameOver">
       <button (click)="resetGame()">Reiniciar Juego</button>

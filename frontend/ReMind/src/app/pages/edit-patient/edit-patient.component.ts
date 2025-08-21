@@ -5,11 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PacientService } from '../../services/pacient.service';
 import { Paciente } from '../../models/paciente.model';
 import Swal from 'sweetalert2';
+import { HeaderComponent } from "../../components/header/header.component";
 
 @Component({
   selector: 'app-edit-patient-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './edit-patient.component.html',
   styleUrls: ['./edit-patient.component.css']
 })

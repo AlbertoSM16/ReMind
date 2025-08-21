@@ -18,6 +18,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
 
   { path: 'login', component: AuthComponent },
+  
   { path: 'landing', component: LadingPageComponent },
   
   { path: 'home', component: HomeComponent },

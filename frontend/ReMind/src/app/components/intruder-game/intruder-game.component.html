@@ -1,13 +1,16 @@
-<div class="intruder-game-container">
-  <h2>Encuentra la Palabra Intrusa</h2>
-  <p>De las palabras, haz clic en la que no guarda relación con las otras.</p>
+<div class="card shadow-lg p-4 mb-4 bg-primary text-white text-center">
+  <h1 class="card-title display-4">{{ title }}</h1>
+  <p class="instrucciones">Lee las diferentes palabras que aparecen e intenta deducir cuál de ellas no guarda relación
+    con las demás.</p>
+  <button class="btn instructions-button" (click)="reproducirInstrucciones()">
+    <i class="pi pi-volume-up"></i> Escuchar Instrucciones
+  </button>
+</div>
 
+<div class="intruder-game-container">
   <div *ngIf="!gameOver && currentSet" class="game-area">
     <div class="options-container">
-      <div *ngFor="let option of shuffledOptions"
-           class="option-card"
-           (click)="selectOption(option)"
-           [ngClass]="{
+      <div *ngFor="let option of shuffledOptions" class="option-card" (click)="selectOption(option)" [ngClass]="{
              'selected': option === selectedOption,
              'correct': option === selectedOption && isCorrect,
              'incorrect': option === selectedOption && !isCorrect,

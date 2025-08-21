@@ -40,6 +40,7 @@ export class AuthComponent {
         sessionStorage.setItem('role',response.rol);
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('id', response.id);
+        sessionStorage.setItem('nombre', response.nombre);
         this.router.navigate(['/home']);
       },
       error: (err) => {

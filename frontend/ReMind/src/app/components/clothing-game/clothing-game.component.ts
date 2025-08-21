@@ -32,6 +32,8 @@ export class ClothingGameComponent implements OnInit {
   score = 0;
   gameOver = false;
   feedbackMessage = '';
+  private audioInstrucciones: HTMLAudioElement | null = null;
+  title = 'Vístete ';
 
   constructor() { }
 
@@ -98,12 +100,21 @@ export class ClothingGameComponent implements OnInit {
   checkGameOver(): void {
     if (this.score === this.clothingItems.length) {
       this.gameOver = true;
-      this.feedbackMessage = '¡Felicidades! Has vestido completamente la silueta.';
       this.gameCompleted.emit(); 
     }
   }
 
   resetGame(): void {
     this.initializeGame();
+  }
+
+   reproducirInstrucciones(): void {
+    if (this.audioInstrucciones && !this.audioInstrucciones.paused) {
+      this.audioInstrucciones.pause();
+      this.audioInstrucciones.currentTime = 0;
+    }
+
+    this.audioInstrucciones = new Audio('assets/matching/instrucciones.mp3');
+    this.audioInstrucciones.play();
   }
 }

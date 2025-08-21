@@ -66,46 +66,42 @@
 .drop-target:hover {
   background-color: rgba(0, 162, 255, 0.3); 
 }
-/* Posicionamiento exacto de las ZONAS para soltar */
 .drop-target.head { top: 0; left: 105px; width: 90px; height: 90px; border-radius: 50%; }
-.drop-target.torso { top: 110px; left: 75px; width: 150px; height: 150px; /* MODIFICADO */ }
-.drop-target.legs { top: 270px; left: 85px; width: 130px; height: 140px; /* MODIFICADO */ }
+.drop-target.torso { top: 110px; left: 75px; width: 150px; height: 150px; }
+.drop-target.legs { top: 270px; left: 85px; width: 130px; height: 140px;  }
 .drop-target.feet { top: 415px; left: 75px; width: 150px; height: 80px; }
 
-/* Estilo base para la ropa ya colocada */
 .placed-item {
   position: absolute;
   pointer-events: none; 
   object-fit: contain; 
 }
 
-/* --- Posicionamiento y tamaño de CADA PRENDA (AJUSTADO) --- */
 
 .placed-head {
-  width: 85px; /* MODIFICADO */
+  width: 85px; 
   top: 18px;
-  left: 107px; /* MODIFICADO */
+  left: 107px; 
 }
 
 .placed-torso {
-  width: 135px; /* MODIFICADO */
-  top: 110px;   /* MODIFICADO */
-  left: 82px;   /* MODIFICADO */
+  width: 135px; 
+  top: 110px;   
+  left: 82px;   
 }
 
 .placed-legs {
-  width: 115px; /* MODIFICADO */
-  top: 270px;   /* MODIFICADO */
-  left: 93px;   /* MODIFICADO */
+  width: 115px; 
+  top: 270px;   
+  left: 93px;   
 }
 
 .placed-feet {
-  width: 135px; /* MODIFICADO */
+  width: 135px; 
   top: 425px;
-  left: 82px;   /* MODIFICADO */
+  left: 82px;   
 }
 
-/* Mensajes */
 .feedback-message, .game-over-message {
   margin-top: 15px;
   padding: 10px;
@@ -129,4 +125,27 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+}
+.instructions-button {
+  background-color: #3498db; 
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.instructions-button:hover {
+  background-color: #2980b9;
+}
+
+.instructions-button .pi {
+  margin-right: 8px;
+}
+
+.instrucciones {
+  font-size: 200%;
+  margin-bottom: 20px;
 }

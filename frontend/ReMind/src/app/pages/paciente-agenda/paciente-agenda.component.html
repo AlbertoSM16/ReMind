@@ -1,9 +1,21 @@
 <header-component></header-component>
 <div class="container my-5">
-  <h2 class="text-center mb-5 display-4">Mis Juegos Asignados</h2>
+  <h2 class="text-center mb-4 display-4">Mis Juegos Asignados</h2>
 
-  <div *ngIf="juegosAsignados.length > 0; else noJuegos" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <div class="col" *ngFor="let juego of juegosAsignados">
+  <div class="filter-controls text-center mb-5">
+    <button class="btn filter-btn" [class.active]="filtroActual === 'todos'" (click)="cambiarFiltro('todos')">
+      Todos
+    </button>
+    <button class="btn filter-btn" [class.active]="filtroActual === 'completados'" (click)="cambiarFiltro('completados')">
+      Completados
+    </button>
+    <button class="btn filter-btn" [class.active]="filtroActual === 'pendientes'" (click)="cambiarFiltro('pendientes')">
+      Pendientes
+    </button>
+  </div>
+
+  <div *ngIf="juegosFiltrados.length > 0; else noJuegos" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col" *ngFor="let juego of juegosFiltrados">
       <div class="game-card" [class.completed]="juego.realizado">
         <i class="game-icon" [ngClass]="getGameIcon(juego.codigo)"></i>
         <h5 class="game-title mt-3">{{ juego.nombre }}</h5>
@@ -21,7 +33,8 @@
 
   <ng-template #noJuegos>
     <div class="text-center mt-5">
-      <p class="fs-4 text-muted">Aún no tienes juegos asignados en tu agenda.</p>
+      <p *ngIf="juegosAsignados.length === 0" class="fs-4 text-muted">Aún no tienes juegos asignados en tu agenda.</p>
+      <p *ngIf="juegosAsignados.length > 0" class="fs-4 text-muted">No hay juegos que coincidan con el filtro seleccionado.</p>
     </div>
   </ng-template>
 </div>

@@ -19,7 +19,7 @@ interface Denomination {
   styleUrls: ['./juego-cambio.component.css']
 })
 export class JuegoCambioComponent implements OnInit {
-  
+
   @Input() dificultad: number = 1;
   @Output() gameCompleted = new EventEmitter<void>();
 
@@ -27,7 +27,9 @@ export class JuegoCambioComponent implements OnInit {
   amountToMatch: number = 0;
   currentAmount: number = 0;
   message: string = '';
-  
+  private audioInstrucciones: HTMLAudioElement | null = null;
+
+
   precioArticulo: number = 0;
   dineroEntregado: number = 0;
 
@@ -59,7 +61,13 @@ export class JuegoCambioComponent implements OnInit {
       const dineroExtra = parseFloat((Math.random() * (10 - 1) + 1).toFixed(2));
       this.dineroEntregado = this.precioArticulo + dineroExtra;
       this.amountToMatch = parseFloat((this.dineroEntregado - this.precioArticulo).toFixed(2));
-      
+
+    } else if (this.dificultad === 2) {
+      this.precioArticulo = parseFloat((Math.random() * (15 - 1) + 1).toFixed(2));
+      const dineroExtra = parseFloat((Math.random() * (10 - 1) + 1).toFixed(2));
+      this.dineroEntregado = this.precioArticulo + dineroExtra;
+      this.amountToMatch = parseFloat((this.dineroEntregado - this.precioArticulo).toFixed(2));
+
     } else {
       this.amountToMatch = parseFloat((Math.random() * (20 - 0.50) + 0.50).toFixed(2));
     }
@@ -69,7 +77,7 @@ export class JuegoCambioComponent implements OnInit {
     this.currentAmount = parseFloat((this.currentAmount + value).toFixed(2));
     this.checkAmount();
   }
-  
+
   checkAmount() {
     if (this.currentAmount === this.amountToMatch) {
       this.message = '¡Felicidades! Has devuelto la cantidad exacta. 🎉';
@@ -87,5 +95,15 @@ export class JuegoCambioComponent implements OnInit {
 
   resetGame() {
     this.startNewRound();
+  }
+
+  reproducirInstrucciones(): void {
+    if (this.audioInstrucciones && !this.audioInstrucciones.paused) {
+      this.audioInstrucciones.pause();
+      this.audioInstrucciones.currentTime = 0;
+    }
+
+    this.audioInstrucciones = new Audio('assets/euros/instrucciones.mp3');
+    this.audioInstrucciones.play();
   }
 }

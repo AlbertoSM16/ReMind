@@ -59,7 +59,6 @@
   transform: none;
 }
 
-
 /* Contenedor de feedback y botón */
 .feedback-container {
   margin-top: 25px;
@@ -97,4 +96,28 @@ button:hover {
 
 .game-over-container {
   margin-top: 20px;
+}
+
+.instructions-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.instructions-button:hover {
+  background-color: #2980b9;
+}
+
+.instructions-button .pi {
+  margin-right: 8px;
+}
+
+.instrucciones {
+  font-size: 200%;
+  margin-bottom: 20px;
 }

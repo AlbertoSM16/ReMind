@@ -34,6 +34,9 @@ export class MatchingGameComponent implements OnInit {
   dropZones: DropZone[] = [];
   gameOver = false;
   successMessage = '';
+  private audioInstrucciones: HTMLAudioElement | null = null;
+  title = 'Profesión-objeto';
+
 
   ngOnInit(): void {
     this.initializeGame();
@@ -72,7 +75,7 @@ export class MatchingGameComponent implements OnInit {
       item: null,
       correct: false
     }));
-    
+
     this.gameOver = false;
     this.successMessage = '';
   }
@@ -133,13 +136,21 @@ export class MatchingGameComponent implements OnInit {
     const allCorrect = this.dropZones.every(dz => dz.correct);
     if (this.dropZones.length > 0 && allCorrect) {
       this.gameOver = true;
-      this.successMessage = '¡Felicidades! Has unido todas las parejas correctamente.';
-      // **CAMBIO AÑADIDO**: Notificar que el juego ha terminado
-      this.gameCompleted.emit(); 
+      this.gameCompleted.emit();
     }
   }
 
   resetGame(): void {
     this.initializeGame();
+  }
+
+  reproducirInstrucciones(): void {
+    if (this.audioInstrucciones && !this.audioInstrucciones.paused) {
+      this.audioInstrucciones.pause();
+      this.audioInstrucciones.currentTime = 0;
+    }
+
+    this.audioInstrucciones = new Audio('assets/matching/instrucciones.mp3');
+    this.audioInstrucciones.play();
   }
 }

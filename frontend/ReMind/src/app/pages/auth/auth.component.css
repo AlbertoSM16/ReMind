@@ -4,7 +4,7 @@
 }
 
 .login-wrapper {
-  background-color: #3b596b; /* Teal background from the image */
+  background-color: #2c7a7b; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +13,7 @@
 }
 
 .login-card {
-  background-color: #5befe1; /* Light teal card background from the image */
+  background-color: #5befe1; 
   padding: 2.5rem;
   border-radius: 20px;
   width: 100%;
@@ -23,9 +23,8 @@
 }
 
 .logo {
-  width: 80px;
+  width: 50%;
   height: auto;
-  margin-bottom: 1.5rem;
 }
 
 .form-group {

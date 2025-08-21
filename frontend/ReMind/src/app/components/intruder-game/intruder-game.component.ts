@@ -3,26 +3,28 @@ import { CommonModule } from '@angular/common';
 
 interface WordSet {
   options: { word: string; isIntruder: boolean }[];
-  explanation: string; 
+  explanation: string;
 }
 
 @Component({
   selector: 'intruder-game',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './intruder-game.component.html', 
+  templateUrl: './intruder-game.component.html',
   styleUrls: ['./intruder-game.component.css']
 })
 export class IntruderGameComponent implements OnInit {
 
   @Input() dificultad: number = 1;
   @Output() gameCompleted = new EventEmitter<void>();
+  private audioInstrucciones: HTMLAudioElement | null = null;
+  title = 'Encuentra al intruso';
 
   private allSets: WordSet[] = [
     {
       options: [
-        { word: 'Coche', isIntruder: true }, 
-        { word: 'Manzana', isIntruder: false }, 
+        { word: 'Coche', isIntruder: true },
+        { word: 'Manzana', isIntruder: false },
         { word: 'Pera', isIntruder: false },
         { word: 'Plátano', isIntruder: false },
         { word: 'Uva', isIntruder: false }
@@ -97,20 +99,20 @@ export class IntruderGameComponent implements OnInit {
   loadNextRound(): void {
     if (this.currentRound < this.allSets.length) {
       this.currentSet = this.allSets[this.currentRound];
-      
+
       let optionsToShow = 3;
       if (this.dificultad === 2) {
         optionsToShow = 4;
       } else if (this.dificultad === 3) {
-        optionsToShow = 5; 
+        optionsToShow = 5;
       }
 
       const intruder = this.currentSet.options.find(o => o.isIntruder)!;
       const nonIntruders = this.currentSet.options.filter(o => !o.isIntruder);
       const selectedNonIntruders = this.shuffleArray(nonIntruders).slice(0, optionsToShow - 1);
-      
+
       this.shuffledOptions = this.shuffleArray([intruder, ...selectedNonIntruders]);
-      
+
       this.selectedOption = null;
       this.isCorrect = null;
       this.feedbackMessage = '';
@@ -143,5 +145,16 @@ export class IntruderGameComponent implements OnInit {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+  }
+
+
+  reproducirInstrucciones(): void {
+    if (this.audioInstrucciones && !this.audioInstrucciones.paused) {
+      this.audioInstrucciones.pause();
+      this.audioInstrucciones.currentTime = 0;
+    }
+
+    this.audioInstrucciones = new Audio('assets/intruder/instrucciones.mp3');
+    this.audioInstrucciones.play();
   }
 }

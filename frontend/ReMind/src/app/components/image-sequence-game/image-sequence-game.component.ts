@@ -103,10 +103,9 @@ export class ImageSequenceGameComponent implements OnInit {
 
     const selectedImg = this.images.find(img => img.id === imageId);
     if (selectedImg) {
-      // Evita añadir la misma imagen dos veces si se hace doble clic rápido
       if (this.userSequence.length < this.sequenceLength && !this.userSequence.includes(imageId)) {
         this.userSequence.push(imageId);
-        selectedImg.flipped = false; // Muestra la imagen al seleccionarla
+        selectedImg.flipped = false; 
       }
     }
 
