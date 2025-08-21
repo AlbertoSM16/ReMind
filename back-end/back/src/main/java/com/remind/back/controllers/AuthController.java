@@ -47,6 +47,7 @@ public class AuthController {
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
+                        "nombre", admin.getNombre(),
                         "id", admin.getId()
                         
                 ));
@@ -62,6 +63,7 @@ public class AuthController {
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
+                        "nombre", terapeuta.getNombre(),
                         "id", terapeuta.getId()
                 ));
             }
@@ -76,6 +78,7 @@ public class AuthController {
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
+                        "nombre", paciente.getNombre(),
                         "id", paciente.getId()
                 ));
             }
