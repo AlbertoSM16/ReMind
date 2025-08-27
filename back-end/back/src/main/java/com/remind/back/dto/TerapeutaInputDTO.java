@@ -30,8 +30,7 @@ public class TerapeutaInputDTO {
 
     private String usuario;
 
-    @NotBlank(message = "La contraseña no puede estar vacía")
-    private String contrasenia;
+    private String contrasena;
 
     @NotBlank(message = "El teléfono no puede estar vacío")
     private String telefono;

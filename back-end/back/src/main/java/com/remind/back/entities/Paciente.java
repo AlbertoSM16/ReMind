@@ -1,10 +1,11 @@
 package com.remind.back.entities;
 
 import java.util.Date;
-
-import jakarta.persistence.Column; 
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,7 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,7 +38,6 @@ public class Paciente {
     @NotBlank
     private String apellido;
 
- 
     @NotBlank
     private String contrasenia;
 
@@ -46,8 +46,8 @@ public class Paciente {
 
     @NotNull
     private Date fechaNacimiento;
-    
-    @Column(unique = true) 
+
+    @Column(unique = true)
     private String usuario;
 
     @NotBlank
@@ -58,15 +58,21 @@ public class Paciente {
 
     @NotBlank
     private String nombreResponsable;
-    
+
     @Enumerated(EnumType.STRING)
     private TipoUsuario rol = TipoUsuario.PACIENTE;
-    
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "terapeuta_id")
     private Terapeuta terapeuta;
 
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PacienteTerapeuta> pacienteTerapeutas;
 
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PacienteAgenda> pacienteAgendas;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PacienteJuego> pacienteJuegos;
 
 }

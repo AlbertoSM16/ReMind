@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
-import java.util.Collections; // Para Collections.singletonList si solo hay un rol
+import java.util.Collections; 
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -40,14 +40,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<Terapeuta> terapeutaOpt = terapeutaRepository.findByUsuario(username);
         if (terapeutaOpt.isPresent()) {
             Terapeuta terapeuta = terapeutaOpt.get();
-            return new User(terapeuta.getUsuario(), terapeuta.getContrasenia(),
+            return new User(terapeuta.getUsuario(), terapeuta.getContrasena(),
                     Collections.singletonList(() -> "ROLE_" + terapeuta.getRol().name()));
         }
 
         Optional<Administrador> administradorOpt = administradorRepository.findByUsuario(username);
         if (administradorOpt.isPresent()) {
             Administrador administrador = administradorOpt.get();
-            return new User(administrador.getUsuario(), administrador.getContrasenia(),
+            return new User(administrador.getUsuario(), administrador.getContrasena(),
                     Collections.singletonList(() -> "ROLE_" + administrador.getRol().name()));
         }
 

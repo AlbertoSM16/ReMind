@@ -28,6 +28,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/paciente/**").permitAll()
                         .requestMatchers("/api/juegos/**").permitAll()
                         .requestMatchers("/api/agenda/**").permitAll()
+                        .requestMatchers("/api/administrador/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(withDefaults());
         return http.build();
@@ -42,7 +43,7 @@ public class SecurityConfig {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@org.springframework.lang.NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:4200")
                         .allowedMethods("*")
@@ -56,4 +57,5 @@ public class SecurityConfig {
             throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+    
 }

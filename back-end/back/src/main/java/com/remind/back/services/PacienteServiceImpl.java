@@ -82,12 +82,11 @@ public class PacienteServiceImpl implements PacienteService {
             Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
                     .orElseThrow(
                             () -> new NoSuchElementException("Terapeuta con ID " + terapeutaId + " no encontrado."));
-            paciente.setTerapeuta(terapeuta); // Asignación directa
+            paciente.setTerapeuta(terapeuta); 
         }
 
         Paciente savedPaciente = pacienteRepository.save(paciente);
 
-        // Crear agenda y asociarla (si se asignó un terapeuta)
         if (savedPaciente.getTerapeuta() != null) {
             Agenda nuevaAgenda = new Agenda();
             nuevaAgenda.setNombre("Agenda de " + savedPaciente.getNombre());

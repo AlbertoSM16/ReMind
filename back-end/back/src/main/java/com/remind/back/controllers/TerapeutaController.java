@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.remind.back.services.TerapeutaService;
 import com.remind.back.dto.AgendaOutputDTO;
+import com.remind.back.dto.PasswordResetDTO;
+import com.remind.back.dto.TerapeutaCreatedDTO;
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
 import com.remind.back.dto.TerapeutaSeguimientoDTO;
@@ -55,7 +57,7 @@ public class TerapeutaController {
     }
 
     // NUEVO ENDPOINT AÑADIDO
-     @GetMapping("/{id}/seguimiento")
+    @GetMapping("/{id}/seguimiento")
     public ResponseEntity<TerapeutaSeguimientoDTO> getSeguimientoIndividual(@PathVariable Integer id) {
         try {
             TerapeutaSeguimientoDTO seguimientoData = terapeutaService.getSeguimientoByTerapeutaId(id);
@@ -69,7 +71,7 @@ public class TerapeutaController {
     public ResponseEntity<?> createTerapeuta(@RequestBody TerapeutaInputDTO terapeutaInputDTO) {
 
         try {
-            TerapeutaOutputDTO createdTerapeuta = terapeutaService.createTerapeuta(terapeutaInputDTO);
+            TerapeutaCreatedDTO createdTerapeuta = terapeutaService.createTerapeuta(terapeutaInputDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdTerapeuta);
 
         } catch (Exception e) {
@@ -82,7 +84,7 @@ public class TerapeutaController {
 
         try {
             terapeutaService.deleteTerapeuta(id);
-            return ResponseEntity.status(HttpStatus.OK).body("El terapeuta ha sido eliminado de la base de datos");
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("No se puede eliminar el terapeuta con id: " + id);
@@ -114,6 +116,18 @@ public class TerapeutaController {
             return ResponseEntity.ok(agendas);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al recuperar las agendas.");
+        }
+    }
+
+    @PostMapping("/{id}/reset-password")
+    public ResponseEntity<?> resetPassword(@PathVariable Integer id) {
+        try {
+            PasswordResetDTO newPassword = terapeutaService.resetPassword(id);
+            return ResponseEntity.ok(newPassword);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al reiniciar la contraseña");
         }
     }
 

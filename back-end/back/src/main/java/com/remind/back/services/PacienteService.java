@@ -19,5 +19,6 @@ public interface PacienteService {
     void deletePaciente(Integer id);
 
     PacienteOutputDTO updatePaciente(Integer id, PacienteInputDTO pacienteDTO);
+    
     PasswordResetDTO resetPassword(Integer id);
 }

@@ -1,7 +1,7 @@
 package com.remind.back.Mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping; // Asegúrate de importar esto
+import org.mapstruct.Mapping; 
 
 import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteInputDTO;

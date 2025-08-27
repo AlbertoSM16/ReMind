@@ -13,7 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.remind.back.dto.AgendaOutputDTO;
 import com.remind.back.dto.JuegoAsignadoDTO;
+import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteSeguimientoDTO;
+import com.remind.back.dto.PasswordResetDTO;
+import com.remind.back.dto.TerapeutaCreatedDTO;
 import com.remind.back.dto.TerapeutaInputDTO;
 import com.remind.back.dto.TerapeutaOutputDTO;
 import com.remind.back.dto.TerapeutaSeguimientoDTO;
@@ -25,6 +28,7 @@ import com.remind.back.entities.Terapeuta;
 import com.remind.back.Mapper.TerapeutaMapper;
 import com.remind.back.repositories.JuegoAgendaRepository;
 import com.remind.back.repositories.PacienteAgendaRepository;
+import com.remind.back.repositories.PacienteRepository;
 import com.remind.back.repositories.PacienteTerapeutaRepository;
 import com.remind.back.repositories.TerapeutaRepository;
 import com.remind.back.utils.Utils;
@@ -42,6 +46,12 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     private JuegoAgendaRepository juegoAgendaRepository;
 
     @Autowired
+    private PacienteRepository pacienteRepository;
+
+    @Autowired
+    private PacienteService pacienteService;
+
+    @Autowired
     private PacienteAgendaRepository pacienteAgendaRepository;
 
     @Autowired
@@ -55,17 +65,20 @@ public class TerapeutaServiceImpl implements TerapeutaService {
 
     @Override
     @Transactional
-    public TerapeutaOutputDTO createTerapeuta(TerapeutaInputDTO terapeutaInputDTO) {
+    public TerapeutaCreatedDTO createTerapeuta(TerapeutaInputDTO terapeutaInputDTO) {
 
-        String hashedPassword = passwordEncoder.encode(terapeutaInputDTO.getContrasenia());
-        terapeutaInputDTO.setContrasenia(hashedPassword);
+        String passwordPlano = utils.generateRandomPassword(terapeutaInputDTO.getNombre(),
+                terapeutaInputDTO.getApellido());
+        String hashedPassword = passwordEncoder.encode(passwordPlano);
+        terapeutaInputDTO.setContrasena(hashedPassword);
 
         String usuario = utils.generateRandomUsername(terapeutaInputDTO.getNombre(), terapeutaInputDTO.getApellido());
         terapeutaInputDTO.setUsuario(usuario);
 
-        Terapeuta terapeuta = terapeutaMapper.TerapeutaInputDTOToTerapeuta(terapeutaInputDTO);
+        Terapeuta terapeuta = terapeutaMapper.toTerapeuta(terapeutaInputDTO);
+        terapeutaRepository.save(terapeuta);
 
-        return terapeutaMapper.TerapeutaToTerapeutaOutputDTO(terapeutaRepository.save(terapeuta));
+        return new TerapeutaCreatedDTO(usuario, passwordPlano);
     }
 
     @Override
@@ -74,7 +87,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
         Terapeuta terapeuta = terapeutaRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con ese id" + id));
 
-        return terapeutaMapper.TerapeutaToTerapeutaOutputDTO(terapeuta);
+        return terapeutaMapper.toDTO(terapeuta);
     }
 
     @Override
@@ -84,22 +97,25 @@ public class TerapeutaServiceImpl implements TerapeutaService {
         return terapeutaRepository.findAll(PageRequest.of(page, size))
                 .getContent()
                 .stream()
-                .map(terapeutaMapper::TerapeutaToTerapeutaOutputDTO)
+                .map(terapeutaMapper::toDTO)
                 .toList();
     }
 
     @Override
     @Transactional
-    public void deleteTerapeuta(Integer id) {
-        Terapeuta terapeuta = terapeutaRepository.findById(id)
-                .orElseThrow(
-                        () -> new NoSuchElementException("No existe un terapeuta con ese id y no se puede eliminar"));
-
-        if (!terapeuta.getPacientes().isEmpty()) {
-            throw new IllegalStateException(
-                    "No se puede eliminar el terapeuta con id " + id + " porque tiene pacientes asociados.");
+    public void deleteTerapeuta(int id) {
+        if (!terapeutaRepository.existsById(id)) {
+            throw new NoSuchElementException("No existe un terapeuta con ese id y no se puede eliminar");
         }
 
+        List<Paciente> pacientesAsociados = pacienteRepository.findByTerapeutaId(id);
+
+        // Se itera sobre la lista de pacientes y se elimina cada uno
+        for (Paciente paciente : pacientesAsociados) {
+            pacienteService.deletePaciente(paciente.getId());
+        }
+
+        // Finalmente, se elimina el terapeuta
         terapeutaRepository.deleteById(id);
     }
 
@@ -124,12 +140,12 @@ public class TerapeutaServiceImpl implements TerapeutaService {
         if (terapeutaInputDTO.getEspecialidad() != null) {
             terapeuta.setEspecialidad(terapeutaInputDTO.getEspecialidad());
         }
-        if (terapeutaInputDTO.getContrasenia() != null) {
-            String hashedPassword = passwordEncoder.encode(terapeutaInputDTO.getContrasenia());
-            terapeuta.setContrasenia(hashedPassword);
+        if (terapeutaInputDTO.getContrasena() != null) {
+            String hashedPassword = passwordEncoder.encode(terapeutaInputDTO.getContrasena());
+            terapeuta.setContrasena(hashedPassword);
         }
 
-        return terapeutaMapper.TerapeutaToTerapeutaOutputDTO(terapeutaRepository.save(terapeuta));
+        return terapeutaMapper.toDTO(terapeutaRepository.save(terapeuta));
 
     }
 
@@ -139,7 +155,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
         Terapeuta terapeuta = terapeutaRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con el id " + id));
 
-        List<Agenda> agendas = terapeuta.getAgendaConexiones()
+        List<Agenda> agendas = terapeuta.getAgendaTerapeutas()
                 .stream()
                 .map(agendaConexion -> agendaConexion.getAgenda())
                 .collect(Collectors.toList());
@@ -160,14 +176,15 @@ public class TerapeutaServiceImpl implements TerapeutaService {
         }).collect(Collectors.toList());
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public TerapeutaSeguimientoDTO getSeguimientoByTerapeutaId(Integer terapeutaId) {
         Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
                 .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con el id " + terapeutaId));
 
-        List<PacienteSeguimientoDTO> pacientesDelTerapeuta = terapeuta.getPacientes()
+        List<Paciente> pacientes = pacienteRepository.findByTerapeutaId(terapeutaId);
+
+        List<PacienteSeguimientoDTO> pacientesDelTerapeuta = pacientes
                 .stream()
                 .map(paciente -> {
                     Integer agendaId = pacienteAgendaRepository.findByPacienteId(paciente.getId())
@@ -203,7 +220,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
                             paciente.getNombre() + " " + paciente.getApellido(),
                             juegosCompletados,
                             juegosTotales,
-                            juegosAsignadosDto // Se pasa la lista
+                            juegosAsignadosDto 
                     );
                 }).collect(Collectors.toList());
 
@@ -211,6 +228,22 @@ public class TerapeutaServiceImpl implements TerapeutaService {
                 terapeuta.getId(),
                 terapeuta.getNombre() + " " + terapeuta.getApellido(),
                 pacientesDelTerapeuta);
+    }
+
+
+    @Override
+    @Transactional
+    public PasswordResetDTO resetPassword(Integer id) {
+        Terapeuta terapeuta = terapeutaRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("El paciente con id " + id + " no existe"));
+
+        String newPasswordPlano = utils.generateRandomPassword(terapeuta.getNombre(), terapeuta.getApellido());
+        String hashedPassword = passwordEncoder.encode(newPasswordPlano);
+
+        terapeuta.setContrasena(hashedPassword);
+        terapeutaRepository.save(terapeuta);
+
+        return new PasswordResetDTO(newPasswordPlano);
     }
 
 }

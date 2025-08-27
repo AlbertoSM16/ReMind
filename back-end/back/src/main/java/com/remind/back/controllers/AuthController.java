@@ -41,7 +41,7 @@ public class AuthController {
         Optional<Administrador> adminOpt = administradorRepository.findByUsuario(usuario);
         if (adminOpt.isPresent()) {
             Administrador admin = adminOpt.get();
-            if (passwordEncoder.matches(contrasenia, admin.getContrasenia())) {
+            if (passwordEncoder.matches(contrasenia, admin.getContrasena())) {
                 String rol = "administrador";
                 String token = JwtUtil.generateToken(admin.getUsuario(), rol);
                 return ResponseEntity.ok(Map.of(
@@ -57,7 +57,7 @@ public class AuthController {
         Optional<Terapeuta> terapeutaOpt = terapeutaRepository.findByUsuario(usuario);
         if (terapeutaOpt.isPresent()) {
             Terapeuta terapeuta = terapeutaOpt.get();
-            if (passwordEncoder.matches(contrasenia, terapeuta.getContrasenia())) {
+            if (passwordEncoder.matches(contrasenia, terapeuta.getContrasena())) {
                 String rol = "terapeuta";
                 String token = JwtUtil.generateToken(terapeuta.getUsuario(), rol);
                 return ResponseEntity.ok(Map.of(

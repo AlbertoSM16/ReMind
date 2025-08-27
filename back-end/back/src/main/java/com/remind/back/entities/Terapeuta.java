@@ -37,7 +37,7 @@ public class Terapeuta {
     private String email;
 
     @NotBlank
-    private String contrasenia;
+    private String contrasena;
 
     @NotBlank
     private String telefono;
@@ -45,7 +45,6 @@ public class Terapeuta {
     @NotNull
     private Date fechaNacimiento;
 
-    @NotBlank
     @Column(unique = true)
     private String usuario;
 
@@ -54,9 +53,9 @@ public class Terapeuta {
 
     private TipoUsuario rol = TipoUsuario.TERAPEUTA;
 
-    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AgendaTerapeuta> agendaConexiones = new ArrayList<>();
+    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PacienteTerapeuta> pacienteTerapeutas;
 
-    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Paciente> pacientes = new ArrayList<>();
+    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<AgendaTerapeuta> agendaTerapeutas;
 }

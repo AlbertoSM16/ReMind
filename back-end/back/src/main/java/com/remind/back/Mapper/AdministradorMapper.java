@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface AdministradorMapper {
 
-    Administrador AdministradorInputDTOToAdministrador(AdministradorInputDTO administradorInputDTO);
+    Administrador toAdministrador(AdministradorInputDTO administradorInputDTO);
 
-    AdministradorOutputDTO AdministradorToAdministradorOutputDTO(Administrador administrador);
+    AdministradorOutputDTO toDTO(Administrador administrador);
 }
