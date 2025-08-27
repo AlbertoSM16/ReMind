@@ -85,10 +85,7 @@ export class PacientListComponent implements OnInit {
     });
   }
 
-  /**
-   * Obtiene y muestra las credenciales de un paciente.
-   * @param patientId El ID del paciente.
-   */
+
   showCredentials(patientId: number): void {
     this.pacientService.getPatientById(patientId).subscribe({
       next: (patient) => {

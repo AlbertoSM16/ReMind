@@ -11,6 +11,9 @@
         <div *ngIf="userRole === 'paciente'">
             <tareas-card (click)="toPacienteAgenda()"></tareas-card>
         </div>
+        <div *ngIf="userRole == 'administrador'">
+            <doctor-card (click)="toDoctors()"></doctor-card>
+        </div>
         
 
     </div>
