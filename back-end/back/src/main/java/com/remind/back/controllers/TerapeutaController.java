@@ -92,17 +92,10 @@ public class TerapeutaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTerapeuta(@PathVariable("id") Integer id,
-            @RequestBody TerapeutaInputDTO terapeutaInputDTO) {
-
-        try {
-            terapeutaService.updateTerapeuta(id, terapeutaInputDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("Los datos del terapeuta han sido modificados");
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se puede editar el terapeuta" + id);
-
-        }
+    public ResponseEntity<TerapeutaOutputDTO> updateTerapeuta(@PathVariable Integer id, @RequestBody TerapeutaInputDTO terapeutaInputDTO) {
+        TerapeutaOutputDTO terapeutaActualizado = terapeutaService.updateTerapeuta(id, terapeutaInputDTO);
+        
+        return new ResponseEntity<>(terapeutaActualizado, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/agendas")

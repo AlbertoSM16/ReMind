@@ -67,6 +67,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     @Transactional
     public TerapeutaCreatedDTO createTerapeuta(TerapeutaInputDTO terapeutaInputDTO) {
 
+
         String passwordPlano = utils.generateRandomPassword(terapeutaInputDTO.getNombre(),
                 terapeutaInputDTO.getApellido());
         String hashedPassword = passwordEncoder.encode(passwordPlano);
@@ -74,7 +75,6 @@ public class TerapeutaServiceImpl implements TerapeutaService {
 
         String usuario = utils.generateRandomUsername(terapeutaInputDTO.getNombre(), terapeutaInputDTO.getApellido());
         terapeutaInputDTO.setUsuario(usuario);
-
         Terapeuta terapeuta = terapeutaMapper.toTerapeuta(terapeutaInputDTO);
         terapeutaRepository.save(terapeuta);
 
@@ -220,8 +220,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
                             paciente.getNombre() + " " + paciente.getApellido(),
                             juegosCompletados,
                             juegosTotales,
-                            juegosAsignadosDto 
-                    );
+                            juegosAsignadosDto);
                 }).collect(Collectors.toList());
 
         return new TerapeutaSeguimientoDTO(
@@ -229,7 +228,6 @@ public class TerapeutaServiceImpl implements TerapeutaService {
                 terapeuta.getNombre() + " " + terapeuta.getApellido(),
                 pacientesDelTerapeuta);
     }
-
 
     @Override
     @Transactional
