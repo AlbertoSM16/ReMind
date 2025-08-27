@@ -1,0 +1,85 @@
+<div class="main-container">
+  <div class="header">
+    <img src="assets/img/logo_doctor.png" alt="Logo Doctor" class="logo">
+    <h1 class="form-title">{{ isEditMode ? 'Editar Terapeuta' : 'Nuevo Terapeuta' }}</h1>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+  <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()" class="doctor-form">
+
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" formControlName="nombre" class="custom-input" placeholder="Introduce el nombre">
+      <div *ngIf="doctorForm.get('nombre')?.invalid && doctorForm.get('nombre')?.touched" class="invalid-feedback">
+        El nombre es requerido.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="apellido">Apellido</label>
+      <input type="text" id="apellido" formControlName="apellido" class="custom-input"
+        placeholder="Introduce los apellidos">
+      <div *ngIf="doctorForm.get('apellido')?.invalid && doctorForm.get('apellido')?.touched" class="invalid-feedback">
+        El apellido es requerido.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="email" class="custom-input" placeholder="Introduce el email">
+      <div *ngIf="doctorForm.get('email')?.touched && doctorForm.get('email')?.errors?.['required']"
+        class="invalid-feedback">
+        El email es requerido.
+      </div>
+      <div *ngIf="doctorForm.get('email')?.touched && doctorForm.get('email')?.errors?.['email']"
+        class="invalid-feedback">
+        El formato del email no es válido.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="telefono">Teléfono</label>
+      <input type="text" id="telefono" formControlName="telefono" class="custom-input"
+        placeholder="Introduce el teléfono">
+    </div>
+
+    <div class="form-group">
+      <label for="especialidad">Especialidad</label>
+      <input type="text" id="especialidad" formControlName="especialidad" class="custom-input"
+        placeholder="Introduce la especialidad">
+      <div *ngIf="doctorForm.get('especialidad')?.invalid && doctorForm.get('especialidad')?.touched"
+        class="invalid-feedback">
+        La especialidad es requerida.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="fechaNacimiento">Fecha de Nacimiento</label>
+      <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento" class="custom-input">
+      <div *ngIf="doctorForm.get('fechaNacimiento')?.invalid && doctorForm.get('fechaNacimiento')?.touched"
+        class="invalid-feedback">
+        La fecha de nacimiento es requerida.
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button type="button" class="action-btn cancel-btn" [routerLink]="['/doctors']">Cancelar</button>
+      <button type="submit" class="action-btn submit-btn" [disabled]="doctorForm.invalid">
+        {{ isEditMode ? 'Actualizar' : 'Crear' }}
+      </button>
+    </div>
+
+  </form>
+</div>
+
+<script>
+
+  function formatDateForBackend(date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+</script>

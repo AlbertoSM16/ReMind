@@ -4,17 +4,17 @@
   <div>
     <nav-component></nav-component>
   </div>
-  <h2 class="text-center mb-4">Listado de pacientes</h2>
+  <h2 class="text-center mb-4">Listado de doctores</h2>
 
-  <!-- <div class="text-center mb-5">
+  <div class="text-center mb-5">
     <button class="btn add-patient-btn" (click)="goToCreateDoctor()">Añadir doctor</button>
-  </div> -->
+  </div>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <div class="col" *ngFor="let doctor of doctors">
       <div class="patient-card shadow-sm">
         <div class="d-flex justify-content-between mb-2">
-          <!-- <i class="pi pi-pencil edit-icon" (click)="editPatient(patient.id)"></i> -->
+          <i class="pi pi-pencil edit-icon" (click)="goEditDoctor(doctor.id)"></i>
           <i class="pi pi-key credentials-icon" (click)="showCredentials(doctor.id)" title="Mostrar credenciales"></i>
           <i class="pi pi-sync reset-password-icon"
             (click)="resetPassword(doctor.id, doctor.nombre + ' ' + doctor.apellido)"

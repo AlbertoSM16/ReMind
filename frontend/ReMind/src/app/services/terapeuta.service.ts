@@ -43,10 +43,6 @@ export class TerapeutaService {
         return this.http.post<Terapeuta>(this.apiUrl, terapeuta);
     }
 
-    updateTerapeuta(id: number, terapeuta: Terapeuta): Observable<Terapeuta> {
-        return this.http.put<Terapeuta>(`${this.apiUrl}/${id}`, terapeuta);
-    }
-
     deleteTerapeuta(id: number): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
@@ -57,5 +53,9 @@ export class TerapeutaService {
 
     resetPassword(id: number): Observable<{ nuevaContrasenia: string }> {
         return this.http.post<{ nuevaContrasenia: string }>(`${this.apiUrl}/${id}/reset-password`, {});
+    }
+
+    updateTerapeuta(id: number, terapeuta: Partial<Terapeuta>): Observable<any> {
+        return this.http.put(`${this.apiUrl}/${id}`, terapeuta);
     }
 }

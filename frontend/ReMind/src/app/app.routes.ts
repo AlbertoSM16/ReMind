@@ -11,9 +11,8 @@ import { PacienteAgendaComponent } from './pages/paciente-agenda/paciente-agenda
 import { Gameplay } from './pages/gameplay/gameplay.component';
 import { LadingPageComponent } from './pages/landing-page/landing-page.component';
 import { FollowComponent } from './pages/follow/follow.component';
-import { CreateTerapeutaComponent } from './components/create-terapeuta/create-terapeuta.component';
-import { EditTerapeutaComponent } from './components/edit-terapeuta/edit-terapeuta.component';
 import { DoctorListComponent } from './pages/doctor-list/doctor-list.component';
+import { DoctorFormComponent } from './pages/doctor-form/doctor-form.component';
 
 
 
@@ -42,9 +41,8 @@ export const routes: Routes = [
 
   { path: 'follow', component: FollowComponent },
 
-  { path: 'terapeutas/crear', component: CreateTerapeutaComponent },
-
-  { path: 'terapeutas/editar/:id', component: EditTerapeutaComponent },
-
-  {path: 'doctors', component: DoctorListComponent }
+  { path: 'doctors/new', component: DoctorFormComponent },
+  
+  { path: 'doctors/edit/:id', component: DoctorFormComponent },
+  { path: 'doctors', component: DoctorListComponent }
 ];

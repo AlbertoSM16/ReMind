@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { PacientService } from '../../services/pacient.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Paciente } from '../../models/paciente.model';
 import Swal from 'sweetalert2';
 import { HeaderComponent } from "../../components/header/header.component";
@@ -10,7 +10,7 @@ import { HeaderComponent } from "../../components/header/header.component";
 @Component({
   selector: 'app-create-patient-form', // Corregido el selector
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent,RouterModule],
   templateUrl: './create-pacient-form.component.html',
   styleUrls: ['./create-pacient-form.component.css']
 })
