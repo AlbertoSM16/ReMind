@@ -1,7 +1,41 @@
 <div>
   <header-component></header-component>
   <nav-component></nav-component>
-  <direct-access></direct-access>
 
-  
+  <div *ngIf="userRole === 'paciente'" class="container mt-4 logros-container">
+    
+    <h3 class="text-center mb-4 logros-title">
+      <i class="bi bi-award-fill"></i> Mis Trofeos
+    </h3>
+
+      <div *ngIf="logrosCompletados.length > 0; else noLogros" class="d-flex justify-content-center align-items-center gap-4 flex-wrap">
+      
+        <div *ngFor="let logro of logrosCompletados" 
+             class="logro-item text-center unlocked"
+             [pTooltip]="logro.descripcion" 
+             tooltipPosition="top">
+          
+          <div class="logro-icons">
+            <i [class]="'bi ' + logro.icono"></i>
+          </div>
+          <span class="logro-titulo">{{ logro.titulo }}</span>
+        </div>
+
+    </div>
+
+    <ng-template #noLogros>
+      <div class="text-center text-muted mt-3">
+        <p>
+          <i class="bi bi-emoji-smile"></i>
+          ¡Completa tus juegos asignados para ganar trofeos!
+        </p>
+        <p class="small">
+          Desbloquea logros especiales completando múltiples juegos.
+        </p>
+      </div>
+    </ng-template>
+
+  </div>
+
+  <direct-access></direct-access>
 </div>
