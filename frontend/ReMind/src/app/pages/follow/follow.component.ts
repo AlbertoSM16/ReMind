@@ -17,7 +17,6 @@ export class FollowComponent implements OnInit {
 
   terapeutaData: TerapeutaSeguimiento | null = null;
   isLoading = true;
-  // --- NUEVO: Variable para controlar qué paciente está expandido ---
   expandedPacienteId: number | null = null;
 
   constructor(
@@ -74,7 +73,6 @@ export class FollowComponent implements OnInit {
     return (completados / totales) * 100;
   }
 
-  // --- NUEVA FUNCIÓN: Para mostrar/ocultar los juegos del paciente ---
   toggleJuegos(pacienteId: number): void {
     if (this.expandedPacienteId === pacienteId) {
       this.expandedPacienteId = null; // Si ya está abierto, lo cierra

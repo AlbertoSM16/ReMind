@@ -24,7 +24,7 @@ export class AgendaDetailComponent implements OnInit {
   juegoSeleccionadoId: number | null = null;
   dificultadSeleccionada: number = 1;
   isLoading: boolean = false;
-
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,

@@ -9,7 +9,7 @@
   <div class="d-flex flex-column align-items-center buttons">
 
     <p-button *ngIf="userRole === 'administrador'"
-      [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}"  label="Doctores"
+      [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" (click) = "toDoctores()"  label="Doctores"
       [rounded]="true" size="large" />
     <p-button *ngIf="userRole === 'terapeuta'"
       [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" (click) = "toPacientes()" label="Pacientes"

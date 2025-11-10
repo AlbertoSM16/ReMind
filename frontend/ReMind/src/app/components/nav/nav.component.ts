@@ -36,4 +36,7 @@ export class NavComponent implements OnInit {
   toTareas(): void {
     this.router.navigate(['/tareas']);
   }
+  toDoctores(): void{
+    this.router.navigate(['/doctors']);
+  }
 }
