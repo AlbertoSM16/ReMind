@@ -1,0 +1,127 @@
+.form-page {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  overflow-y: auto;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-heading {
+  font-size: var(--font-size-xl);
+  color: #2c3e50;
+  text-align: center;
+  margin: 0 0 var(--spacing-sm);
+  font-weight: 700;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.form-group label {
+  font-size: var(--font-size-base);
+  color: #555;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.custom-input {
+  background-color: white;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--border-radius);
+  padding: 12px 16px;
+  font-size: var(--font-size-base);
+  color: #333;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.custom-input:focus {
+  border-color: var(--button-color);
+  box-shadow: 0 0 0 3px rgba(44, 122, 123, 0.15);
+  outline: none;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.submit-btn {
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 14px 40px;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  min-width: 150px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #236b6c;
+  transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+  background-color: #cccccc;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cancel-btn {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 14px 40px;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  min-width: 150px;
+}
+
+.cancel-btn:hover {
+  background-color: #c9302c;
+  transform: translateY(-2px);
+}
+
+.form-error-banner {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.form-error-banner i {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}

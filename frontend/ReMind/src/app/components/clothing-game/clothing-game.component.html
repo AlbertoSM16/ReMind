@@ -1,0 +1,50 @@
+<div class="clothing-game-container">
+  <div class="card shadow-lg p-4 mb-4 bg-primary text-white text-center">
+    <h1 class="card-title display-4">{{ title }}</h1>
+    <button class="btn instructions-button" (click)="reproducirInstrucciones()">
+          <i class="pi pi-volume-up"></i> Escuchar Instrucciones
+        </button>
+      <p class = "instrucciones">
+        Imagínate que te estas preparando para salir de tu casa a hacer recados,
+        y necesitas vestirte. En este juego tendrás que vestir a la persona que hay abajo
+        como si de tí se tratara. ¡Coloca cada prenda en su sitio!
+      </p>
+        
+      
+  </div>
+  <div *ngIf="feedbackMessage && !gameOver" class="feedback-message">{{ feedbackMessage }}</div>
+
+  <div class="game-area">
+    <div class="clothing-list">
+      <h3>Prendas</h3>
+      <div *ngFor="let item of clothingItems" class="clothing-item-wrapper">
+        <div *ngIf="!item.placed"
+             class="clothing-item"
+             draggable="true"
+             (dragstart)="onDragStart($event, item)">
+          <img [src]="item.src" [alt]="item.name">
+          <span>{{ item.name }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="silhouette-container">
+      <img src="assets/clothing/silueta.png" alt="Silueta de cuerpo humano" class="silhouette-img">
+      
+      <div class="drop-target head" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'head')"></div>
+      <div class="drop-target torso" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'torso')"></div>
+      <div class="drop-target legs" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'legs')"></div>
+      <div class="drop-target feet" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'feet')"></div>
+
+      <img *ngIf="dropTargets['head'].item" [src]="dropTargets['head'].item!.src" class="placed-item placed-head">
+      <img *ngIf="dropTargets['torso'].item" [src]="dropTargets['torso'].item!.src" class="placed-item placed-torso">
+      <img *ngIf="dropTargets['legs'].item" [src]="dropTargets['legs'].item!.src" class="placed-item placed-legs">
+      <img *ngIf="dropTargets['feet'].item" [src]="dropTargets['feet'].item!.src" class="placed-item placed-feet">
+    </div>
+  </div>
+
+  <div *ngIf="gameOver" class="game-over-message">
+    <h3>{{ feedbackMessage }}</h3>
+    <button (click)="resetGame()">Jugar de nuevo</button>
+  </div>
+</div>

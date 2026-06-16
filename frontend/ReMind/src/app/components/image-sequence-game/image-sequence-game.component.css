@@ -1,0 +1,58 @@
+.game-board {
+  gap: 20px;
+}
+
+.image-card {
+  width: 150px;
+  height: 150px;
+  background-color: var(--card-color);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.image-card:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.image-card img.flipped {
+  filter: grayscale(30%);
+  opacity: 0.8;
+}
+
+.image-card img.unflipped {
+  filter: none;
+}
+
+@media (max-width: 768px) {
+  .image-card {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+:host ::ng-deep .btn-primary,
+:host ::ng-deep .btn-secondary {
+  background-color: var(--button-color) !important;
+  border-color: var(--button-color) !important;
+  color: white !important;
+}
+
+:host ::ng-deep .btn-primary:hover:not(:disabled),
+:host ::ng-deep .btn-secondary:hover:not(:disabled) {
+  background-color: #236b6c !important;
+  border-color: #236b6c !important;
+}

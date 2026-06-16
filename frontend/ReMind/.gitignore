@@ -1,42 +1,91 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# ===============================================================
+# ## Archivos y Carpetas Generales
+# =================================ac==============================
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+# Directorios de dependencias
+node_modules/
+jspm_packages/
+web_modules/
 
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
-
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# Visual Studio Code
+# Archivos de configuración del editor
+.idea
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
+*.sublime-workspace
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
-
-# System files
+# Archivos del sistema operativo
 .DS_Store
 Thumbs.db
+ehthumbs.db
+
+# ===============================================================
+# ## Backend: Spring Boot & Maven
+# ===============================================================
+# Archivos compilados de Java
+*.class
+
+# Archivos de empaquetado de Maven/Gradle
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+build/
+!build/libs/
+!build/distributions/
+
+# Archivos generados por Spring Boot
+.project
+.settings
+.spring-boot-devtools.properties
+
+# Archivos de empaquetado
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ===============================================================
+# ## Frontend: Angular & Node.js
+# ===============================================================
+# Archivos de caché y temporales
+dist/
+tmp/
+.npm
+/out-tsc/
+/bazel-out/
+
+# Entorno local
+/src/environments/environment.ts
+/src/environments/environment.prod.ts
+
+# Cobertura de tests
+/coverage
+
+# Archivos de caché del navegador
+.angular/cache
+
+# Archivos de construcción
+*.js.map
+*.css.map
+
+/node_modules

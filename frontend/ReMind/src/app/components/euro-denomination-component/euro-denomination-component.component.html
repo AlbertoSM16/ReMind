@@ -1,0 +1,4 @@
+<button class="denomination-btn" (click)="onClick()" [attr.aria-label]="'Añadir ' + (value | currency:'EUR':'symbol')">
+  <img [src]="imageUrl" [alt]="'Moneda o billete de ' + (value | currency:'EUR':'symbol')" class="denomination-img" />
+  <span class="denomination-value">{{ value | currency:'EUR':'symbol' }}</span>
+</button>

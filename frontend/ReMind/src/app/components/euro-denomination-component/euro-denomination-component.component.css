@@ -1,0 +1,36 @@
+.denomination-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 16px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 120px;
+  min-height: 100px;
+}
+
+.denomination-btn:hover {
+  transform: translateY(-4px);
+  border-color: var(--button-color);
+  box-shadow: 0 4px 12px rgba(44, 122, 123, 0.2);
+}
+
+.denomination-btn:active {
+  transform: scale(0.95);
+}
+
+.denomination-img {
+  width: 80px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.denomination-value {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: #333;
+}

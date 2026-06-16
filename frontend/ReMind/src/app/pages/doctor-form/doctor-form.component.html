@@ -1,0 +1,85 @@
+<div class="form-page">
+  <header-component></header-component>
+  <div class="form-body">
+    <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()" class="form-card">
+
+      <h2 class="form-heading">{{ isEditMode ? 'Editar terapeuta' : 'Nuevo terapeuta' }}</h2>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+      <div *ngIf="submitted && doctorForm.invalid" class="form-error-banner">
+        <i class="pi pi-exclamation-circle"></i> Corrige los errores marcados antes de continuar.
+      </div>
+
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" formControlName="nombre" class="custom-input" placeholder="Introduce el nombre" maxlength="100">
+        <div *ngIf="doctorForm.get('nombre')?.invalid && doctorForm.get('nombre')?.touched" class="invalid-feedback">
+          <div *ngIf="doctorForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</div>
+          <div *ngIf="doctorForm.get('nombre')?.errors?.['pattern']">El nombre no puede estar vacío.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" formControlName="apellido" class="custom-input"
+          placeholder="Introduce los apellidos" maxlength="100">
+        <div *ngIf="doctorForm.get('apellido')?.invalid && doctorForm.get('apellido')?.touched" class="invalid-feedback">
+          <div *ngIf="doctorForm.get('apellido')?.errors?.['required']">El apellido es obligatorio.</div>
+          <div *ngIf="doctorForm.get('apellido')?.errors?.['pattern']">El apellido no puede estar vacío.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" formControlName="correo" class="custom-input" placeholder="Introduce el correo" maxlength="200">
+        <div *ngIf="doctorForm.get('correo')?.touched && doctorForm.get('correo')?.errors?.['required']"
+          class="invalid-feedback">
+          El correo es obligatorio.
+        </div>
+        <div *ngIf="doctorForm.get('correo')?.touched && doctorForm.get('correo')?.errors?.['email']"
+          class="invalid-feedback">
+          El formato del correo no es válido.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input type="text" id="telefono" formControlName="telefono" class="custom-input"
+          placeholder="9 dígitos (opcional)" maxlength="9">
+        <div *ngIf="doctorForm.get('telefono')?.touched && doctorForm.get('telefono')?.errors?.['pattern']"
+          class="invalid-feedback">
+          El teléfono debe tener 9 dígitos.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="especialidad">Especialidad</label>
+        <input type="text" id="especialidad" formControlName="especialidad" class="custom-input"
+          placeholder="Introduce la especialidad" maxlength="100">
+        <div *ngIf="doctorForm.get('especialidad')?.invalid && doctorForm.get('especialidad')?.touched"
+          class="invalid-feedback">
+          <div *ngIf="doctorForm.get('especialidad')?.errors?.['required']">La especialidad es obligatoria.</div>
+          <div *ngIf="doctorForm.get('especialidad')?.errors?.['pattern']">La especialidad no puede estar vacía.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaNacimiento">Fecha de Nacimiento</label>
+        <input type="date" id="fechaNacimiento" formControlName="fechaNacimiento" class="custom-input">
+        <div *ngIf="doctorForm.get('fechaNacimiento')?.invalid && doctorForm.get('fechaNacimiento')?.touched"
+          class="invalid-feedback">
+          <div *ngIf="doctorForm.get('fechaNacimiento')?.errors?.['required']">La fecha de nacimiento es obligatoria.</div>
+          <div *ngIf="doctorForm.get('fechaNacimiento')?.errors?.['futureDate']">La fecha no puede ser posterior a hoy.</div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button type="button" class="btn cancel-btn" [routerLink]="['/doctors']">Cancelar</button>
+        <button type="submit" class="btn submit-btn">
+          {{ isEditMode ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

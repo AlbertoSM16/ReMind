@@ -1,0 +1,49 @@
+<div class="matching-game-container">
+  <div class="game-header">
+    <h1 class="game-title">{{ title }}</h1>
+    <button class="btn-instructions" (click)="reproducirInstrucciones()">
+      <i class="pi pi-volume-up"></i> Escuchar Instrucciones
+    </button>
+    <p class="game-description">
+      Relaciona cada profesión con su objeto. Arrastra las imágenes de la izquierda a la zona correspondiente.
+    </p>
+  </div>
+
+  <div class="game-area">
+    <div class="unmatched-images">
+      <h2 class="section-label">Imágenes</h2>
+      <div class="image-list">
+        <div *ngFor="let image of getUnmatchedImages()"
+             class="image-item"
+             draggable="true"
+             (dragstart)="onDragStart($event, image)">
+          <img [src]="image.src" [alt]="image.name">
+          <p>{{image.name}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="drop-zones">
+      <h2 class="section-label">Zonas</h2>
+      <div *ngFor="let zone of dropZones"
+           class="drop-zone"
+           [class.correct]="zone.correct"
+           (dragover)="onDragOver($event)"
+           (drop)="onDrop($event, zone)">
+        <div class="placeholder">
+          <img *ngIf="zone.person" [src]="zone.person.src" [alt]="zone.person.name">
+          <span *ngIf="!zone.person" class="placeholder-label">Persona</span>
+        </div>
+        <div class="placeholder">
+          <img *ngIf="zone.item" [src]="zone.item.src" [alt]="zone.item.name">
+          <span *ngIf="!zone.item" class="placeholder-label">Objeto</span>
+        </div>
+        <div *ngIf="zone.correct" class="feedback-badge">¡Correcto!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-actions">
+    <button class="btn-reset" (click)="resetGame()">Reiniciar Juego</button>
+  </div>
+</div>

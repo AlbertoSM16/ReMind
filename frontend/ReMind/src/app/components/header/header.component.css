@@ -1,34 +1,72 @@
 .header-container {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  position: relative;
+  min-height: 90px;
 }
 
 .logo {
-  width: 12%;
-  height: 12%;
+  width: 110px;
+  height: auto;
   object-fit: contain;
 }
 
-.logo_user {
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
-}
-
-.left-icon, .right-icon {
+.header-btn {
   position: absolute;
   top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 12px;
+  transition: background-color 0.2s;
+  min-height: auto;
+  min-width: auto;
 }
 
-.left-icon {
-  left: 10px;
-transform: translateY(-50%) translateX(-30%);
-
+.header-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-.right-icon {
-  right: 10px;
-transform: translateY(-50%) translateX(20%);
+.left-btn {
+  left: var(--spacing-lg);
+}
+
+.right-btn {
+  right: var(--spacing-lg);
+}
+
+.header-btn i {
+  font-size: 2.6rem;
+  color: #555;
+}
+
+.header-btn-label {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: #555;
+}
+
+.logout-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .logo {
+    width: 85px;
+  }
+  .header-btn i {
+    font-size: 2rem;
+  }
+  .header-btn-label {
+    display: none;
+  }
 }

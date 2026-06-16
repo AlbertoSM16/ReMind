@@ -1,0 +1,33 @@
+.gameplay-container {
+  min-height: calc(100vh - 100px);
+}
+
+.game-not-found {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.game-not-found h2 {
+  color: #dc3545;
+  margin-bottom: var(--spacing-md);
+}
+
+.game-not-found p {
+  color: #666;
+  margin-bottom: var(--spacing-lg);
+}
+
+.btn-back {
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 999px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-back:hover {
+  background-color: #236b6c;
+}

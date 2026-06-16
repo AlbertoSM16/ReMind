@@ -1,22 +1,38 @@
-.agenda_logo {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
+.access-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 220px;
 }
 
-.subtitle {
-    margin-top: 1rem;
-    text-align: center;
+.access-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.card-button {
-    background-color: white;
-    color: var(--text-color);
-    padding: 5%;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
+.access-card-icon i {
+  font-size: 3rem;
+  color: var(--button-color);
+}
+
+.access-card-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.access-card-desc {
+  font-size: var(--font-size-base);
+  color: #666;
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
 }

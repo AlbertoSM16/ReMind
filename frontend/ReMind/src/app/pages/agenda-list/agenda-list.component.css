@@ -1,0 +1,15 @@
+.agenda-card {
+  border-radius: 15px;
+  border: 1px solid #e0e0e0;
+}
+.agenda-icon {
+  width: 80px;
+  height: 80px;
+}
+.edit-icon, .delete-icon {
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.edit-icon:hover { color: #5cb85c; }
+.delete-icon:hover { color: #d9534f; }

@@ -1,0 +1,44 @@
+<div class="sentence-game-container">
+  <div class="game-header">
+    <h2>Completa la Oración</h2>
+    <p>Elige la palabra correcta para completar la frase.</p>
+  </div>
+
+  <div *ngIf="!gameOver && currentRoundData" class="game-area">
+    <div class="sentence-display">
+      <span class="sentence-start">{{ currentRoundData.start }}</span>
+      <span class="sentence-blank">
+        {{ selectedOption ? selectedOption.word : '_____' }}
+      </span>
+      <span class="sentence-end">{{ currentRoundData.end }}</span>
+    </div>
+
+    <div class="options-grid">
+      <button *ngFor="let option of shuffledOptions"
+              (click)="selectOption(option)"
+              [disabled]="selectedOption !== null"
+              [ngClass]="{
+                'btn-correct': option === selectedOption && isAnswerCorrect,
+                'btn-incorrect': option === selectedOption && !isAnswerCorrect,
+                'btn-disabled': selectedOption !== null && option !== selectedOption
+              }">
+        {{ option.word }}
+      </button>
+    </div>
+
+    <div *ngIf="selectedOption" class="feedback-area">
+      <p [ngClass]="{'text-success': isAnswerCorrect, 'text-danger': !isAnswerCorrect}">
+        {{ feedbackMessage }}
+      </p>
+      <button class="btn-next" (click)="loadNextRound()">
+        Siguiente <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="gameOver" class="game-over-area">
+    <h3>¡Juego Finalizado!</h3>
+    <p>{{ feedbackMessage }}</p>
+    <button class="btn-play-again" (click)="startGame()">Volver a Jugar</button>
+  </div>
+</div>

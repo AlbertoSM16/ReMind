@@ -1,6 +1,75 @@
-<div>
+<div class="home-wrapper">
+
   <header-component></header-component>
-  <nav-component></nav-component>  
-    <direct-access></direct-access>
-  
+
+  <div class="home-body">
+
+    <nav-component></nav-component>
+
+    <div *ngIf="userRole === 'paciente'" class="logros-container">
+
+      <h2 class="logros-title">
+        <i class="pi pi-trophy logros-title-icon"></i> Mis Trofeos
+      </h2>
+
+      <div class="progreso-section">
+        <div class="progreso-bar">
+          <div class="progreso-fill" [style.width.%]="progreso"></div>
+        </div>
+        <p class="progreso-texto">
+          <strong>{{ completadosCount }}/{{ totalJuegos }}</strong> juegos completados
+        </p>
+      </div>
+
+      <div *ngIf="logrosJuegos.length > 0" class="seccion">
+        <h3 class="seccion-titulo">
+          <i class="pi pi-check-circle"></i> Completados
+        </h3>
+        <div class="logros-scroll">
+          <div *ngFor="let logro of logrosJuegos" class="logro-card logro-juego">
+            <div class="logro-icon">
+              <i [class]="logro.icono"></i>
+            </div>
+            <span class="logro-nombre">{{ logro.titulo }}</span>
+            <span class="logro-badge">✔</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="logrosEspecialesLista.length > 0" class="seccion">
+        <h3 class="seccion-titulo">
+          <i class="pi pi-star-fill"></i> Especiales
+        </h3>
+        <div class="especiales-row">
+          <div *ngFor="let logro of logrosEspecialesLista"
+               class="logro-card"
+               [class.logro-bronce]="logro.tipo === 'bronce' && !logro.bloqueado"
+               [class.logro-plata]="logro.tipo === 'plata' && !logro.bloqueado"
+               [class.logro-oro]="logro.tipo === 'oro' && !logro.bloqueado"
+               [class.logro-bloqueado]="logro.bloqueado">
+            <div class="logro-icon">
+              <i [class]="logro.icono"></i>
+            </div>
+            <span class="logro-nombre">{{ logro.titulo }}</span>
+            <span *ngIf="logro.bloqueado" class="logro-badge bloqueado">🔒</span>
+            <span *ngIf="!logro.bloqueado" class="logro-badge desbloqueado">✔</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-cta" (click)="goToPacienteAgenda()">
+        <i class="pi pi-play-circle"></i> Ir a mis juegos
+      </button>
+
+    </div>
+
+    <div *ngIf="userRole !== 'paciente'" class="doctor-home">
+      <p class="doctor-greeting">
+        <i class="pi pi-user-md"></i> Bienvenido, <strong>{{ userName }}</strong>
+      </p>
+      <direct-access></direct-access>
+    </div>
+
+  </div>
+
 </div>

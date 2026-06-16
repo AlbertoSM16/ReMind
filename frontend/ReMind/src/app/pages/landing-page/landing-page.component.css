@@ -1,29 +1,73 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Montserrat:wght@700&display=swap');
-
-.logo {
-  width: 20%;
-  vertical-align: middle;
-
+.landing-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--spacing-md);
+  background-color: var(--background-color);
 }
 
-.logo-log {
-  width: 15%;
-  vertical-align: middle;
+.landing-content {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
 
+.logo {
+  width: 45%;
+  max-width: 250px;
+  height: auto;
+  margin-bottom: var(--spacing-xl);
 }
 
 .slogan-linea1 {
-  font-family: 'Dancing Script', cursive;
-  font-size: 400%;
+  font-size: 2rem;
   font-weight: 600;
   color: #000;
-  position: relative;
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.4;
 }
 
 .slogan-linea2 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 600%;
+  font-size: 2.8rem;
   font-weight: 700;
-  color: #88bca3;
+  color: var(--link-color);
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.2;
+}
+
+.btn-entrar {
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  padding: 18px 60px;
+  border-radius: 999px;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  min-width: 200px;
+  min-height: 60px;
+  box-shadow: 0 4px 15px rgba(44, 122, 123, 0.3);
+}
+
+.btn-entrar:hover {
+  background-color: #236b6c;
+  transform: scale(1.05);
+}
+
+.btn-entrar:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .slogan-linea1 {
+    font-size: 1.5rem;
+  }
+  .slogan-linea2 {
+    font-size: 2rem;
+  }
+  .logo {
+    width: 60%;
+  }
 }

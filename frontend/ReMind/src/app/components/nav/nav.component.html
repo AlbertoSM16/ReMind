@@ -1,17 +1,38 @@
-<!-- Button to open drawer -->
-<div class="menu-button">
-  <button pButton type="button" (click)="visible = true" label="Menu" icon="pi pi-bars"></button>
-</div>
-<!-- The drawer -->
-<p-drawer [(visible)]="visible" [modal]="true" [position]="'left'" [style]="{'background-color':'var(--button-color)'}">
-  <i class="pi pi-user user mb-4 align-self-center"></i>
-  <p class="mb-5 fs-2 fw-semibold text-center">Usuario</p>
-  <div class="d-flex flex-column align-items-center buttons">
-    <p-button [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" label="Doctores" [rounded]="true" size="large"/>
-    <p-button [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" label="Pacientes" [rounded]="true" size="large"/>
-    <p-button [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" label="Agendas" [rounded]="true" size="large"/>
-    <p-button [style]="{'background-color':'var(--link-color)', 'color': 'black','margin-bottom':'55%'}" label="Seguimiento" [rounded]="true" size="large"/>
+<button class="menu-btn" (click)="visible = true" aria-label="Abrir menú">
+  <i class="pi pi-bars"></i>
+</button>
+
+<p-drawer [(visible)]="visible" [modal]="true" [position]="'left'" [style]="{'background-color': 'var(--button-color)', 'width': '300px'}">
+  <div class="drawer-content">
+    <div class="drawer-header">
+      <i class="pi pi-user drawer-user-icon"></i>
+      <p class="drawer-user-name">{{ userName }}</p>
+    </div>
+
+    <div class="drawer-buttons">
+      <button class="drawer-btn" (click)="toHome()">
+        <i class="pi pi-home"></i> Inicio
+      </button>
+
+      <button *ngIf="userRole === 'administrador'" class="drawer-btn" (click)="toDoctores()">
+        <i class="pi pi-user-edit"></i> Doctores
+      </button>
+
+      <button *ngIf="userRole === 'terapeuta'" class="drawer-btn" (click)="toPacientes()">
+        <i class="pi pi-users"></i> Pacientes
+      </button>
+
+      <button *ngIf="userRole === 'terapeuta'" class="drawer-btn" (click)="toAgendas()">
+        <i class="pi pi-calendar"></i> Agendas
+      </button>
+
+      <button *ngIf="userRole === 'terapeuta'" class="drawer-btn" (click)="toSeguimiento()">
+        <i class="pi pi-chart-bar"></i> Seguimiento
+      </button>
+
+      <button *ngIf="userRole === 'paciente'" class="drawer-btn" (click)="toTareas()">
+        <i class="pi pi-play-circle"></i> Mis Juegos
+      </button>
+    </div>
   </div>
-
-
 </p-drawer>

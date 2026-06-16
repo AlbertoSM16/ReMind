@@ -1,0 +1,33 @@
+.progress-bar {
+  background-color: #0d6efd;
+  transition: width 0.6s ease;
+}
+
+.terapeuta-container {
+  max-width: 800px;
+  margin: auto;
+}
+
+.list-group-item {
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+/* --- NUEVOS ESTILOS --- */
+.juegos-detalle {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.table {
+  font-size: 0.9rem;
+}
+
+.pi {
+  font-size: 0.8rem;
+  margin-left: 5px;
+}

@@ -1,0 +1,43 @@
+<header-component></header-component>
+
+<div class="agenda-container">
+  <h2 class="agenda-title">Mis Juegos</h2>
+
+  <div *ngIf="isLoading" class="loading-section">
+    <div class="spinner-large"></div>
+    <p>Cargando tus juegos...</p>
+  </div>
+
+  <div *ngIf="!isLoading && juegosPendientes.length > 0" class="game-section">
+    <h3 class="section-title">
+      <i class="bi bi-play-circle-fill"></i> Juegos para hacer
+    </h3>
+    <div class="game-grid">
+      <div *ngFor="let juego of juegosPendientes" class="game-card pendiente" (click)="jugarJuego(juego.codigo, juego.dificultad, juego.id)">
+        <i [class]="getGameIcon(juego.codigo) + ' game-icon'"></i>
+        <span class="game-name">{{ juego.nombre }}</span>
+        <span class="game-action">JUGAR</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && juegosCompletados.length > 0" class="game-section">
+    <h3 class="section-title completed-title">
+      <i class="bi bi-check-circle-fill"></i> Completados
+    </h3>
+    <div class="game-grid">
+      <div *ngFor="let juego of juegosCompletados" class="game-card completado">
+        <i [class]="getGameIcon(juego.codigo) + ' game-icon completed-icon'"></i>
+        <span class="game-name">{{ juego.nombre }}</span>
+        <span class="game-badge completado-badge">
+          <i class="bi bi-check-lg"></i> Hecho
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && juegosAsignados.length === 0" class="no-juegos">
+    <i class="bi bi-emoji-neutral no-juegos-icon"></i>
+    <p>Aún no tienes juegos asignados en tu agenda.</p>
+  </div>
+</div>

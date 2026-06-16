@@ -1,0 +1,39 @@
+<div class="intruder-game-wrapper">
+  <div class="game-header">
+    <h1 class="game-title">{{ title }}</h1>
+    <p class="game-description">Lee las palabras y encuentra cuál no pertenece al grupo.</p>
+    <button class="btn-instructions" (click)="reproducirInstrucciones()">
+      <i class="pi pi-volume-up"></i> Escuchar Instrucciones
+    </button>
+  </div>
+
+  <div *ngIf="!gameOver && currentSet" class="game-area">
+    <div class="options-container">
+      <div *ngFor="let option of shuffledOptions"
+           class="option-card"
+           (click)="selectOption(option)"
+           [ngClass]="{
+             'option-correct': option === selectedOption && isCorrect,
+             'option-incorrect': option === selectedOption && !isCorrect,
+             'option-disabled': selectedOption !== null && option !== selectedOption
+           }">
+        {{ option.word }}
+      </div>
+    </div>
+
+    <div *ngIf="selectedOption" class="feedback-container">
+      <p [ngClass]="{'text-correct': isCorrect, 'text-incorrect': !isCorrect}">
+        {{ feedbackMessage }}
+      </p>
+      <button class="btn-next-round" (click)="loadNextRound()">
+        Siguiente <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="gameOver" class="game-over-container">
+    <h3>¡Juego Terminado!</h3>
+    <p>{{ feedbackMessage }}</p>
+    <button class="btn-play-again" (click)="startGame()">Jugar de Nuevo</button>
+  </div>
+</div>
