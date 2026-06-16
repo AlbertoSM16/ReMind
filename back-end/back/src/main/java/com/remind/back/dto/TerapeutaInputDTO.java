@@ -9,6 +9,8 @@ import java.util.List;
 
 import com.remind.back.entities.Agenda;
 import com.remind.back.entities.Paciente;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +28,7 @@ public class TerapeutaInputDTO {
     private String apellido;
 
     @NotBlank(message = "El email no puede estar vacío")
+    @JsonAlias({"email", "correo"})
     private String email;
 
     private String usuario;
@@ -39,6 +42,7 @@ public class TerapeutaInputDTO {
     private String especialidad; 
     
     @NotNull(message = "La fecha de nacimiento no puede estar vacía")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date fechaNacimiento;
 
     private List<Paciente> pacientes = null;

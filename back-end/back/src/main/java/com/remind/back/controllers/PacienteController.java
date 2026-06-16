@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +56,7 @@ public class PacienteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPaciente(@RequestBody PacienteInputDTO pacienteInputDTO) {
+    public ResponseEntity<?> createPaciente(@Valid @RequestBody PacienteInputDTO pacienteInputDTO) {
         try {
 
             PacienteCreatedDTO createdPaciente = pacienteService.createPaciente(pacienteInputDTO);
@@ -90,7 +92,7 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePaciente(@PathVariable Integer id, @RequestBody PacienteInputDTO pacienteInputDTO) {
+    public ResponseEntity<?> updatePaciente(@PathVariable Integer id, @Valid @RequestBody PacienteInputDTO pacienteInputDTO) {
         try {
             PacienteOutputDTO updatedPaciente = pacienteService.updatePaciente(id, pacienteInputDTO);
             return ResponseEntity.ok(updatedPaciente);

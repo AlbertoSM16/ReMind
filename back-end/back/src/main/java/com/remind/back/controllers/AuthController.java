@@ -32,18 +32,20 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest login) {
         String usuario = login.getUsuario();
         String contrasenia = login.getContrasenia();
-
+        System.out.println(login.toString());
         Optional<Administrador> adminOpt = administradorRepository.findByUsuario(usuario);
         if (adminOpt.isPresent()) {
             Administrador admin = adminOpt.get();
             if (passwordEncoder.matches(contrasenia, admin.getContrasena())) {
                 String rol = "administrador";
-                String token = JwtUtil.generateToken(admin.getUsuario(), rol);
+                String token = jwtUtil.generateToken(admin.getUsuario(), rol);
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
@@ -59,7 +61,7 @@ public class AuthController {
             Terapeuta terapeuta = terapeutaOpt.get();
             if (passwordEncoder.matches(contrasenia, terapeuta.getContrasena())) {
                 String rol = "terapeuta";
-                String token = JwtUtil.generateToken(terapeuta.getUsuario(), rol);
+                String token = jwtUtil.generateToken(terapeuta.getUsuario(), rol);
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,
@@ -74,7 +76,7 @@ public class AuthController {
             Paciente paciente = pacienteOpt.get();
             if (passwordEncoder.matches(contrasenia, paciente.getContrasenia())) {
                 String rol = "paciente";
-                String token = JwtUtil.generateToken(paciente.getUsuario(), rol);
+                String token = jwtUtil.generateToken(paciente.getUsuario(), rol);
                 return ResponseEntity.ok(Map.of(
                         "token", token,
                         "rol", rol,

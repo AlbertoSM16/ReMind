@@ -2,6 +2,7 @@ package com.remind.back.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -38,6 +39,7 @@ public class PacienteInputDTO {
     private String nombreResponsable;
 
     @NotNull(message = "La fecha de nacimiento no puede estar vacía")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date fechaNacimiento;
 
     @NotNull(message = "El ID del terapeuta no puede ser nulo")
