@@ -1,47 +1,61 @@
 package com.remind.back.entities;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@DiscriminatorValue("TERAPEUTA")
 @Entity
-public class Terapeuta extends Usuario {
+@Data
+@NoArgsConstructor
+@Table(name = "terapeuta")
+public class Terapeuta {
 
-    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Agenda> agendas = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.ALL)
-    private List<Paciente> pacientes;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    public Terapeuta() {
-        super();
-    }
+    @NotBlank
+    private String nombre;
 
-    public Terapeuta(int id, String nombre, String apellido, String email, String contraseña, String telefono,
-            List<Paciente> pacientes) {
-        super(id, nombre, apellido, email, contraseña, telefono);
-        this.pacientes = pacientes;
-    }
+    @NotBlank
+    private String apellido;
 
-    public List<Paciente> getPacientes() {
-        return pacientes;
-    }
+    @NotBlank
+    private String email;
 
-    public void setPacientes(List<Paciente> pacientes) {
-        this.pacientes = pacientes;
-    }
+    @NotBlank
+    private String contrasena;
 
-    public List<Agenda> getAgendas() {
-        return agendas;
-    }
+    @NotBlank
+    private String telefono;
 
-    public void setAgendas(List<Agenda> agendas) {
-        this.agendas = agendas;
-    }
+    @NotNull
+    private Date fechaNacimiento;
 
+    @Column(unique = true)
+    private String usuario;
+
+    @NotBlank
+    String especialidad;
+
+    private TipoUsuario rol = TipoUsuario.TERAPEUTA;
+
+    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PacienteTerapeuta> pacienteTerapeutas;
+
+    @OneToMany(mappedBy = "terapeuta", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<AgendaTerapeuta> agendaTerapeutas;
 }

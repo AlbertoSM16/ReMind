@@ -1,0 +1,52 @@
+\chapter{Conclusiones y Trabajos Futuros}
+
+\section{Resumen de Resultados}
+
+El presente Trabajo de Fin de Grado ha dado como resultado ReMind, una aplicación web funcional y completa para la estimulación cognitiva de personas mayores, con especial atención a aquellas en fases tempranas de la enfermedad de Alzheimer. La plataforma integra seis minijuegos terapéuticos (ordenar secuencia, relacionar objetos, pagos exactos, vístete, completar oración e intruso), cada uno diseñado para trabajar dominios cognitivos específicos como la memoria, la atención, el lenguaje, el cálculo y las funciones ejecutivas.
+
+El sistema se ha desarrollado siguiendo una arquitectura cliente-servidor de tres capas, empleando Spring Boot en el backend y Angular en el frontend, con MySQL como sistema de gestión de bases de datos. Se ha implementado un sistema de autenticación basado en JWT con tres roles de usuario (administrador, terapeuta y paciente), permitiendo la asignación personalizada de agendas de actividades y el seguimiento clínico del progreso de cada paciente.
+
+Las pruebas realizadas, tanto unitarias (JUnit y Mockito) como de integración (Postman), han validado el correcto funcionamiento de la lógica de negocio, la seguridad del sistema y la robustez de la API REST.
+
+\section{Cumplimiento de Objetivos}
+
+Los objetivos planteados al inicio del proyecto se han alcanzado satisfactoriamente:
+
+\begin{itemize}
+    \item \textbf{Investigación de fundamentos neurocientíficos:} Se ha realizado una revisión bibliográfica sobre la enfermedad de Alzheimer, la estimulación cognitiva y las técnicas validadas para el entrenamiento de las distintas áreas cognitivas.
+    \item \textbf{Diseño arquitectónico:} Se ha implementado una arquitectura software robusta, escalable y segura, basada en el patrón cliente-servidor de tres capas con una clara separación de responsabilidades.
+    \item \textbf{Desarrollo de minijuegos:} Se han creado seis minijuegos interactivos que trabajan diferentes dominios cognitivos, con niveles de dificultad progresiva y generación dinámica de contenido.
+    \item \textbf{Gestión de usuarios:} Se ha implementado un sistema completo de roles y permisos que permite la administración de usuarios, la asignación personalizada de actividades y el control de acceso basado en privilegios.
+    \item \textbf{Accesibilidad:} La interfaz de usuario se ha diseñado siguiendo los estándares WCAG 2.1, priorizando la usabilidad para personas mayores con potenciales déficits visuales, motrices o cognitivos.
+    \item \textbf{Seguimiento clínico:} Se ha incorporado un módulo de seguimiento y estadísticas que permite a los terapeutas evaluar el rendimiento y la evolución de los pacientes a lo largo del tiempo.
+\end{itemize}
+
+\section{Lecciones Aprendidas}
+
+Durante el desarrollo de ReMind se han extraído diversas lecciones que abarcan tanto el ámbito técnico como el metodológico:
+
+\begin{itemize}
+    \item \textbf{Adaptación de Scrum a un equipo unipersonal:} La aplicación del marco Scrum en un contexto de desarrollo individual con supervisión académica ha demostrado ser viable. La sustitución del Daily Scrum por una planificación semanal autónoma y las reuniones quincenales de revisión con el tutor han permitido mantener los pilares de inspección y adaptación sin la sobrecarga de reuniones innecesarias.
+    \item \textbf{Importancia del diseño centrado en el usuario:} El perfil del público objetivo (personas mayores con posible deterioro cognitivo) ha condicionado cada decisión de diseño. La priorización de la accesibilidad, la simplicidad visual y la retroalimentación positiva ha sido fundamental para garantizar la usabilidad de la plataforma.
+    \item \textbf{Valor de las pruebas automatizadas:} La integración de pruebas unitarias con JUnit y Mockito ha permitido detectar errores en fases tempranas del desarrollo, facilitando la refactorización y evitando regresiones al introducir nuevas funcionalidades.
+    \item \textbf{Gestión del tiempo y planificación:} La planificación temporal mediante diagramas de Gantt y la división en sprints ha proporcionado una visión clara del progreso, aunque la complejidad de algunos minijuegos requirió ajustes en las estimaciones iniciales.
+\end{itemize}
+
+\section{Trabajos Futuros}
+
+A pesar de que ReMind constituye una plataforma funcional y completa, existen diversas líneas de trabajo que podrían abordarse en el futuro para mejorar y extender sus capacidades:
+
+\begin{itemize}
+    \item \textbf{Ampliación del catálogo de minijuegos:} Incorporar nuevos juegos que trabajen dominios cognitivos adicionales, como la orientación espacial, la percepción visual o la memoria prospectiva.
+    \item \textbf{Despliegue en producción:} Publicar la aplicación en un entorno cloud (AWS, Azure o Google Cloud) para permitir su acceso remoto y evaluar su rendimiento en condiciones reales de uso.
+    \item \textbf{Versión móvil:} Desarrollar una aplicación nativa para dispositivos móviles (iOS y Android) que permita a los pacientes realizar las actividades desde cualquier lugar, sincronizando los datos con la plataforma web.
+    \item \textbf{Inteligencia artificial:} Implementar algoritmos de aprendizaje automático que analicen los patrones de rendimiento de los pacientes para predecir el deterioro cognitivo y recomendar automáticamente ejercicios personalizados.
+    \item \textbf{Evaluación clínica:} Realizar un estudio piloto con pacientes reales y terapeutas especializados que permita validar estadísticamente la eficacia de la plataforma como herramienta de estimulación cognitiva.
+    \item \textbf{Multiidioma:} Adaptar la interfaz y los contenidos a otros idiomas para facilitar su uso en contextos internacionales y llegar a una población más amplia.
+\end{itemize}
+
+\section{Conclusiones Finales}
+
+ReMind demuestra que es posible desarrollar una herramienta software completa, accesible y con base científica para la estimulación cognitiva de personas mayores, combinando tecnologías web modernas con principios de diseño centrado en el usuario. La plataforma no solo cubre la necesidad identificada de una alternativa gratuita y adaptada al contexto español frente a las soluciones comerciales existentes, sino que además integra funcionalidades de gestión clínica que permiten a los terapeutas personalizar y supervisar el tratamiento de forma remota.
+
+El proyecto ha permitido aplicar los conocimientos adquiridos durante el Grado en Ingeniería Informática en un caso de uso real, abarcando todas las fases del ciclo de vida del software desde el análisis de requisitos hasta las pruebas y validación, pasando por el diseño arquitectónico, la implementación y la documentación. La experiencia ha reforzado competencias en tecnologías web, metodologías ágiles, accesibilidad y trabajo autónomo, constituyendo una formación integral para el ejercicio profesional de la ingeniería del software.

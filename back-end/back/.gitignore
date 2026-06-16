@@ -45,3 +45,6 @@ hs_err_pid*
 
 # Configuración local de Spring Boot DevTools
 .spring-boot-devtools.properties
+
+#Frontend build artifacts
+/frontend

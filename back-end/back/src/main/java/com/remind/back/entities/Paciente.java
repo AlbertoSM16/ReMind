@@ -1,92 +1,79 @@
 package com.remind.back.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import com.remind.back.entities.PacienteJuego;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@DiscriminatorValue("PACIENTE")
 @Entity
-public class Paciente extends Usuario {
+@Data
+@NoArgsConstructor
+@Table(name = "paciente")
+public class Paciente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @NotBlank
+    private String nombre;
+
+    @NotBlank
+    private String apellido;
+
+    @NotBlank
+    @Column(name = "contrasenia")
+    private String contrasena;
+
+    @NotBlank
+    private String telefono;
+
+    @NotNull
+    private Date fechaNacimiento;
+
+    @Column(unique = true)
+    private String usuario;
 
     @NotBlank
     private String enfermedad;
 
-    @NotBlank
-    private String edad;
+    @NotNull
+    private Integer edad;
 
     @NotBlank
     private String nombreResponsable;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
+    private TipoUsuario rol = TipoUsuario.PACIENTE;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "terapeuta_id")
     private Terapeuta terapeuta;
 
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private List<PacienteJuego> juegosRealizados;
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PacienteTerapeuta> pacienteTerapeutas;
 
-    @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private Agenda agenda;
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PacienteAgenda> pacienteAgendas;
 
-    public Paciente() {
-        super();
-    }
-
-    public Paciente(int id, @NotBlank String nombre, @NotBlank String apellido, @NotBlank String email,
-            @NotBlank String contraseña, @NotBlank String telefono, @NotBlank String enfermedad, @NotBlank String edad,
-            @NotBlank String nombreResponsable, Terapeuta terapeuta) {
-        super(id, nombre, apellido, email, contraseña, telefono);
-        this.enfermedad = enfermedad;
-        this.edad = edad;
-        this.nombreResponsable = nombreResponsable;
-        this.terapeuta = terapeuta;
-    }
-
-    public String getEnfermedad() {
-        return enfermedad;
-    }
-
-    public void setEnfermedad(String enfermedad) {
-        this.enfermedad = enfermedad;
-    }
-
-    public String getEdad() {
-        return edad;
-    }
-
-    public void setEdad(String edad) {
-        this.edad = edad;
-    }
-
-    public String getNombreResponsable() {
-        return nombreResponsable;
-    }
-
-    public void setNombreResponsable(String nombreResponsable) {
-        this.nombreResponsable = nombreResponsable;
-    }
-
-    public Terapeuta getTerapeuta() {
-        return terapeuta;
-    }
-
-    public void setTerapeuta(Terapeuta terapeuta) {
-        this.terapeuta = terapeuta;
-    }
-
-    public List<PacienteJuego> getJuegosRealizados() {
-        return juegosRealizados;
-    }
-
-    public void setJuegosRealizados(List<PacienteJuego> juegosRealizados) {
-        this.juegosRealizados = juegosRealizados;
-    }
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PacienteJuego> pacienteJuegos;
 
 }

@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: proyecto.aux
+The style file: unsrt.bst
+Database file #1: bibliografia/bibliografia.bib
+Warning--there's a number but no volume in garcia2022eficacia
+You've used 43 entries,
+            1791 wiz_defined-function locations,
+            693 strings with 11979 characters,
+and the built_in function-call counts, 7877 in all, are:
+= -- 675
+> -- 376
+< -- 1
++ -- 147
+- -- 104
+* -- 407
+:= -- 1301
+add.period$ -- 141
+call.type$ -- 43
+change.case$ -- 40
+chr.to.int$ -- 0
+cite$ -- 44
+duplicate$ -- 312
+empty$ -- 829
+format.name$ -- 104
+if$ -- 1744
+int.to.chr$ -- 0
+int.to.str$ -- 43
+missing$ -- 27
+newline$ -- 230
+num.names$ -- 43
+pop$ -- 175
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 129
+stack$ -- 0
+substring$ -- 324
+swap$ -- 48
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 70
+width$ -- 45
+write$ -- 472
+(There was 1 warning)

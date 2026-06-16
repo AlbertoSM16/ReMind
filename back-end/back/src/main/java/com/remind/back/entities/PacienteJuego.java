@@ -1,66 +1,41 @@
 package com.remind.back.entities;
 
-import java.time.LocalDateTime;
-import jakarta.persistence.Id;
+
+import java.sql.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Data; 
+import lombok.NoArgsConstructor; 
+import lombok.AllArgsConstructor; 
 
+@Entity
+@Data 
+@NoArgsConstructor 
+@AllArgsConstructor 
 public class PacienteJuego {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "juego_id")
     private Juego juego;
 
-    private Boolean realizado;
+    @Column(name = "fecha_realizacion")
+    private Date fecha_realizacion;
 
-    private LocalDateTime fecha = LocalDateTime.now();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public Juego getJuego() {
-        return juego;
-    }
-
-    public void setJuego(Juego juego) {
-        this.juego = juego;
-    }
-
-    public Boolean getRealizado() {
-        return realizado;
-    }
-
-    public void setRealizado(Boolean realizado) {
-        this.realizado = realizado;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
-    }
+    @Column(name = "completado" )
+    private Boolean completado;
 }
+
