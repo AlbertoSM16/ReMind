@@ -9,7 +9,7 @@ h2 {
 }
 
 .add-patient-btn {
-  background-color: #61b369;
+  background-color: var(--button-color);
   color: white;
   border-radius: 20px;
   padding: 10px 30px;

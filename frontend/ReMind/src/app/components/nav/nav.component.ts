@@ -15,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
 export class NavComponent implements OnInit {
   visible = false;
   userRole: string | null = null;
-  userName : string | null = null;
+  userName: string | null = null;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -25,18 +25,32 @@ export class NavComponent implements OnInit {
   }
 
   toPacientes(): void {
+    this.visible = false;
     this.router.navigate(['/pacients']);
   }
+
   toAgendas(): void {
+    this.visible = false;
     this.router.navigate(['/agendas']);
   }
+
   toSeguimiento(): void {
+    this.visible = false;
     this.router.navigate(['/follow']);
   }
+
   toTareas(): void {
-    this.router.navigate(['/tareas']);
+    this.visible = false;
+    this.router.navigate(['/paciente-agenda']);
   }
-  toDoctores(): void{
+
+  toDoctores(): void {
+    this.visible = false;
     this.router.navigate(['/doctors']);
+  }
+
+  toHome(): void {
+    this.visible = false;
+    this.router.navigate(['/home']);
   }
 }

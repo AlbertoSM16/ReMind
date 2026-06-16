@@ -17,13 +17,13 @@ export class AuthService {
 
   logout(): void {
     sessionStorage.removeItem('token');
-    sessionStorage.removeItem('rol');
+    sessionStorage.removeItem('role');
     sessionStorage.removeItem('id');
     sessionStorage.removeItem('nombre');
     this.router.navigate(['/landing']);
   }
 
-   getRole(): string | null {
+  getRole(): string | null {
     return sessionStorage.getItem('role');
   }
 }

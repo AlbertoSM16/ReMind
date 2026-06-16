@@ -1,18 +1,20 @@
 <div class="login-wrapper">
   <div class="login-card">
-    <img src="assets/img/logo.png" alt="logo" class="logo" />
+    <img src="assets/img/logo.png" alt="Logo ReMind" class="logo" />
 
-    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+    <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="login-form">
       <div class="form-group">
         <label for="usuario">Usuario</label>
         <input
           type="text"
           id="usuario"
           name="usuario"
-          placeholder="Usuario"
+          placeholder="Escribe tu usuario"
           [(ngModel)]="credentials.usuario"
           required
           class="form-control"
+          autocomplete="username"
+          [attr.aria-invalid]="errorMessage ? 'true' : null"
         />
       </div>
 
@@ -22,18 +24,23 @@
           type="password"
           id="password"
           name="contrasenia"
-          placeholder="Contraseña"
+          placeholder="Escribe tu contraseña"
           [(ngModel)]="credentials.contrasenia"
           required
           class="form-control"
+          autocomplete="current-password"
+          [attr.aria-invalid]="errorMessage ? 'true' : null"
         />
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+      <div *ngIf="errorMessage" class="error-message" role="alert">
         {{ errorMessage }}
       </div>
 
-      <button type="submit" class="btn-login">INICIAR SESIÓN</button>
+      <button type="submit" class="btn-login" [disabled]="isLoading">
+        <span *ngIf="isLoading" class="spinner"></span>
+        <span *ngIf="!isLoading">INICIAR SESIÓN</span>
+      </button>
     </form>
   </div>
 </div>

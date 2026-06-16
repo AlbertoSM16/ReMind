@@ -17,7 +17,6 @@ export class DoctorFormComponent implements OnInit {
   isEditMode = false;
   terapeutaId: number | null = null;
   errorMessage: string | null = null;
-  successMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +27,7 @@ export class DoctorFormComponent implements OnInit {
     this.doctorForm = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      correo: ['', [Validators.required, Validators.email]],
       telefono: [''],
       especialidad: ['', Validators.required],
       fechaNacimiento: ['', Validators.required]
@@ -45,25 +44,14 @@ export class DoctorFormComponent implements OnInit {
         // Format the date for the input field
         const formattedData = {
           ...data,
-          fechaNacimiento: this.formatDateForInput(data.fechaNacimiento)
+          fechaNacimiento: this.formatDate(data.fechaNacimiento)
         };
         this.doctorForm.patchValue(formattedData);
       });
     }
   }
-  private formatDateForInput(dateString: string): string {
+  private formatDate(dateString: string): string {
     if (!dateString) return '';
-
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
-  private formatDateForBackend(dateString: string): string {
-    if (!dateString) return '';
-
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -78,7 +66,7 @@ export class DoctorFormComponent implements OnInit {
 
     const formData = {
       ...this.doctorForm.value,
-      fechaNacimiento: this.formatDateForBackend(this.doctorForm.value.fechaNacimiento)
+      fechaNacimiento: this.formatDate(this.doctorForm.value.fechaNacimiento)
     };
 
     if (this.isEditMode && this.terapeutaId) {
@@ -99,7 +87,6 @@ export class DoctorFormComponent implements OnInit {
         error: (err) => this.errorMessage = 'Error al actualizar el terapeuta.'
       });
     } else {
-      console.log(formData);
       this.terapeutaService.createTerapeuta(formData).subscribe({
 
         next: (response) => {

@@ -61,12 +61,20 @@
             </strong>
           </p>
 
-          <div *ngIf="dificultad === 1   && (currentAmount > 0 && currentAmount < amountToMatch)"
+          <div *ngIf="dificultad === 1 && currentAmount > 0 && currentAmount < amountToMatch"
             class="alert alert-info" role="alert">
             Sigue añadiendo dinero...
           </div>
 
-          <div *ngIf="dificultad === 1 || currentAmount >= amountToMatch" [ngClass]="{
+          <div *ngIf="dificultad === 1 && currentAmount >= amountToMatch" [ngClass]="{
+                  'alert alert-success': currentAmount === amountToMatch,
+                  'alert alert-danger': currentAmount > amountToMatch,
+                  'alert alert-secondary': currentAmount === 0
+                }" role="alert" class="message-box fade show">
+            {{ message }}
+          </div>
+
+          <div *ngIf="dificultad > 1" [ngClass]="{
                   'alert alert-success': currentAmount === amountToMatch,
                   'alert alert-danger': currentAmount > amountToMatch,
                   'alert alert-info': currentAmount < amountToMatch && currentAmount !== 0,

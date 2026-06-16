@@ -5,7 +5,6 @@
   </div>
 
   <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
 
   <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()" class="doctor-form">
 
@@ -27,15 +26,15 @@
     </div>
 
     <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" formControlName="email" class="custom-input" placeholder="Introduce el email">
-      <div *ngIf="doctorForm.get('email')?.touched && doctorForm.get('email')?.errors?.['required']"
+      <label for="correo">Correo electrónico</label>
+      <input type="email" id="correo" formControlName="correo" class="custom-input" placeholder="Introduce el correo">
+      <div *ngIf="doctorForm.get('correo')?.touched && doctorForm.get('correo')?.errors?.['required']"
         class="invalid-feedback">
-        El email es requerido.
+        El correo es requerido.
       </div>
-      <div *ngIf="doctorForm.get('email')?.touched && doctorForm.get('email')?.errors?.['email']"
+      <div *ngIf="doctorForm.get('correo')?.touched && doctorForm.get('correo')?.errors?.['email']"
         class="invalid-feedback">
-        El formato del email no es válido.
+        El formato del correo no es válido.
       </div>
     </div>
 
@@ -73,13 +72,3 @@
 
   </form>
 </div>
-
-<script>
-
-  function formatDateForBackend(date) {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-</script>

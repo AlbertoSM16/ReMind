@@ -48,24 +48,22 @@ export class EditPatientFormComponent implements OnInit {
 
   onSubmit(): void {
     this.pacientService.updatePatient(this.patientId, this.patient).subscribe({
-      next: (response) => {
-        if (response) {
-          Swal.fire({
-            title: 'Éxito',
-            text: 'Paciente actualizado con éxito!',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          });
-          this.router.navigate(['/pacients']);
-        }
+      next: () => {
+        Swal.fire({
+          title: 'Éxito',
+          text: 'Paciente actualizado con éxito!',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+        this.router.navigate(['/pacients']);
       },
-      error: (error) => {
-        if (error.status === 200) {
-          alert('Paciente actualizado con éxito!');
-          this.router.navigate(['/pacients']);
-        } else {
-          alert('Hubo un error al actualizar el paciente.');
-        }
+      error: () => {
+        Swal.fire({
+          title: 'Error',
+          text: 'Hubo un error al actualizar el paciente.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
       }
     });
   }

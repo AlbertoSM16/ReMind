@@ -2,38 +2,69 @@
   <header-component></header-component>
   <nav-component></nav-component>
 
-  <div *ngIf="userRole === 'paciente'" class="container mt-4 logros-container">
-    
-    <h3 class="text-center mb-4 logros-title">
-      <i class="bi bi-award-fill"></i> Mis Trofeos
-    </h3>
+  <div *ngIf="userRole === 'paciente'" class="logros-container">
 
-      <div *ngIf="logrosCompletados.length > 0; else noLogros" class="d-flex justify-content-center align-items-center gap-4 flex-wrap">
-      
-        <div *ngFor="let logro of logrosCompletados" 
-             class="logro-item text-center unlocked"
-             [pTooltip]="logro.descripcion" 
-             tooltipPosition="top">
-          
-          <div class="logro-icons">
-            <i [class]="'bi ' + logro.icono"></i>
-          </div>
-          <span class="logro-titulo">{{ logro.titulo }}</span>
-        </div>
+    <h2 class="logros-title">
+      <i class="pi pi-trophy logros-title-icon"></i> Mis Trofeos
+    </h2>
 
+    <div class="progreso-section">
+      <p class="progreso-texto">
+        Has completado <strong>{{ completadosCount }}</strong> de <strong>{{ totalJuegos }}</strong> juegos
+      </p>
+      <div class="progreso-bar">
+        <div class="progreso-fill" [style.width.%]="progreso"></div>
+      </div>
+      <p *ngIf="siguienteLogro" class="siguiente-hito">
+        <i class="pi pi-arrow-right"></i> Próximo: {{ siguienteLogro.titulo }}
+        ({{ siguienteLogro.descripcion }})
+      </p>
+      <p *ngIf="!siguienteLogro && completadosCount > 0" class="siguiente-hito logro-completo">
+        <i class="pi pi-check-circle"></i> ¡Has desbloqueado todos los logros!
+      </p>
     </div>
 
-    <ng-template #noLogros>
-      <div class="text-center text-muted mt-3">
-        <p>
-          <i class="bi bi-emoji-smile"></i>
-          ¡Completa tus juegos asignados para ganar trofeos!
-        </p>
-        <p class="small">
-          Desbloquea logros especiales completando múltiples juegos.
-        </p>
+    <div *ngIf="logrosJuegos.length > 0" class="seccion">
+      <h3 class="seccion-titulo">
+        <i class="pi pi-check-circle"></i> Juegos completados
+      </h3>
+      <div class="logros-grid">
+        <div *ngFor="let logro of logrosJuegos" class="logro-card logro-juego">
+          <div class="logro-icon">
+            <i [class]="logro.icono"></i>
+          </div>
+          <span class="logro-nombre">{{ logro.titulo }}</span>
+          <span class="logro-badge">✔ Hecho</span>
+        </div>
       </div>
-    </ng-template>
+    </div>
+
+    <div *ngIf="logrosEspecialesLista.length > 0" class="seccion">
+      <h3 class="seccion-titulo">
+        <i class="pi pi-star-fill"></i> Logros especiales
+      </h3>
+      <div class="logros-grid">
+        <div *ngFor="let logro of logrosEspecialesLista"
+             class="logro-card"
+             [class.logro-bronce]="logro.tipo === 'bronce' && !logro.bloqueado"
+             [class.logro-plata]="logro.tipo === 'plata' && !logro.bloqueado"
+             [class.logro-oro]="logro.tipo === 'oro' && !logro.bloqueado"
+             [class.logro-bloqueado]="logro.bloqueado">
+          <div class="logro-icon">
+            <i [class]="logro.icono"></i>
+          </div>
+          <span class="logro-nombre">{{ logro.titulo }}</span>
+          <span class="logro-desc">{{ logro.descripcion }}</span>
+          <span *ngIf="logro.bloqueado" class="logro-badge bloqueado">🔒 Bloqueado</span>
+          <span *ngIf="!logro.bloqueado" class="logro-badge desbloqueado">✔ Conseguido</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="logrosJuegos.length === 0 && logrosEspecialesLista.length > 0" class="no-logros">
+      <i class="pi pi-smile no-logros-icon"></i>
+      <p>¡Completa tus juegos asignados para ganar trofeos!</p>
+    </div>
 
   </div>
 

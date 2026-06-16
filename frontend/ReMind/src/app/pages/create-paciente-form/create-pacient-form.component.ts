@@ -5,12 +5,10 @@ import { PacientService } from '../../services/pacient.service';
 import { Router, RouterModule } from '@angular/router';
 import { Paciente } from '../../models/paciente.model';
 import Swal from 'sweetalert2';
-import { HeaderComponent } from "../../components/header/header.component";
-
 @Component({
   selector: 'app-create-patient-form', // Corregido el selector
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './create-pacient-form.component.html',
   styleUrls: ['./create-pacient-form.component.css']
 })

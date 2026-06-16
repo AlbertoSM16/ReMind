@@ -73,7 +73,7 @@ export class ImageSequenceGameComponent implements OnInit {
     this.gameStarted = true;
     this.message = 'Memoriza la secuencia...';
 
-    const shuffledImages = [...this.images].sort(() => 0.5 - Math.random());
+    const shuffledImages = this.shuffleArray([...this.images]);
     this.currentSequence = shuffledImages.slice(0, this.sequenceLength);
 
     let i = 0;
@@ -145,7 +145,14 @@ export class ImageSequenceGameComponent implements OnInit {
     }, 3000);
   }
 
-  // **NUEVO**: Función para reproducir el audio
+  private shuffleArray(array: any[]): any[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
   playAudio(audioSrc: string): void {
     if (audioSrc) {
       const audio = new Audio(audioSrc);

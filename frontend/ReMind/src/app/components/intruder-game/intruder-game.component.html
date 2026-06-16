@@ -1,20 +1,21 @@
-<div class="card shadow-lg p-4 mb-4 bg-primary text-white text-center">
-  <h1 class="card-title display-4">{{ title }}</h1>
-  <p class="instrucciones">Lee las diferentes palabras que aparecen e intenta deducir cuál de ellas no guarda relación
-    con las demás.</p>
-  <button class="btn instructions-button" (click)="reproducirInstrucciones()">
-    <i class="pi pi-volume-up"></i> Escuchar Instrucciones
-  </button>
-</div>
+<div class="intruder-game-wrapper">
+  <div class="game-header">
+    <h1 class="game-title">{{ title }}</h1>
+    <p class="game-description">Lee las palabras y encuentra cuál no pertenece al grupo.</p>
+    <button class="btn-instructions" (click)="reproducirInstrucciones()">
+      <i class="pi pi-volume-up"></i> Escuchar Instrucciones
+    </button>
+  </div>
 
-<div class="intruder-game-container">
   <div *ngIf="!gameOver && currentSet" class="game-area">
     <div class="options-container">
-      <div *ngFor="let option of shuffledOptions" class="option-card" (click)="selectOption(option)" [ngClass]="{
-             'selected': option === selectedOption,
-             'correct': option === selectedOption && isCorrect,
-             'incorrect': option === selectedOption && !isCorrect,
-             'disabled': selectedOption !== null
+      <div *ngFor="let option of shuffledOptions"
+           class="option-card"
+           (click)="selectOption(option)"
+           [ngClass]="{
+             'option-correct': option === selectedOption && isCorrect,
+             'option-incorrect': option === selectedOption && !isCorrect,
+             'option-disabled': selectedOption !== null && option !== selectedOption
            }">
         {{ option.word }}
       </div>
@@ -24,13 +25,15 @@
       <p [ngClass]="{'text-correct': isCorrect, 'text-incorrect': !isCorrect}">
         {{ feedbackMessage }}
       </p>
-      <button (click)="loadNextRound()">Siguiente Ronda</button>
+      <button class="btn-next-round" (click)="loadNextRound()">
+        Siguiente <i class="bi bi-arrow-right"></i>
+      </button>
     </div>
   </div>
 
   <div *ngIf="gameOver" class="game-over-container">
-    <h3>Juego Terminado</h3>
+    <h3>¡Juego Terminado!</h3>
     <p>{{ feedbackMessage }}</p>
-    <button (click)="startGame()">Jugar de Nuevo</button>
+    <button class="btn-play-again" (click)="startGame()">Jugar de Nuevo</button>
   </div>
 </div>

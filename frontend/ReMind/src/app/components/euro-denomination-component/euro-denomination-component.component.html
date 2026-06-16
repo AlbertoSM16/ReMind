@@ -1,6 +1,4 @@
-<div class="card text-center m-2 shadow-sm denomination-item" (click)="onClick()">
-  <div class="card-body p-2">
-    <img [src]="imageUrl" alt="Euro {{ value }}" class="img-fluid mb-2" style="max-width: 80px; height: auto;" />
-    <p class="card-text fw-bold mb-0">{{ value | currency:'EUR':'symbol' }}</p>
-  </div>
-</div>
+<button class="denomination-btn" (click)="onClick()" [attr.aria-label]="'Añadir ' + (value | currency:'EUR':'symbol')">
+  <img [src]="imageUrl" [alt]="'Moneda o billete de ' + (value | currency:'EUR':'symbol')" class="denomination-img" />
+  <span class="denomination-value">{{ value | currency:'EUR':'symbol' }}</span>
+</button>

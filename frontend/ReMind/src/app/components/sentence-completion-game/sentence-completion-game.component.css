@@ -1,94 +1,160 @@
 .sentence-game-container {
-  font-family: sans-serif;
-  text-align: center;
-  padding: 20px;
   max-width: 800px;
-  margin: 20px auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f7f9fc;
+  margin: var(--spacing-lg) auto;
+  padding: var(--spacing-lg);
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.game-header h2 {
+  color: var(--button-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.game-header p {
+  color: #666;
 }
 
 .game-area {
-  margin-top: 25px;
+  margin-top: var(--spacing-lg);
 }
 
-/* Estilo de la oración */
 .sentence-display {
-  font-size: 24px;
-  margin-bottom: 30px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  font-size: var(--font-size-xl);
+  line-height: 1.8;
+  padding: var(--spacing-lg);
+  background-color: #f8f9fa;
+  border-radius: 16px;
+  border: 2px solid #e0e0e0;
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
 }
 
-.placeholder {
-  font-weight: bold;
-  color: #007bff;
+.sentence-start, .sentence-end {
+  color: #333;
+}
+
+.sentence-blank {
+  font-weight: 700;
+  color: var(--button-color);
   display: inline-block;
-  min-width: 100px;
-  border-bottom: 2px dashed #ccc;
-  margin: 0 5px;
+  min-width: 120px;
+  border-bottom: 3px dashed var(--button-color);
+  margin: 0 var(--spacing-sm);
+  padding: 0 var(--spacing-sm);
 }
 
-/* Contenedor de botones */
-.options-container {
+.options-grid {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
 }
 
-button {
-  padding: 12px 25px;
-  font-size: 18px;
+.options-grid button {
+  padding: 16px 32px;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  border: 3px solid var(--button-color);
+  border-radius: 16px;
+  background-color: white;
+  color: var(--button-color);
   cursor: pointer;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  background-color: #007bff;
-  color: white;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s;
+  min-width: 120px;
+  min-height: 56px;
 }
 
-button:hover:not(:disabled) {
-  background-color: #0056b3;
+.options-grid button:hover:not(:disabled) {
+  background-color: var(--button-color);
+  color: white;
   transform: translateY(-2px);
 }
 
-button.correct {
-  background-color: #28a745;
-  border-color: #28a745;
+.btn-correct {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: white !important;
 }
 
-button.incorrect {
-  background-color: #dc3545;
-  border-color: #dc3545;
+.btn-incorrect {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: white !important;
 }
 
-button.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
 }
 
-/* Feedback y botón de siguiente */
 .feedback-area {
-  margin-top: 20px;
+  text-align: center;
+  margin-top: var(--spacing-lg);
 }
 
 .feedback-area p {
-  font-weight: bold;
-  font-size: 18px;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
 }
 
-.text-correct { color: #155724; }
-.text-incorrect { color: #721c24; }
+.text-success { color: #28a745; }
+.text-danger { color: #dc3545; }
 
-.next-button {
-  background-color: #6c757d;
+.btn-next {
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-/* Pantalla de fin de juego */
+.btn-next:hover {
+  background-color: #236b6c;
+}
+
+.btn-next i {
+  margin-left: 8px;
+}
+
 .game-over-area {
-  margin-top: 20px;
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.game-over-area h3 {
+  color: var(--button-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.game-over-area p {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.btn-play-again {
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.btn-play-again:hover {
+  background-color: #236b6c;
 }

@@ -56,20 +56,15 @@ export class JuegoCambioComponent implements OnInit {
     this.currentAmount = 0;
     this.message = '';
 
-    if (this.dificultad === 3) {
-      this.precioArticulo = parseFloat((Math.random() * (15 - 1) + 1).toFixed(2));
-      const dineroExtra = parseFloat((Math.random() * (10 - 1) + 1).toFixed(2));
-      this.dineroEntregado = this.precioArticulo + dineroExtra;
-      this.amountToMatch = parseFloat((this.dineroEntregado - this.precioArticulo).toFixed(2));
-
-    } else if (this.dificultad === 2) {
-      this.precioArticulo = parseFloat((Math.random() * (15 - 1) + 1).toFixed(2));
-      const dineroExtra = parseFloat((Math.random() * (10 - 1) + 1).toFixed(2));
-      this.dineroEntregado = this.precioArticulo + dineroExtra;
-      this.amountToMatch = parseFloat((this.dineroEntregado - this.precioArticulo).toFixed(2));
-
-    } else {
+    if (this.dificultad === 1) {
       this.amountToMatch = parseFloat((Math.random() * (20 - 0.50) + 0.50).toFixed(2));
+    } else {
+      const maxPrecio = this.dificultad === 2 ? 10 : 15;
+      const maxExtra = this.dificultad === 2 ? 5 : 10;
+      this.precioArticulo = parseFloat((Math.random() * (maxPrecio - 1) + 1).toFixed(2));
+      const dineroExtra = parseFloat((Math.random() * (maxExtra - 1) + 1).toFixed(2));
+      this.dineroEntregado = this.precioArticulo + dineroExtra;
+      this.amountToMatch = parseFloat((this.dineroEntregado - this.precioArticulo).toFixed(2));
     }
   }
 

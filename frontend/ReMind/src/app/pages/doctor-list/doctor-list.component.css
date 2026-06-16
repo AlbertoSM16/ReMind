@@ -8,8 +8,9 @@ h2 {
   font-weight: bold;
 }
 
-.add-patient-btn {
-  background-color: #61b369;
+.add-patient-btn,
+.add-doctor-btn {
+  background-color: var(--button-color);
   color: white;
   border-radius: 20px;
   padding: 10px 30px;
@@ -19,8 +20,9 @@ h2 {
   transition: background-color 0.3s ease;
 }
 
-.add-patient-btn:hover {
-  background-color: #4a9151; 
+.add-patient-btn:hover,
+.add-doctor-btn:hover {
+  background-color: #236b6c; 
   color: white; 
 }
 

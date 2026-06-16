@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from "../../components/header/header.component";
 import { NavComponent } from "../../components/nav/nav.component";
 import { Router } from '@angular/router';
-import { Paciente } from '../../models/paciente.model';
+
 import Swal from 'sweetalert2';
 import { TerapeutaService } from '../../services/terapeuta.service';
 import { Terapeuta } from '../../models/terapeuta.model';
@@ -37,8 +37,8 @@ export class DoctorListComponent implements OnInit {
       },
       error: (error) => {
         Swal.fire({
-          title: 'No se encontraron pacientes',
-          text: 'Actualmente no hay pacientes registrados.',
+          title: 'No se encontraron doctores',
+          text: 'Actualmente no hay doctores registrados.',
           icon: 'info',
           confirmButtonColor: '#61b369'
         });
@@ -86,9 +86,9 @@ export class DoctorListComponent implements OnInit {
     this.terapeutaService.getTerapeutaById(doctorId).subscribe({
       next: (doctor) => {
         Swal.fire({
-          title: 'Datos de Acceso del Paciente',
+          title: 'Datos de Acceso del Doctor',
           html: `
-                <p>Las credenciales se muestran una única vez al crear el paciente por motivos de seguridad.</p>
+                <p>Las credenciales se muestran una única vez al crear el doctor por motivos de seguridad.</p>
                 <div style="text-align: left; margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;">
                   <strong>Usuario:</strong> ${doctor.usuario}
                 </div>
@@ -98,10 +98,10 @@ export class DoctorListComponent implements OnInit {
         });
       },
       error: (error) => {
-        console.error('Error al obtener los datos del paciente:', error);
+        console.error('Error al obtener los datos del doctor:', error);
         Swal.fire(
           'Error',
-          'No se pudieron obtener los datos del paciente.',
+          'No se pudieron obtener los datos del doctor.',
           'error'
         );
       }
@@ -109,7 +109,7 @@ export class DoctorListComponent implements OnInit {
   }
 
 
-  deletePatient(terapeutaId: number): void {
+  deleteDoctor(terapeutaId: number): void {
     Swal.fire({
       title: '¿Estás seguro?',
       text: "¡No podrás revertir esta acción!",
@@ -126,7 +126,7 @@ export class DoctorListComponent implements OnInit {
             this.doctors = this.doctors.filter(p => p.id !== terapeutaId);
             Swal.fire(
               '¡Eliminado!',
-              'El paciente ha sido eliminado.',
+              'El doctor ha sido eliminado.',
               'success'
             );
           },

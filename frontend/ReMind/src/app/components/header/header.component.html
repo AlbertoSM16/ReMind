@@ -1,8 +1,13 @@
 <div class="header-container">
-  
-  <i class="pi pi-arrow-circle-left left-icon" (click)="goHome()"></i>
-  <img src="/assets/img/logo.png" alt="main logo" class="logo" /> 
-  
-  <img src="/assets/img/log_out.png" alt="logout" class="logo_user right-icon" (click)="logout()" />
+  <button class="header-btn left-btn" (click)="goHome()" aria-label="Volver al inicio">
+    <i class="pi pi-arrow-circle-left"></i>
+    <span class="header-btn-label">Inicio</span>
+  </button>
 
+  <img src="/assets/img/logo.png" alt="ReMind" class="logo" />
+
+  <button class="header-btn right-btn" (click)="logout()" aria-label="Cerrar sesión">
+    <img src="/assets/img/log_out.png" alt="Salir" class="logout-icon" />
+    <span class="header-btn-label">Salir</span>
+  </button>
 </div>

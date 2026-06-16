@@ -114,7 +114,7 @@ export class ClothingGameComponent implements OnInit {
       this.audioInstrucciones.currentTime = 0;
     }
 
-    this.audioInstrucciones = new Audio('assets/matching/instrucciones.mp3');
+    this.audioInstrucciones = new Audio('assets/clothing/instrucciones.mp3');
     this.audioInstrucciones.play();
   }
 }

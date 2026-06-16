@@ -7,7 +7,7 @@
   <h2 class="text-center mb-4">Listado de doctores</h2>
 
   <div class="text-center mb-5">
-    <button class="btn add-patient-btn" (click)="goToCreateDoctor()">Añadir doctor</button>
+    <button class="btn add-doctor-btn" (click)="goToCreateDoctor()">Añadir doctor</button>
   </div>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -19,7 +19,7 @@
           <i class="pi pi-sync reset-password-icon"
             (click)="resetPassword(doctor.id, doctor.nombre + ' ' + doctor.apellido)"
             title="Reiniciar contraseña"></i>
-          <i class="pi pi-trash delete-icon" (click)="deletePatient(doctor.id)"></i>
+          <i class="pi pi-trash delete-icon" (click)="deleteDoctor(doctor.id)"></i>
         </div>
         <div class="d-flex align-items-center">
           <img src="assets/img/user_logo.png" alt="Patient Avatar" class="patient-avatar me-3">
