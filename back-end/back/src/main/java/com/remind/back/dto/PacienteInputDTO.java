@@ -3,6 +3,7 @@ package com.remind.back.dto;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -24,7 +25,8 @@ public class PacienteInputDTO {
 
     private String usuario;
 
-    private String contrasenia;
+    @JsonProperty("contrasenia")
+    private String contrasena;
 
     @NotBlank(message = "El teléfono no puede estar vacío")
     private String telefono;

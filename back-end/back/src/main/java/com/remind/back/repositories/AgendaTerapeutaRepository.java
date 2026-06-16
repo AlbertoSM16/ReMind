@@ -13,5 +13,7 @@ public interface AgendaTerapeutaRepository  extends JpaRepository<AgendaTerapeut
     
     boolean existsByTerapeutaId(Integer terapeutaId);
 
+    boolean existsByAgendaIdAndTerapeutaId(Integer agendaId, Integer terapeutaId);
+
     AgendaTerapeuta findByAgendaIdAndTerapeutaId(Integer agendaId, Integer terapeutaId);
 }   

@@ -1,5 +1,6 @@
 package com.remind.back.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,5 +34,6 @@ public class PacienteOutputDTO {
 
     private Integer terapeuta_id;
     
-    private String contrasenia;
+    @JsonProperty("contrasenia")
+    private String contrasena;
 }

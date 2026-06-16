@@ -39,7 +39,8 @@ public class Paciente {
     private String apellido;
 
     @NotBlank
-    private String contrasenia;
+    @Column(name = "contrasenia")
+    private String contrasena;
 
     @NotBlank
     private String telefono;

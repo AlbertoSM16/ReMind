@@ -3,6 +3,9 @@ package com.remind.back.services;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.remind.back.dto.AgendaOutputDTO;
 import com.remind.back.dto.JuegoAsignadoDTO;
-import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteSeguimientoDTO;
 import com.remind.back.dto.PasswordResetDTO;
 import com.remind.back.dto.TerapeutaCreatedDTO;
@@ -32,6 +34,8 @@ import com.remind.back.repositories.PacienteRepository;
 import com.remind.back.repositories.PacienteTerapeutaRepository;
 import com.remind.back.repositories.TerapeutaRepository;
 import com.remind.back.utils.Utils;
+
+import org.springframework.security.access.AccessDeniedException;
 
 @Service
 public class TerapeutaServiceImpl implements TerapeutaService {
@@ -63,6 +67,29 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     @Autowired
     private Utils utils;
 
+    private boolean esAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRADOR"));
+    }
+
+    private Integer getTerapeutaAutenticadoId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        return terapeutaRepository.findByUsuario(username)
+                .orElseThrow(() -> new AccessDeniedException("Terapeuta no encontrado"))
+                .getId();
+    }
+
+    private void verificarPropietarioTerapeuta(Integer id) {
+        if (!esAdmin()) {
+            Integer authId = getTerapeutaAutenticadoId();
+            if (!authId.equals(id)) {
+                throw new AccessDeniedException("No tienes permiso para acceder a este terapeuta");
+            }
+        }
+    }
+
     @Override
     @Transactional
     public TerapeutaCreatedDTO createTerapeuta(TerapeutaInputDTO terapeutaInputDTO) {
@@ -84,6 +111,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     @Override
     @Transactional(readOnly = true)
     public TerapeutaOutputDTO getTerapeutaById(Integer id) {
+        verificarPropietarioTerapeuta(id);
         Terapeuta terapeuta = terapeutaRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con ese id" + id));
 
@@ -104,24 +132,24 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     @Override
     @Transactional
     public void deleteTerapeuta(int id) {
+        verificarPropietarioTerapeuta(id);
         if (!terapeutaRepository.existsById(id)) {
             throw new NoSuchElementException("No existe un terapeuta con ese id y no se puede eliminar");
         }
 
         List<Paciente> pacientesAsociados = pacienteRepository.findByTerapeutaId(id);
 
-        // Se itera sobre la lista de pacientes y se elimina cada uno
         for (Paciente paciente : pacientesAsociados) {
             pacienteService.deletePaciente(paciente.getId());
         }
 
-        // Finalmente, se elimina el terapeuta
         terapeutaRepository.deleteById(id);
     }
 
     @Override
     @Transactional
     public TerapeutaOutputDTO updateTerapeuta(Integer id, TerapeutaInputDTO terapeutaInputDTO) {
+        verificarPropietarioTerapeuta(id);
         Terapeuta terapeuta = terapeutaRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("El terapeuta con id " + id + " no existe"));
 
@@ -152,6 +180,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     @Override
     @Transactional(readOnly = true)
     public List<AgendaOutputDTO> getAgendasByTerapeutaId(Integer id) {
+        verificarPropietarioTerapeuta(id);
         Terapeuta terapeuta = terapeutaRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con el id " + id));
 
@@ -179,6 +208,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     @Override
     @Transactional(readOnly = true)
     public TerapeutaSeguimientoDTO getSeguimientoByTerapeutaId(Integer terapeutaId) {
+        verificarPropietarioTerapeuta(terapeutaId);
         Terapeuta terapeuta = terapeutaRepository.findById(terapeutaId)
                 .orElseThrow(() -> new NoSuchElementException("No existe terapeuta con el id " + terapeutaId));
 
@@ -232,6 +262,7 @@ public class TerapeutaServiceImpl implements TerapeutaService {
     @Override
     @Transactional
     public PasswordResetDTO resetPassword(Integer id) {
+        verificarPropietarioTerapeuta(id);
         Terapeuta terapeuta = terapeutaRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("El paciente con id " + id + " no existe"));
 

@@ -130,7 +130,7 @@ public class PacienteServiceImplTest {
         Integer pacienteId = 1;
         PacienteInputDTO dto = new PacienteInputDTO();
         dto.setNombre("Carlos Editado");
-        dto.setContrasenia("nuevaPass");
+        dto.setContrasena("nuevaPass");
 
         Paciente pacienteExistente = new Paciente();
         pacienteExistente.setNombre("Carlos");
@@ -145,7 +145,7 @@ public class PacienteServiceImplTest {
 
         // Assert
         assertEquals("Carlos Editado", pacienteExistente.getNombre());
-        assertEquals("hashedNuevaPass", pacienteExistente.getContrasenia());
+        assertEquals("hashedNuevaPass", pacienteExistente.getContrasena());
         verify(pacienteRepository).save(pacienteExistente);
     }
 }

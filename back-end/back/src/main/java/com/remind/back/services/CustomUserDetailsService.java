@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<Paciente> pacienteOpt = pacienteRepository.findByUsuario(username);
         if (pacienteOpt.isPresent()) {
             Paciente paciente = pacienteOpt.get();
-            return new User(paciente.getUsuario(), paciente.getContrasenia(),
+            return new User(paciente.getUsuario(), paciente.getContrasena(),
                     Collections.singletonList(() -> "ROLE_" + paciente.getRol().name()));
         }
 

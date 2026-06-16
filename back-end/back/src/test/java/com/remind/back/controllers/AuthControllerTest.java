@@ -106,7 +106,7 @@ public class AuthControllerTest {
         Paciente paciente = new Paciente();
         paciente.setId(3);
         paciente.setUsuario("pacienteUser");
-        paciente.setContrasenia("encodedPass");
+        paciente.setContrasena("encodedPass");
         paciente.setNombre("PacienteName");
         paciente.setApellido("PacienteLastName");
         paciente.setTelefono("555555555");

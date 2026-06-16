@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.remind.back.Mapper.AgendaMapper;
@@ -60,6 +63,49 @@ public class AgendaServiceImpl implements AgendaService {
     @Autowired
     private JuegoRepository juegoRepository;
 
+    private boolean esAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRADOR"));
+    }
+
+    private Integer getTerapeutaAutenticadoId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        return terapeutaRepository.findByUsuario(username)
+                .orElseThrow(() -> new AccessDeniedException("Terapeuta no encontrado"))
+                .getId();
+    }
+
+    private Integer getPacienteAutenticadoId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        return pacienteRepository.findByUsuario(username)
+                .orElseThrow(() -> new AccessDeniedException("Paciente no encontrado"))
+                .getId();
+    }
+
+    private boolean esTerapeuta() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_TERAPEUTA"));
+    }
+
+    private boolean esPaciente() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_PACIENTE"));
+    }
+
+    private void verificarAgendaPerteneceATerapeuta(Integer agendaId) {
+        if (esAdmin()) return;
+        Integer terapeutaId = getTerapeutaAutenticadoId();
+        boolean pertenece = agendaTerapeutaRepository.existsByAgendaIdAndTerapeutaId(agendaId, terapeutaId);
+        if (!pertenece) {
+            throw new AccessDeniedException("No tienes permiso para acceder a esta agenda");
+        }
+    }
+
     @Override
     @Transactional
     public AgendaOutputDTO createAgenda(AgendaInputDTO agendaInputDTO) {
@@ -91,7 +137,9 @@ public class AgendaServiceImpl implements AgendaService {
     @Override
     @Transactional(readOnly = true)
     public AgendaOutputDTO getAgendaById(Integer id) {
-
+        if (esTerapeuta()) {
+            verificarAgendaPerteneceATerapeuta(id);
+        }
         Agenda agenda = agendaRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Agenda con ID " + id + " no existe."));
         return agendaMapper.agendaToAgendaOutputDTO(agenda);
@@ -112,13 +160,14 @@ public class AgendaServiceImpl implements AgendaService {
     @Override
     @Transactional
     public void deleteAgenda(Integer id) {
-
+        if (esTerapeuta()) {
+            verificarAgendaPerteneceATerapeuta(id);
+        }
         if (!agendaRepository.existsById(id)) {
             throw new NoSuchElementException("Agenda con ID " + id + " no existe.");
         }
 
         agendaRepository.deleteById(id);
-        // También eliminar las relaciones en la tabla intermedia
         pacienteAgendaRepository.deleteByAgendaId(id);
         agendaTerapeutaRepository.deleteByAgendaId(id);
     }
@@ -126,6 +175,9 @@ public class AgendaServiceImpl implements AgendaService {
     @Override
     @Transactional
     public AgendaOutputDTO updateAgenda(Integer id, AgendaInputDTO agendaInputDTO) {
+        if (esTerapeuta()) {
+            verificarAgendaPerteneceATerapeuta(id);
+        }
         Agenda existingAgenda = agendaRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Agenda con ID " + id + " no existe."));
 
@@ -158,6 +210,9 @@ public class AgendaServiceImpl implements AgendaService {
     @Override
     @Transactional(readOnly = true)
     public List<JuegoAsignadoDTO> getJuegosByAgendaId(Integer agendaId) {
+        if (esTerapeuta()) {
+            verificarAgendaPerteneceATerapeuta(agendaId);
+        }
         if (!agendaRepository.existsById(agendaId)) {
             throw new NoSuchElementException("Agenda con ID " + agendaId + " no existe.");
         }
@@ -176,6 +231,9 @@ public class AgendaServiceImpl implements AgendaService {
     @Override
     @Transactional
     public void assignJuegoToAgenda(Integer agendaId, Integer juegoId, Integer dificultad) {
+        if (esTerapeuta()) {
+            verificarAgendaPerteneceATerapeuta(agendaId);
+        }
         if (juegoAgendaRepository.findByAgendaIdAndJuegoId(agendaId, juegoId).isPresent()) {
             throw new IllegalStateException("Este juego ya ha sido asignado a la agenda.");
         }
@@ -197,6 +255,12 @@ public class AgendaServiceImpl implements AgendaService {
     @Override
     @Transactional(readOnly = true)
     public Map<String, Object> getJuegosByPacienteId(Integer pacienteId) {
+        if (esPaciente()) {
+            Integer authPacienteId = getPacienteAutenticadoId();
+            if (!authPacienteId.equals(pacienteId)) {
+                throw new AccessDeniedException("No tienes permiso para ver los juegos de otro paciente");
+            }
+        }
         PacienteAgenda pacienteAgenda = pacienteAgendaRepository.findByPacienteId(pacienteId)
                 .stream()
                 .findFirst()
@@ -226,6 +290,15 @@ public class AgendaServiceImpl implements AgendaService {
     @Override
     @Transactional
     public void completarJuego(Integer agendaId, Integer juegoId) {
+        if (esPaciente()) {
+            PacienteAgenda pa = pacienteAgendaRepository.findByPacienteId(getPacienteAutenticadoId())
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(() -> new AccessDeniedException("No tienes una agenda asignada"));
+            if (pa.getAgenda().getId() != agendaId) {
+                throw new AccessDeniedException("No tienes permiso para completar juegos en esta agenda");
+            }
+        }
         JuegoAgenda asignacion = juegoAgendaRepository.findByAgendaIdAndJuegoId(agendaId, juegoId)
                 .orElseThrow(() -> new NoSuchElementException(
                         "No se encontró la asignación del juego " + juegoId + " en la agenda " + agendaId));
@@ -237,6 +310,9 @@ public class AgendaServiceImpl implements AgendaService {
 
     @Transactional
     public void removeJuegoFromAgenda(Integer agendaId, Integer juegoId) {
+        if (esTerapeuta()) {
+            verificarAgendaPerteneceATerapeuta(agendaId);
+        }
         JuegoAgenda asignacion = juegoAgendaRepository.findByAgendaIdAndJuegoId(agendaId, juegoId)
                 .orElseThrow(() -> new NoSuchElementException(
                         "No se encontró la asignación del juego " + juegoId + " en la agenda " + agendaId));

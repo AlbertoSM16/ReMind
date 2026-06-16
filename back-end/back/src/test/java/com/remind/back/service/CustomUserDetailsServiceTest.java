@@ -40,7 +40,7 @@ public class CustomUserDetailsServiceTest {
         // Arrange
         Paciente paciente = new Paciente();
         paciente.setUsuario("paciente1");
-        paciente.setContrasenia("pass123");
+        paciente.setContrasena("pass123");
         paciente.setRol(TipoUsuario.PACIENTE);
 
         when(pacienteRepository.findByUsuario("paciente1")).thenReturn(Optional.of(paciente));

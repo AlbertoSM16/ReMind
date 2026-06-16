@@ -1,5 +1,8 @@
 package com.remind.back.security;
 
+import com.remind.back.repositories.AdministradorRepository;
+import com.remind.back.repositories.PacienteRepository;
+import com.remind.back.repositories.TerapeutaRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +20,18 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final AdministradorRepository administradorRepository;
+    private final TerapeutaRepository terapeutaRepository;
+    private final PacienteRepository pacienteRepository;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil,
+                                   AdministradorRepository administradorRepository,
+                                   TerapeutaRepository terapeutaRepository,
+                                   PacienteRepository pacienteRepository) {
         this.jwtUtil = jwtUtil;
+        this.administradorRepository = administradorRepository;
+        this.terapeutaRepository = terapeutaRepository;
+        this.pacienteRepository = pacienteRepository;
     }
 
     @Override
@@ -35,13 +47,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = jwtUtil.getUsernameFromToken(token);
                 String role = jwtUtil.getRoleFromToken(token);
 
-                List<SimpleGrantedAuthority> authorities = List.of(
-                        new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()));
+                boolean exists = switch (role) {
+                    case "administrador" -> administradorRepository.findByUsuario(username).isPresent();
+                    case "terapeuta" -> terapeutaRepository.findByUsuario(username).isPresent();
+                    case "paciente" -> pacienteRepository.findByUsuario(username).isPresent();
+                    default -> false;
+                };
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(username, null, authorities);
+                if (exists) {
+                    List<SimpleGrantedAuthority> authorities = List.of(
+                            new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         }
 

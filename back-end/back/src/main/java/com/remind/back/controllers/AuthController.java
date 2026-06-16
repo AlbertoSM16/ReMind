@@ -74,7 +74,7 @@ public class AuthController {
         Optional<Paciente> pacienteOpt = pacienteRepository.findByUsuario(usuario);
         if (pacienteOpt.isPresent()) {
             Paciente paciente = pacienteOpt.get();
-            if (passwordEncoder.matches(contrasenia, paciente.getContrasenia())) {
+            if (passwordEncoder.matches(contrasenia, paciente.getContrasena())) {
                 String rol = "paciente";
                 String token = jwtUtil.generateToken(paciente.getUsuario(), rol);
                 return ResponseEntity.ok(Map.of(
