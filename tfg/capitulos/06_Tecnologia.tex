@@ -1,0 +1,203 @@
+\chapter{Tecnologías}
+
+En esta sección se describen las tecnologías utilizadas en el desarrollo de la aplicación ReMind, incluyendo los lenguajes de programación, frameworks y herramientas empleadas para construir tanto el frontend como el backend del sistema. Además, se detallan las razones detrás de la elección de cada tecnología y cómo contribuyen al cumplimiento de los objetivos del proyecto.
+
+\section{Tecnologías seleccionadas}
+
+\subsection{Base de datos: MySQL}
+La elección del Sistema Gestor de Bases de Datos (SGBD) es un pilar fundamental en la arquitectura de cualquier sistema de software, ya que impacta directamente en el rendimiento, la integridad de los datos y la escalabilidad de la aplicación. Para este proyecto, se ha seleccionado MySQL como motor de persistencia de datos.
+
+Esta decisión se fundamenta en dos ejes principales: las ventajas técnicas inherentes a MySQL, que lo convierten en un estándar de la industria, y un factor pragmático de gestión de proyecto: la experiencia previa consolidada con esta tecnología.
+
+MySQL es uno de los SGBD relacionales (\textit{RDBMS}) de código abierto más utilizados a nivel mundial, y su popularidad se debe a un conjunto de características técnicas que lo hacían idóneo para los requisitos de este proyecto: \cite{MySQLDocs}
+
+\begin{itemize}
+    \item \textbf{Rendimiento Optimizado:} MySQL ha demostrado históricamente un rendimiento excepcional en operaciones de lectura (\textit{read-heavy workloads}), que es el escenario más común para las aplicaciones web y de consulta de datos como la desarrollada en este proyecto.
+    \item \textbf{Modelo Relacional y Cumplimiento ACID:} Al utilizar el motor de almacenamiento InnoDB (estándar por defecto), MySQL ofrece un cumplimiento total de las propiedades ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad). Esto garantiza la integridad transaccional, un requisito indispensable para asegurar que las operaciones se completen correctamente o no se realicen en absoluto.
+    \item \textbf{Ecosistema y Comunidad:} Al ser una tecnología \textit{open-source} tan extendida, posee uno de los ecosistemas más grandes. La documentación es exhaustiva, la comunidad es inmensa (facilitando la resolución de problemas) y existe un amplio abanico de herramientas de administración gráfica, como MySQL Workbench, que facilitan el diseño, la monitorización y el mantenimiento de la base de datos.
+    \item \textbf{Coste:} El uso de la \textit{Community Edition} de MySQL elimina cualquier barrera de licenciamiento, un factor relevante tanto en el acoplamiento académico como en un potencial despliegue comercial futuro del proyecto.
+\end{itemize}
+
+Más allá de las ventajas técnicas objetivas, un factor decisivo para la adopción de MySQL fue la trayectoria y el conocimiento práctico acumulado previamente con este SGBD. En el contexto de este proyecto, donde los plazos son definidos, la curva de aprendizaje de una tecnología crítica puede suponer un riesgo significativo. La familiaridad con MySQL se traduce directamente en beneficios tangibles para el desarrollo:
+
+\begin{itemize}
+    \item \textbf{Velocidad de Desarrollo:} Al no requerirse un periodo de adaptación, el diseño del esquema de la base de datos, la normalización y la implementación de las primeras migraciones se realizaron de forma inmediata.
+    \item \textbf{Optimización Avanzada:} La experiencia previa permitió aplicar desde el inicio las mejores prácticas en la optimización de consultas. Se implementaron estrategias de indexación adecuadas y se utilizó el análisis de planes de ejecución para depurar potenciales cuellos de botella antes de que afectaran al rendimiento.
+    \item \textbf{Gestión de Riesgos:} El conocimiento de los problemas comunes de configuración y escalado de MySQL permitió anticipar incidencias. Esto evitó dedicar tiempo valioso del cronograma a depurar fallos de configuración de bajo nivel, permitiendo centrar los esfuerzos en la lógica de negocio.
+\end{itemize}
+
+\subsection{Backend: Spring Boot}
+Para la implementación del \textit{backend} y la lógica de negocio de este proyecto, se seleccionó el \textit{framework} Spring Boot. Esta decisión se basó en un análisis de sus capacidades para acelerar el desarrollo y su robustez para la puesta en producción.
+
+Spring Boot constituye una evolución del \textit{framework} Spring cuyo objetivo principal es simplificar la configuración y el despliegue de aplicaciones. Proporciona un enfoque basado en valores por defecto sensatos que elimina la necesidad de una configuración XML extensa y tediosa, resolviendo un problema histórico de este ecosistema. La adopción de Spring Boot en este proyecto se fundamenta en un conjunto de ventajas técnicas que impactan directamente en la productividad y la calidad del software:
+
+\begin{enumerate}
+    \item \textbf{Auto-configuración:} Spring Boot inspecciona el \textit{classpath} del proyecto y, en función de las dependencias detectadas, configura automáticamente la aplicación. Si detecta la dependencia de Spring Data JPA y un controlador de base de datos, inicializa un \textit{DataSource} y un \textit{EntityManager} listos para ser usados, sin necesidad de código de configuración manual. \cite{spring-boot-autoconfig}
+    \item \textbf{Aplicaciones \textit{Standalone}:} Spring Boot rompe con el paradigma tradicional de desplegar aplicaciones Java como un archivo WAR en un servidor externo. En su lugar, empaqueta la aplicación como un archivo JAR ejecutable (\texttt{java -jar mi-app.jar}) que incluye un servidor web embebido (Tomcat). Esto simplifica el despliegue, las pruebas y la integración en contenedores como Docker. \cite{spring-boot-embedded}
+    \item \textbf{El Ecosistema de Starters:} Para gestionar la auto-configuración, introduce los Starters. Estos son descriptores de dependencias que agrupan las librerías necesarias para una funcionalidad específica. Al incluir \texttt{spring-boot-starter-web}, se añaden automáticamente Spring MVC, el servidor Tomcat embebido y las librerías para construir APIs REST. \cite{spring-boot-starters}
+\end{enumerate}
+
+A pesar de sus ventajas, el uso de Spring Boot implica ciertas contrapartidas que debieron ser gestionadas durante el desarrollo:
+
+\begin{enumerate}
+    \item \textbf{Complejidad subyacente:} La auto-configuración puede ocultar una gran complejidad. Cuando la configuración por defecto es insuficiente y se requiere un ajuste específico, depurar un problema puede volverse complejo al tener que navegar por el árbol de decisiones automáticas del framework.
+    \item \textbf{Curva de aprendizaje del ecosistema Spring:} Spring Boot reduce la barrera de entrada, pero sigue siendo indispensable entender los conceptos fundamentales subyacentes, tales como el contenedor de Inversión de Control (\textit{IoC Container}), la Inyección de Dependencias (DI) y la Programación Orientada a Aspectos.
+    \item \textbf{Tamaño del empaquetado (\textit{Bloat}):} Al incluir todas las dependencias y el servidor en un único archivo, el JAR resultante (\textit{fat JAR}) posee un tamaño considerable, lo cual puede ser un inconveniente en entornos con restricciones severas de almacenamiento.
+    \item \textbf{Sobrecarga en proyectos mínimos:} La arquitectura estructurada que facilita las aplicaciones complejas puede representar un coste innecesario (\textit{overhead}) para servicios extremadamente simples, donde micro-frameworks más ligeros resultarían más adecuados.
+\end{enumerate}
+
+Para este proyecto, los beneficios de Spring Boot superaron ampliamente sus inconvenientes. Esto se vio respaldado por la experiencia previa con el lenguaje Java y por una formación continua realizada de forma paralela al desarrollo de la aplicación, lo que permitió centrar los esfuerzos en la lógica de negocio y no en la infraestructura.
+
+\subsection{Frontend: Angular}
+Angular es una plataforma de desarrollo y un marco de trabajo (\textit{framework}) de código abierto, respaldado tecnológicamente por Google, diseñado específicamente para la arquitectura y construcción de Aplicaciones de Página Única (SPA) de alta complejidad. A diferencia de las bibliotecas orientadas exclusivamente a la capa de vista, Angular se define como un \textit{framework} prescriptivo, imponiendo una estructura arquitectónica estricta y un conjunto unificado de patrones de diseño.
+
+La plataforma está implementada de forma nativa sobre TypeScript, un superconjunto de JavaScript que introduce tipado estático, interfaces y decoradores, garantizando la detección de errores en tiempo de compilación y la mantenibilidad del código fuente a gran escala.
+
+La arquitectura de Angular se fundamenta en componentes. Cada componente actúa como la unidad modular mínima de la interfaz, encapsulando la vista (HTML), la lógica de control (TypeScript) y el diseño estético (CSS). Asimismo, la plataforma provee soluciones integradas esenciales: un subsistema de enrutamiento avanzado, un cliente HTTP para la comunicación asíncrona, validación de formularios y un motor de inyección de dependencias que desacopla la creación de los servicios de su consumo.
+
+\subsubsection{Análisis de ventajas arquitectónicas}
+\begin{description}
+    \item[Ecosistema homogéneo e integral:] Al proporcionar soluciones nativas para las necesidades comunes del desarrollo frontend, se elimina la necesidad de evaluar bibliotecas de terceros. Esto garantiza que componentes críticos se actualicen de manera síncrona con el núcleo del framework, mitigando problemas de compatibilidad.
+    \item[Escalabilidad y mantenibilidad:] La obligatoriedad de TypeScript, junto con la modularidad interna y la inyección de dependencias, permite que las aplicaciones puedan ser refactorizadas y extendidas minimizando la deuda técnica.
+    \item[Automatización mediante CLI:] La interfaz de línea de comandos (CLI) automatiza flujos de trabajo críticos como el andamiaje de código, la ejecución de pruebas y la optimización de producción mediante técnicas como el \textit{Tree Shaking} y la compilación \textit{Ahead-of-Time} (AOT).
+    \item[Reactividad avanzada con Signals:] Las especificaciones contemporáneas del \textit{framework} introducen el paradigma de \textit{Signals}. Este modelo proporciona un sistema de reactividad de grano fino que permite al motor de renderizado identificar con precisión qué nodos específicos del DOM requieren actualización, optimizando el uso de memoria.
+\end{description}
+
+\subsubsection{Limitaciones técnicas y factores de riesgo}
+\begin{description}
+    \item[Elevada curva de aprendizaje:] Angular presenta una barrera de entrada exigente. Requiere dominar conceptos avanzados como el tipado estático, la inyección de dependencias y la programación reactiva basada en flujos de datos asíncronos (RxJS).
+    \item[Verbosidad arquitectónica:] El rigor estructural de Angular se traduce en una mayor cantidad de código base para implementar funcionalidades triviales, lo que puede ralentizar las fases iniciales de codificación.
+    \item[Sobrecarga en pequeña escala:] Debido a las dimensiones del núcleo de la plataforma, su selección resulta desproporcionada para desarrollos ligeros o sitios web estáticos, introduciendo una complejidad infraestructural innecesaria.
+\end{description}
+
+\subsection{Lenguaje de hojas de estilo: CSS3}
+CSS3 constituye la evolución del estándar de hojas de estilo en cascada, cuya función consiste en disociar la estructura semántica y lógica de un documento de su capa de presentación visual. La principal innovación de CSS3 radica en su transición hacia un modelo modular segmentado en subdocumentos independientes bajo la supervisión del W3C. Esta granularidad permite la integración de un conjunto de capacidades avanzadas:
+
+\begin{itemize}
+    \item \textbf{Selectores de alta precisión:} Incorporación de pseudoclases, pseudoelementos y selectores de atributos avanzados que permiten realizar un direccionamiento quirúrgico sobre los nodos del DOM.
+    \item \textbf{Motores de maquetación avanzados:} Introducción de Flexbox para el diseño unidimensional de componentes, y \textit{CSS Grid Layout} para la estructuración bidimensional de rejillas complejas.
+    \item \textbf{Diseño adaptable nativo:} Consolidación de las directivas de consulta de medios (\textit{media queries}), que evalúan en tiempo de ejecución las características del dispositivo para adaptar la interfaz.
+    \item \textbf{Procesamiento visual acelerado:} Propiedades como esquinas redondeadas, sombras y animaciones basadas en fotogramas clave (\textit{keyframes}) se ejecutan directamente en la GPU, disminuyendo la carga en el hilo principal de JavaScript.
+\end{itemize}
+
+\subsection{Framework Frontend: Bootstrap}
+Bootstrap es un marco de trabajo de código abierto diseñado para la optimización del desarrollo en la capa de presentación. Su arquitectura se fundamenta en un sistema de rejilla (\textit{Grid System}) bidimensional basado en CSS que adopta un paradigma de diseño enfocado en dispositivos móviles (\textit{Mobile-First}), y en un catálogo extensivo de componentes reutilizables (barras de navegación, formularios, modales) que aseguran la coherencia estética.
+
+La integración de Bootstrap optimiza los tiempos de desarrollo al abstraer la necesidad de codificar estilos base desde cero, mitigando la deuda técnica en equipos colaborativos gracias a su lenguaje visual unificado. No obstante, presenta limitaciones como la tendencia a homogeneizar la estética de las interfaces (requiriendo personalización avanzada mediante Sass) y la sobrecarga de recursos debido al código muerto (\textit{dead code}) si solo se emplea una fracción de sus capacidades, lo cual puede penalizar las métricas de rendimiento web.
+
+\subsection{Suite de Componentes de Interfaz: PrimeNG}
+PrimeNG se define como una biblioteca de componentes de interfaz de usuario de código abierto, desarrollada específicamente para su integración nativa en Angular. Actúa como una capa de abstracción sobre los elementos HTML5 y CSS3 nativos, proporcionando componentes complejos preconfigurados que permiten delegar la lógica visual de bajo nivel para concentrar los recursos del proyecto en la implementación de la lógica de negocio.
+
+
+\section{Otras alternativas consideradas}
+
+\subsection{Base de datos: MongoDB}
+MongoDB es una base de datos NoSQL orientada a documentos \cite{MongoDBDocs}. En lugar de almacenar datos en tablas rígidas, organiza la información en colecciones de documentos con formato BSON (similar a JSON), permitiendo estructuras complejas y anidadas que se alinean de manera natural con los objetos del código de la aplicación.
+
+\subsubsection{Ventajas}
+\begin{itemize}
+    \item \textbf{Esquema flexible:} Los documentos de una colección no requieren compartir la misma estructura, lo que facilita una adaptación inmediata ante cambios en los requisitos del sistema.
+    \item \textbf{Escalabilidad horizontal:} Diseñado para distribuirse a través de múltiples servidores mediante un proceso de división de datos llamado \textit{sharding}.
+    \item \textbf{Alta disponibilidad:} Mantiene copias automáticas de los datos a través de conjuntos de réplicas (\textit{replica sets}), garantizando la continuidad del servicio ante fallos de hardware.
+\end{itemize}
+
+\subsubsection{Desventajas}
+\begin{itemize}
+    \item \textbf{Ineficiencia en relaciones complejas:} Si el modelo de datos requiere uniones complejas (\textit{JOINs}) e integridad referencial estricta, las consultas entre colecciones se vuelven costosas y poco eficientes.
+    \item \textbf{Modelo de consistencia eventual:} A diferencia de la consistencia inmediata de las bases de datos SQL ACID, MongoDB prioriza la disponibilidad, lo que añade complejidad en el control transaccional.
+    \item \textbf{Mayor consumo de almacenamiento:} El formato BSON almacena los nombres de los campos en cada documento, lo que incrementa el espacio en disco en comparación con el modelo relacional.
+\end{itemize}
+
+\subsection{Laravel}
+
+
+
+Laravel se define como un entorno de trabajo (\textit{framework}) de código abierto enfocado en el desarrollo de aplicaciones web bajo el lenguaje de programación PHP. Concebido originalmente por Taylor Otwell en 2011, en la actualidad constituye uno de los ecosistemas más extendidos dentro de la comunidad de desarrollo global, destacando por una filosofía de diseño orientada a la legibilidad del código y la simplificación de tareas operativas recurrentes~\cite{LaravelDocs}.
+
+
+
+Desde una perspectiva arquitectónica, Laravel implementa el patrón Modelo-Vista-Controlador (MVC). Su núcleo se fundamenta en componentes desacoplados extraídos del \textit{framework} Symfony, lo que le otorga una base madura, estable y de alta fiabilidad. Sobre esta infraestructura, añade una capa de abstracción orientada a mitigar la complejidad en la implementación de lógicas comunes, proveyendo soluciones nativas para~\cite{LaravelDocs}:
+
+\begin{itemize}
+
+\item Gestión avanzada de rutas de acceso y direccionamiento URL.
+
+\item Mecanismos integrados de autenticación, control de accesos y persistencia de sesiones de usuario.
+
+\item Abstracción y manipulación de la capa de datos mediante el mapeador objeto-relacional (ORM) Eloquent.
+
+\item Procesamiento y renderizado de interfaces de usuario a través del motor de plantillas Blade.
+
+\item Sistemas de colas de trabajo distribuidas, asincronía y automatización de tareas programadas.
+
+\end{itemize}
+
+
+
+El propósito primordial de esta herramienta radica en reducir la carga cognitiva asociada a la infraestructura base de la aplicación, permitiendo a los equipos de ingeniería concentrar los esfuerzos en la implementación de la lógica de negocio.
+
+
+
+\subsubsection{Ventajas del framework}
+
+También se valoró la opción de usar Laravel para el desarrollo del backend, aunque finalmente se optó por Spring Boot. Sin embargo, es importante destacar las ventajas competitivas que Laravel ofrece en su ámbito de aplicación:
+
+
+\begin{itemize}
+    \item \textbf{Ecosistema integral:} A diferencia de otras alternativas modulares del mercado, Laravel provee un ecosistema de herramientas oficiales centralizadas y perfectamente acopladas. Soluciones como Forge (para el aprovisionamiento de servidores) o Vapor (para arquitecturas \textit{serverless} en AWS) facilitan el despliegue. Asimismo, paquetes como Breeze o Jetstream permiten incorporar módulos complejos de seguridad (como autenticación en dos factores o gestión de perfiles de usuario) en fases tempranas del proyecto~\cite{LaravelDocs}.
+
+    \item \textbf{El ORM Eloquent:} La interacción con bases de datos relacionales se realiza abstrayendo la sintaxis SQL tradicional mediante una interfaz orientada a objetos sumamente expresiva. Operaciones complejas de consulta y filtrado relacional se simplifican en instrucciones secuenciales legibles, como se ilustra a continuación:
+    \begin{center}
+        \texttt{User::find(1)->posts()->where('active', true)->get();}
+    \end{center}
+
+    \item \textbf{Motor de plantillas Blade:} Permite estructurar la interfaz de usuario dividiendo el código HTML en componentes reutilizables y aplicando herencia de vistas. Su principal virtud radica en que no penaliza el rendimiento de la aplicación, ya que los archivos de Blade se compilan directamente a código PHP nativo y se almacenan en caché hasta que sufren modificaciones.
+
+    \item \textbf{Soporte documental y comunidad:} Dispone de una de las documentaciones oficiales más rigurosas y detalladas dentro del software libre~\cite{LaravelDocs}. El volumen de su comunidad global asegura una alta tasa de resolución de incidencias en entornos de producción y una amplia disponibilidad de librerías de terceros.
+
+    \item \textbf{Seguridad nativa:} Incorpora mecanismos preconfigurados contra las vulnerabilidades web más habituales de acuerdo con los estándares de la industria. Entre ellos destaca la mitigación de inyecciones SQL (gracias a la parametrización forzada de Eloquent), la protección automatizada contra ataques de falsificación de petición en sitios cruzados (CSRF) y la gestión segura del \textit{hashing} de contraseñas por defecto.
+\end{itemize}
+
+
+\subsubsection{Limitaciones y consideraciones técnicas}
+
+
+
+A pesar de sus capacidades, es imperativo evaluar sus restricciones técnicas antes de su selección arquitectónica:
+
+
+
+\begin{itemize}
+
+\item \textbf{Curva de aprendizaje en conceptos avanzados:} Aunque la puesta en marcha de aplicaciones básicas es ágil, el dominio avanzado de su arquitectura interna resulta complejo. Comprender el funcionamiento del Contenedor de Servicios (\textit{Service Container}), la inversión de control mediante la inyección de dependencias y el ciclo de vida de las peticiones (\textit{request lifecycle}) exige una inversión considerable de tiempo.
+
+
+\item \textbf{Sobrecarga de rendimiento (\textit{Overhead}):} Al tratarse de un \textit{framework} monolítico rico en características, presenta un consumo de recursos y un tiempo de respuesta inicial superior al de micro-frameworks o soluciones minimalistas. En entornos con una alta concurrencia de tráfico, se vuelve indispensable la configuración exhaustiva de capas de caché (como Redis o Memcached) y la optimización de las consultas a la base de datos.
+
+
+\item \textbf{Abstracción mediante Fachadas (\textit{Facades}):} El uso generalizado de \textit{Facades} proporciona atajos estáticos para acceder a servicios complejos del contenedor. Si bien agiliza la escritura de código, es objeto de críticas en el diseño de software debido a que tiende a enmascarar las dependencias reales de las clases y puede llegar a complicar el diseño de pruebas unitarias (\textit{mocking}) si no se aplican los patrones adecuados.
+
+
+\item \textbf{Frecuencia de actualización de versiones:} El ritmo evolutivo del \textit{framework} es elevado. El proceso de migración entre versiones mayores puede requerir tareas de refactorización de código no triviales en aplicaciones de gran escala, a pesar de las guías pormenorizadas facilitadas por el equipo de desarrollo.
+
+\end{itemize}
+
+
+\subsection{Frontend: Vue.js}
+Vue.js es un marco de trabajo progresivo de JavaScript enfocado en la construcción de interfaces de usuario mediante una arquitectura de componentes declarativa \cite{VueDocs}. Opera vinculando plantillas con el estado de la aplicación de manera eficiente a través de un DOM virtual.
+
+\subsubsection{Ventajas}
+\begin{itemize}
+    \item \textbf{Curva de aprendizaje accesible:} Presenta una baja barrera de entrada que permite alcanzar una productividad óptima con conocimientos básicos de los estándares web nativos.
+    \item \textbf{Naturaleza incremental:} Permite ser integrado como una biblioteca de reactividad ligera o escalar hacia un framework completo mediante herramientas oficiales como Vue Router y Pinia.
+    \item \textbf{Rendimiento óptimo:} Su motor de reactividad basado en objetos Proxy de ECMAScript efectúa un seguimiento granular de las dependencias, minimizando los re-renderizados físicos.
+\end{itemize}
+
+\subsubsection{Desventajas}
+\begin{itemize}
+    \item \textbf{Baja prescripción arquitectónica:} Al no imponer una estructura estricta de directorios o patrones unificados, la falta de convenciones internas explícitas en los equipos puede derivar en un código fragmentado.
+    \item \textbf{Complejidad en la gestión de estado:} La coexistencia histórica entre herramientas como Vuex y soluciones contemporáneas más ligeras como Pinia incrementa la deuda técnica potencial en proyectos extensos.
+\end{itemize}
+
+\subsection{Resolución de la arquitectura del proyecto}
+Tras evaluar detalladamente las ventajas y desventajas de las diferentes opciones, se determinó que la combinación de Spring Boot y Angular constituía la opción más adecuada para este proyecto. Aunque ambos entornos frontend (Vue y Angular) representaban tecnologías inéditas en el catálogo de competencias previas, el rigor arquitectónico, la tipificación estricta de Angular y la robustez transaccional de Spring Boot proporcionaron el marco de ingeniería óptimo para cumplir con las exigencias de seguridad y estabilidad que demanda una aplicación de carácter médico.

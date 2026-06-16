@@ -1,0 +1,136 @@
+\chapter{Desarrollo}
+En esta sección se detalla el proceso de implementación de los diferentes módulos que conforman la aplicación ReMind. Asimismo, se exponen las justificaciones arquitectónicas, las decisiones de diseño técnico y las ventajas operativas que ofrecen las tecnologías seleccionadas para agilizar el desarrollo del sistema.
+
+\section{Desarrollo Backend}
+El backend de la aplicación se ha estructurado siguiendo un patrón de arquitectura por capas, organizando el código fuente en paquetes independientes con responsabilidades bien definidas: \textit{entity}, \textit{mapper}, \textit{repository}, \textit{service}, \textit{controller}, \textit{security} y \textit{dto}.
+
+A continuación, se detalla la función técnica de cada uno de los componentes:
+\begin{itemize}
+    \item \textbf{Entity:} Almacena las clases de dominio que mapean el modelo de datos y definen las relaciones relacionales mediante las especificaciones de JPA. Permite establecer restricciones de integridad (claves primarias, claves foráneas, columnas no nulas y nombres de tablas), automatizando y agilizando la sincronización con la base de datos de manera directa.
+    \item \textbf{Mapper:} Alberga los componentes encargados de la transformación de objetos de datos, gestionando la conversión bidireccional entre las entidades JPA y los Objetos de Transferencia de Datos (DTO).
+    \item \textbf{Repository:} Centraliza las operaciones de persistencia y acceso a los datos. Reduce significativamente la redundancia de código al heredar interfaces predefinidas para la ejecución de consultas, inserciones, modificaciones y eliminaciones de registros.
+    \item \textbf{Service:} Gestiona la lógica de negocio de la aplicación. Actúa como una capa intermedia de aislamiento y desacoplamiento entre el repositorio de datos y los controladores.
+    \item \textbf{Controller:} Constituye el punto de entrada de la aplicación en el servidor. Se encarga de exponer los puntos de acceso, interceptar las peticiones HTTP entrantes, validar la estructura de la solicitud y delegar el flujo a la capa de servicio correspondiente.
+    \item \textbf{Security:} Capa administrada por el ecosistema de Spring Security, responsable de los procesos críticos de autenticación, autorización y control de acceso perimetral de los usuarios.
+    \item \textbf{DTO (Data Transfer Object):} Facilita el intercambio seguro de datos entre las distintas capas del software, abstrayendo la estructura interna de las entidades y previniendo la exposición innecesaria de información sensible hacia el cliente.
+\end{itemize}
+
+\subsection{Patrones de diseño utilizados}
+\begin{itemize}
+    \item \textbf{Capa de Servicio (Service Layer):} Centraliza la lógica de negocio en clases especializadas, promoviendo la reutilización del código fuente y garantizando controladores desacoplados y simplificados.
+    \item \textbf{Objeto de Transferencia de Datos (DTO):} Técnica empleada para mitigar vulnerabilidades asociadas a la exposición directa de entidades JPA en la API pública, delimitando estrictamente los datos legibles por el cliente.
+    \item \textbf{Patrón Repositorio (Repository Pattern):} Implementado mediante Spring Data JPA, permitiendo interactuar con el motor de persistencia relacional abstrayendo la escritura de consultas SQL manuales.
+    \item \textbf{Uso de Lombok (Boilerplate Reduction):} Integración de la librería Lombok mediante el uso de anotaciones como \texttt{@Data}, \texttt{@AllArgsConstructor} y \texttt{@NoArgsConstructor}, reduciendo drásticamente la verbosidad del código fuente asociado a getters, setters y constructores.
+\end{itemize}
+
+\subsection{Seguridad}
+La infraestructura de seguridad se fundamenta en el framework Spring Security, constituyendo un núcleo crítico para la protección de la plataforma médica y el aislamiento de datos confidenciales.
+
+\subsubsection{Autenticación basada en JWT}
+El protocolo cerrado para la gestión de sesiones asíncronas se ejecuta de acuerdo con la siguiente secuencia operativa:
+\begin{enumerate}
+    \item El cliente introduce sus credenciales de acceso y las transmite hacia la API mediante una solicitud dirigida al endpoint \textit{/api/auth/login}.
+    \item El servidor recibe las credenciales y valida su veracidad contra los registros de la persistencia de datos.
+    \item Tras una validación exitosa, se genera un token firmado digitalmente mediante JWT (JSON Web Token), el cual incorpora las notificaciones o atributos de identidad del usuario (como su identificador y su rol dentro del sistema).
+    \item Para interactuar con los recursos protegidos de la plataforma, el cliente adjunta de forma obligatoria dicho token en la cabecera \texttt{Authorization} de cada petición HTTP subsecuente.
+    \item El componente de filtrado especializado \texttt{JwtRequestFilter} intercepta cada solicitud entrante antes de que alcance el controlador, encargándose de extraer el token, descodificarlo y verificar su integridad y vigencia.
+    \item Finalmente, la configuración centralizada en \texttt{SecurityConfig} evalúa el token validado junto con los privilegios del rol del usuario para autorizar o denegar el acceso a la ruta solicitada de la API.
+\end{enumerate}
+
+\subsubsection{Protección contra vulnerabilidades comunes}
+\begin{itemize}
+    \item \textbf{Validación de datos de entrada:} Los flujos entrantes procesados por los controladores se reciben mediante objetos DTO estructurados, validando sus restricciones lógicas a través de la especificación Bean Validation mediante anotaciones restrictivas como \texttt{@NotNull}, \texttt{@NotBlank} o \texttt{@Size}.
+    \item \textbf{Cifrado criptográfico de contraseñas:} Para garantizar el aislamiento seguro de las contraseñas, estas se procesan mediante un hashing criptográfico basado en el algoritmo BCrypt, expuesto a través de la interfaz \texttt{PasswordEncoder}, antes de consolidar su persistencia en la base de datos.
+    \item \textbf{Protección contra ataques XSS (Cross-Site Scripting):} El framework subyacente implementa de forma nativa políticas de saneamiento de cadenas y cabeceras de seguridad que previenen la inyección destructiva de código malicioso en el lado del cliente.
+\end{itemize}
+
+\subsection{API Rest}
+El backend y el frontend se comunican de forma asíncrona a través de una API RESTful. Se han diseñado los diferentes endpoints siguiendo los estándares normativos de nomenclatura HTTP:
+
+\begin{itemize}
+\item \textbf{Autenticación}
+\begin{itemize}
+\item \verb|POST /api/auth/login| Autenticación de usuarios (administrador, terapeuta, paciente) y generación del token JWT.
+\end{itemize}
+\item \textbf{Agenda}
+\begin{itemize}
+\item \verb|GET /api/agenda| Obtiene todas las agendas, con soporte de paginación opcional (\textit{page}, \textit{size}).
+\item \verb|GET /api/agenda/{id}| Obtiene una agenda específica por su identificador.
+\item \verb|GET /api/agenda/paciente/{pacienteId}| Obtiene la agenda y las actividades cognitivas asignadas a un paciente específico.
+\item \verb|PUT /api/agenda/{agendaId}/juego/{juegoId}/completar| Marca un juego específico dentro de una agenda como completado.
+\item \verb|POST /api/agenda| Registra una nueva agenda en el sistema.
+\item \verb|PUT /api/agenda/{id}| Actualiza una agenda existente.
+\item \verb|DELETE /api/agenda/{id}| Elimina una agenda específica del sistema por su ID.
+\item \verb|POST /api/agenda/{agendaId}/juego| Asigna una actividad cognitiva a una agenda específica.
+\item \verb|GET /api/agenda/{agendaId}/juegos| Obtiene todos los juegos contenidos en una agenda específica.
+\item \verb|DELETE /api/agenda/{agendaId}/juego/{juegoId}| Elimina un juego asignado a una agenda específica.
+\end{itemize}
+\item \textbf{Administrador}
+\begin{itemize}
+\item \verb|POST /api/administrador| Registra un nuevo perfil de administrador.
+\end{itemize}
+\item \textbf{Juego}
+\begin{itemize}
+\item \verb|GET /api/juegos| Obtiene el catálogo completo de juegos.
+\item \verb|GET /api/juegos/{id}| Obtiene un juego por su identificador.
+\item \verb|POST /api/juegos| Registra un nuevo juego en el catálogo.
+\item \verb|DELETE /api/juegos/{id}| Elimina un juego por su ID.
+\end{itemize}
+\item \textbf{Terapeuta}
+\begin{itemize}
+\item \verb|GET /api/terapeuta| Obtiene todos los terapeutas registrados, con paginación opcional (\textit{page}, \textit{size}).
+\item \verb|GET /api/terapeuta/{id}| Obtiene un terapeuta por su identificador.
+\item \verb|GET /api/terapeuta/{id}/seguimiento| Obtiene los datos de seguimiento clínico individual para un terapeuta, incluyendo información agregada de sus pacientes y evolución de los juegos.
+\item \verb|POST /api/terapeuta| Registra un nuevo terapeuta en el sistema.
+\item \verb|DELETE /api/terapeuta/{id}| Elimina un terapeuta por su ID.
+\item \verb|PUT /api/terapeuta/{id}| Actualiza un terapeuta existente.
+\item \verb|GET /api/terapeuta/{id}/agendas| Obtiene todas las agendas asociadas y gestionadas por un terapeuta específico.
+\item \verb|POST /api/terapeuta/{id}/reset-password| Restablece la contraseña de acceso de un terapeuta.
+\end{itemize}
+\item \textbf{Paciente}
+\begin{itemize}
+\item \verb|GET /api/paciente| Obtiene todos los pacientes, con soporte de paginación opcional (\textit{page}, \textit{size}).
+\item \verb|GET /api/paciente/{id}| Obtiene un paciente por su identificador.
+\item \verb|POST /api/paciente| Registra un nuevo paciente en el sistema.
+\item \verb|POST /api/paciente/{id}/reset-password| Restablece la contraseña de acceso de un paciente.
+\item \verb|DELETE /api/paciente/{id}| Elimina un paciente por su ID.
+\item \verb|PUT /api/paciente/{id}| Actualiza la información de un paciente existente.
+\end{itemize}
+\end{itemize}
+
+
+\section{Desarrollo Frontend}
+La capa de presentación e interfaz interactiva con el usuario se ha desarrollado en Angular. Este framework facilita la estructuración de la interfaz bajo el modelo de Aplicación de una Sola Página (SPA), optimizando la velocidad de respuesta y eliminando las recargas físicas del navegador.
+
+\subsection{Arquitectura del frontend}
+La arquitectura del lado del cliente se distribuye según los siguientes principios técnicos de ingeniería de software:
+\begin{itemize}
+    \item \textbf{Estructura basada en componentes:} Cada módulo visual de la interfaz encapsula su propia lógica de control (TypeScript), plantilla estructural (HTML5) y estilos de diseño independientes (CSS3). Esta modularidad promueve la reutilización de código y minimiza la deuda técnica del proyecto.
+    \item \textbf{Organización de directorios:}
+    \begin{itemize}
+        \item \textbf{components:} Almacena los elementos moleculares y componentes visuales reutilizables de la interfaz, tales como botones, tarjetas y formularios de control.
+        \item \textbf{services:} Contiene las clases encargadas de gestionar la lógica de comunicación asíncrona y el consumo de endpoints desde la API del servidor.
+        \item \textbf{models:} Define las interfaces y estructuras de datos estáticas que tipifican los objetos compartidos en la aplicación, garantizando la robustez del tipado.
+        \item \textbf{pages:} Representa las vistas completas del sistema que se encargan de organizar y orquestar a los diferentes componentes reutilizables.
+        \item \textbf{interceptor:} Componente especializado encargado de interceptar globalmente las peticiones HTTP salientes para adjuntar el token de autenticación JWT de manera automatizada en las cabeceras de la solicitud.
+    \end{itemize}
+    \item \textbf{Estilos y consistencia visual:} El diseño visual y la adaptabilidad de la interfaz se apoyan en el estándar CSS3 combinado con el framework Bootstrap para agilizar la maquetación geométrica de contenedores, tarjetas, botones y menús. Asimismo, se integra la librería PrimeIcons para unificar el catálogo de iconografía, optimizando la experiencia de usuario y la calidad de la presentación gráfica.
+\end{itemize}
+
+\subsection{Comunicación con el Backend}
+La transferencia asíncrona de datos entre el cliente Angular y el servidor Spring Boot se realiza mediante el ciclo de peticiones HTTP estructurado bajo los siguientes flujos operativos:
+
+\begin{itemize}
+    \item \textbf{Autenticación y ciclo de vida del token:}
+    \begin{itemize}
+        \item \textbf{Solicitud de Login:} Desde el módulo de acceso, el usuario introduce sus credenciales de seguridad. El servicio asignado captura estos datos y despacha una solicitud asíncrona de tipo POST hacia la API.
+        \item \textbf{Validación en el Backend:} El componente \texttt{AuthController} en el servidor intercepta la petición y evalúa la coincidencia de la clave enviada contra el hash criptográfico almacenado en la persistencia.
+        \item \textbf{Emisión y almacenamiento de la respuesta:} Tras la validación de las credenciales, el backend transmite el token JWT hacia el cliente, donde el servicio \texttt{auth.service} se encarga de recibirlo y almacenarlo de forma segura en el almacenamiento local del navegador del usuario.
+    \end{itemize}
+    \item \textbf{Acceso a recursos protegidos:}
+    \begin{itemize}
+        \item \textbf{Inyección mediante interceptor:} Ante cualquier solicitud de datos protegidos, el interceptor HTTP extrae automáticamente el token almacenado en el navegador y lo adjunta dentro de la cabecera \texttt{Authorization} de la petición saliente.
+        \item \textbf{Servicios clientes:} Los servicios especializados inician las llamadas asíncronas orientadas a obtener, crear, modificar o eliminar datos, interactuando de forma limpia con los controladores del backend.
+        \item \textbf{Procesamiento y renderizado:} El controlador del backend ejecuta la regla de negocio y transmite una respuesta estructurada en formato JSON que el frontend procesa dinámicamente para actualizar la vista sin necesidad de recargar la página.
+    \end{itemize}
+\end{itemize}

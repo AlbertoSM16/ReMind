@@ -1,0 +1,275 @@
+\begin{thebibliography}{10}
+
+\bibitem{who2021dementia}
+{World Health Organization}.
+\newblock Global status report on the public health response to dementia, 2021.
+\newblock Consultado el 15 de junio de 2026.
+
+\bibitem{merino2015enfermedad}
+E~Navarro Merino, MA~Conde Sendin, and JA~Villanueva Osorio.
+\newblock Enfermedad de alzheimer.
+\newblock {\em Medicine-Programa de Formaci{\'o}n M{\'e}dica Continuada
+  Acreditado}, 11(72):4306--4315, 2015.
+
+\bibitem{kueider2012computerized}
+Alexandra~M. Kueider, Jeanine~M. Parisi, Alden~L. Gross, and George~W. Rebok.
+\newblock Computerized cognitive training with older adults: A systematic
+  review.
+\newblock {\em PLoS ONE}, 7(7):e40588, 2012.
+
+\bibitem{castillo2020neuroplasticidad}
+Gabriela Castillo, Brayhan Fern{\'a}ndez, and Diego Chamorro.
+\newblock Neuroplasticidad: Ejercicios para retrasar los efectos de la
+  enfermedad de alzheimer mediante estimulaci{\'o}n cognitiva.
+\newblock {\em Revista de Investigaci{\'o}n Cient{\'\i}fica y Tecnol{\'o}gica},
+  4(2):115--122, 2020.
+
+\bibitem{dort2020_aphasia}
+Samantha Van~Dort et~al.
+\newblock Evaluation of aphasia in a culturally and linguistically diverse
+  context: Practices of and challenges faced by speech-language pathologists.
+\newblock {\em Authorea Preprints}, 2020.
+
+\bibitem{stroke_equity_2021}
+Amy~W. Wang et~al.
+\newblock Moving towards equity with digital health innovations for stroke
+  care.
+\newblock {\em Stroke}, 52(9):3053--3061, 2021.
+
+\bibitem{donoso2003enfermedad}
+Archibaldo Donoso.
+\newblock La enfermedad de alzheimer.
+\newblock {\em Revista chilena de neuro-psiquiatr{\'\i}a}, 41:13--22, 2003.
+
+\bibitem{romano2007enfermedad}
+M~Romano, Maria~Daniela Nissen, N~Del~Huerto, and C~Parquet.
+\newblock Enfermedad de alzheimer.
+\newblock {\em Revista de posgrado de la v{\'\i}a c{\'a}tedra de medicina},
+  75(1):9--12, 2007.
+
+\bibitem{romero2018importancia}
+A~P{\'e}rez Romero and S~Gonz{\'a}lez Garrido.
+\newblock La importancia de los s{\'\i}ntomas psicol{\'o}gicos y conductuales
+  (spcd) en la enfermedad de alzheimer.
+\newblock {\em Neurolog{\'\i}a}, 33(6):378--384, 2018.
+
+\bibitem{reyes2010sintomas}
+Julio~C{\'e}sar Reyes-Figueroa, Marcel Rosich-Estrag{\'o}, Eva Bordas-Buera,
+  Ana~Milena Gaviria-G{\'o}mez, Elisabet Vilella-Cuadrada, and Antonio
+  Labad-Alqu{\'e}zar.
+\newblock S{\'\i}ntomas psicol{\'o}gicos y conductuales como factores de
+  progresi{\'o}n a demencia tipo alzheimer en el deterioro cognitivo leve.
+\newblock {\em Rev Neurol}, 50(11):653--660, 2010.
+
+\bibitem{valls2010diagnostico}
+Cinta Valls-Pedret, Jos{\'e}~Luis Molinuevo, and Lorena Rami.
+\newblock Diagn{\'o}stico precoz de la enfermedad de alzheimer: fase
+  prodr{\'o}mica y precl{\'\i}nica.
+\newblock {\em Rev Neurol}, 51(8):471--480, 2010.
+
+\bibitem{garcia2022eficacia}
+Mar{\'\i}a Isabel~Barrientos Garc{\'\i}a and Evaristo~Barrera Algar{\'\i}n.
+\newblock Eficacia del programa gradior para la estimulaci{\'o}n cognitiva de
+  personas con alzheimer.
+\newblock {\em Retos: nuevas tendencias en educaci{\'o}n f{\'\i}sica, deporte y
+  recreaci{\'o}n}, (46):151--160, 2022.
+
+\bibitem{pena2010estimulacion}
+Andr{\'e}s~Sardinero Pe{\~n}a.
+\newblock Estimulaci{\'o}n cognitiva para adultos, 2010.
+\newblock Recuperado de tallerescognitiva.com/descargas/muestra.pdf.
+
+\bibitem{ellis2022_representation}
+Charles Ellis et~al.
+\newblock Representation in aphasia research: An examination of {U.S.}
+  treatment studies published between 2009 and 2019.
+\newblock {\em American Journal of Speech-Language Pathology}, 31(2):851--861,
+  2022.
+
+\bibitem{neuroscience_ai_2026}
+{Autores Varios}.
+\newblock Bridging neuroscience and {AI}: Adaptive, culturally sensitive
+  technologies transforming aphasia rehabilitation.
+\newblock {\em arXiv preprint}, 2026.
+
+\bibitem{stroke_qualitative_2025}
+{Autores del estudio cualitativo}.
+\newblock Older adult stroke survivors' needs and perspectives of a stroke app:
+  a qualitative study.
+\newblock {\em PubMed Central (PMC)}, 2025.
+
+\bibitem{jmir_digitaldivide_2025}
+{Autores del estudio JMIR}.
+\newblock The association between the digital divide and health inequalities
+  among older adults: Nationally representative cross-sectional survey.
+\newblock {\em Journal of Medical Internet Research}, 2025.
+
+\bibitem{canos2003metodologias}
+Jos{\'e}~H Can{\'o}s, Patricio Letelier, and M{\textordfeminine}~Carmen
+  Penad{\'e}s.
+\newblock Metodolog{\'\i}as {\'a}giles en el desarrollo de software.
+\newblock {\em Universidad Polit{\'e}cnica de Valencia, Valencia}, pages 1--8,
+  2003.
+
+\bibitem{MySQLDocs}
+Oracle and/or~its affiliates.
+\newblock Mysql documentation.
+\newblock \url{https://dev.mysql.com/doc/}, 2024.
+\newblock Documentación oficial de MySQL. Accedido en 2024.
+
+\bibitem{spring-boot-autoconfig}
+Inc. VMware.
+\newblock Spring boot documentation - auto-configuration.
+\newblock
+  \url{https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using.auto-configuration},
+  2024.
+\newblock Accedido en 2024. Documentación oficial sobre el mecanismo de
+  auto-configuración.
+
+\bibitem{spring-boot-embedded}
+Inc. VMware.
+\newblock Spring boot documentation - embedded web servers.
+\newblock
+  \url{https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.embedded-servers},
+  2024.
+\newblock Accedido en 2024. Documentación sobre el uso de servidores web
+  embebidos.
+
+\bibitem{spring-boot-starters}
+Inc. VMware.
+\newblock Spring boot documentation - starters.
+\newblock
+  \url{https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using.build-systems.starters},
+  2024.
+\newblock Accedido en 2024. Documentación oficial sobre los descriptores de
+  dependencia "Starters".
+
+\bibitem{MongoDBDocs}
+Inc. MongoDB.
+\newblock Mongodb documentation.
+\newblock \url{https://www.mongodb.com/docs/}, 2024.
+\newblock Documentación oficial de MongoDB.
+
+\bibitem{LaravelDocs}
+Taylor Otwell and contributors.
+\newblock Laravel documentation.
+\newblock \url{https://laravel.com/docs}, 2024.
+\newblock Fuente principal y documentación oficial del framework.
+
+\bibitem{VueDocs}
+Evan You and Vue.js Team.
+\newblock Vue.js - the progressive javascript framework.
+\newblock \url{https://vuejs.org/}, 2024.
+\newblock Documentación oficial de Vue.js.
+
+\bibitem{eluigwe2026}
+K.~N. Eluigwe, E.~N.~O. Acquah, E.~A. Sarfo, and O.~U. Oka.
+\newblock Artificial intelligence and machine learning in the early detection
+  and prediction of {Alzheimer's} disease.
+\newblock {\em Research Connections, Oxford Academic}, 2026.
+
+\bibitem{frontiers2025}
+{Frontiers in Computer Science}.
+\newblock A comprehensive review on early detection of {Alzheimer's} disease
+  using various deep learning techniques, 2025.
+
+\bibitem{sheffield2026}
+{University of Sheffield}.
+\newblock Computer science: Advanced computational methods in dementia
+  research, 2026.
+
+\bibitem{zhao2026}
+K.~Zhao and I.~Nasrallah.
+\newblock How well can {AI}-based {CAD} models identify {Alzheimer's} disease?
+\newblock {\em Radiology: Artificial Intelligence}, 2026.
+
+\bibitem{glassdoor:ntt:sueldos}
+Glassdoor.
+\newblock Sueldos de programador j{\'u}nior en {{NTT DATA}} en granada, s.f.
+\newblock Recuperado el 27 de octubre de 2025.
+
+\bibitem{glassdoor:senior:granada}
+Glassdoor.
+\newblock Sueldo de {{Senior Software Engineer}} en granada, s.f.
+\newblock Recuperado el 27 de octubre de 2025.
+
+\bibitem{al2020agile}
+Samar Al-Saqqa, Samer Sawalha, and Hiba AbdelNabi.
+\newblock Agile software development: Methodologies and trends.
+\newblock {\em International Journal of Interactive Mobile Technologies},
+  14(11), 2020.
+
+\bibitem{scrumguide2020}
+Ken Schwaber and Jeff Sutherland.
+\newblock {\em La Gu{\'i}a de Scrum: La Gu{\'i}a Definitiva de Scrum}.
+\newblock Scrumguides.org, 2020.
+\newblock Recuperado el 27 de octubre de 2025.
+
+\bibitem{sachdeva2016scrum}
+Sakshi Sachdeva.
+\newblock Scrum methodology.
+\newblock {\em Int. J. Eng. Comput. Sci}, 5(16792):16792--16800, 2016.
+
+\bibitem{johnson2004spring}
+Rod Johnson, Juergen Hoeller, Keith Donald, Colin Sampaleanu, Rob Harrop,
+  Thomas Risberg, Alef Arendsen, Darren Davison, Dmitriy Kopylenko, Mark
+  Pollack, et~al.
+\newblock The spring framework-reference documentation.
+\newblock {\em interface}, 21:27, 2004.
+
+\bibitem{react:docs}
+{React Documentation}.
+\newblock Declarative: React makes it painless to create interactive uis, s.f.
+\newblock Consultado el 28 de octubre de 2025.
+
+\bibitem{agilemanifesto2001}
+Kent Beck, Mike Beedle, Arie van Bennekum, Alistair Cockburn, Ward Cunningham,
+  Martin Fowler, James Grenning, Jim Highsmith, Andrew Hunt, Ron Jeffries, Jon
+  Kern, Brian Marick, Robert~C. Martin, Steve Mellor, Ken Schwaber, Jeff
+  Sutherland, and Dave Thomas.
+\newblock Manifiesto por el desarrollo ágil de software (agile manifesto).
+\newblock Sitio web oficial del Manifiesto Ágil, 2001.
+\newblock Consultado el 30 de octubre de 2025.
+
+\bibitem{highsmith2009agile}
+Jim Highsmith.
+\newblock {\em Agile Project Management: Creating Innovative Products}.
+\newblock Addison-Wesley Professional, Boston, EE.UU., 2009.
+\newblock Obra de referencia sobre la aplicación práctica de metodologías
+  ágiles en gestión de proyectos.
+
+\bibitem{paneke2025ventajasagil}
+José Paneke.
+\newblock Ventajas de la metodología Ágil.
+\newblock Elaboración propia basada en el Manifiesto Ágil (2001) y Highsmith
+  (2009)., 2025.
+\newblock Reseña ampliada sobre los beneficios y ventajas del enfoque ágil en
+  la gestión de proyectos.
+
+\bibitem{meyer2006css}
+Eric~A Meyer.
+\newblock {\em CSS: The Definitive Guide: The Definitive Guide}.
+\newblock " O'Reilly Media, Inc.", 2006.
+
+\bibitem{BootstrapDocs}
+Mark Otto, Jacob Thornton, and Bootstrap Team.
+\newblock Bootstrap documentation.
+\newblock \url{https://getbootstrap.com/docs/}, 2024.
+\newblock Documentación oficial de Bootstrap v5.
+
+\bibitem{AngularDocs}
+The~Angular Team.
+\newblock Angular documentation.
+\newblock \url{https://angular.dev}, 2024.
+\newblock Documentación oficial de la plataforma de desarrollo Angular.
+
+\bibitem{spring-boot-actuator}
+Inc. VMware.
+\newblock Spring boot documentation - actuator: Production-ready features.
+\newblock
+  \url{https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html},
+  2024.
+\newblock Accedido en 2024. Documentación sobre las capacidades de
+  monitorización y gestión en producción.
+
+\end{thebibliography}

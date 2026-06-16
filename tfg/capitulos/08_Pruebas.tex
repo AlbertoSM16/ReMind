@@ -1,0 +1,57 @@
+\chapter{Pruebas y Validación}
+\section{Estrategia de Pruebas del Sistema}
+
+\subsection{Pruebas Unitarias en el Backend: JUnit y Mockito}
+
+Para garantizar la estabilidad del \textit{backend} y asegurar que la lógica de negocio funcione exactamente como se ha diseñado, se ha implementado una batería de pruebas unitarias. El objetivo principal es aislar cada componente de la arquitectura Spring Boot y validar su comportamiento de forma independiente, lo que permite detectar fallos en fases tempranas del desarrollo y evitar regresiones al introducir cambios en el código. Para llevar a cabo esta tarea de forma automatizada, se han integrado dos herramientas estándar en el ecosistema Java: JUnit y Mockito.
+
+\subsubsection{JUnit 5: Gestión del Ciclo de Vida de las Pruebas}
+Se ha utilizado JUnit 5  como el \textit{framework} base para definir, estructurar y ejecutar los test. Su función en el proyecto es controlar el entorno de pruebas y verificar los resultados de las operaciones. Los mecanismos clave de JUnit aplicados en el proyecto son:
+\begin{itemize}
+    \item \textbf{Configuración del entorno:} Mediante el uso de anotaciones como \texttt{@BeforeEach} y \texttt{@AfterEach}, 
+    se preparan los datos necesarios antes de cada test y se limpian al finalizar. Esto asegura que cada prueba sea independiente y 
+    que el estado de una no afecte a las siguientes.
+    \item \textbf{Aserciones (\textit{Assertions}):} Se emplean métodos estáticos de la clase \texttt{Assertions} (\texttt{assertEquals}, \texttt{assertNotNull}, \texttt{assertTrue}) para comprobar que los datos devueltos por los métodos del \textit{backend} coinciden con los resultados esperados.
+    \item \textbf{Control de excepciones:} El sistema también se ha probado ante escenarios de error (como introducir datos inválidos), utilizando \texttt{assertThrows} para verificar que el \textit{backend} lanza las excepciones personalizadas correctas bajo esas condiciones.
+\end{itemize}
+
+\subsubsection{Mockito: Aislamiento de Dependencias}
+En Spring Boot, las clases de la capa de negocio (\textit{Services}) dependen directamente de la capa de acceso a datos (\textit{Repositories}) o de componentes externos. Para conseguir que un test sea estrictamente unitario, es necesario aislar el componente bajo prueba eliminando estas dependencias reales. Para ello se ha utilizado Mockito.
+
+Mockito permite crear objetos simulados (\textit{mocks}) que reemplazan a los componentes reales, controlando su comportamiento. Su uso en el proyecto se resume en:
+\begin{itemize}
+    \item \textbf{Inyección de dobles de prueba:} Combinando las anotaciones \texttt{@Mock} y \texttt{@InjectMocks}, 
+    se generan los componentes simulados y se inyectan automáticamente en el servicio a probar. Esto emula el funcionamiento
+     del contenedor de inversión de control de Spring, pero de manera limpia y sin la carga gráfica del \textit{framework}.
+    \item \textbf{Definición de comportamiento:} A través de la sintaxis \texttt{when(...)} . \texttt{thenReturn(...)} se programa a los 
+    \textit{mocks} para que devuelvan datos controlados cuando reciben llamadas específicas. Esto permite probar la lógica del servicio sin necesidad de realizar consultas reales a la base de datos.
+    \item \textbf{Verificación de interacciones:} Se utiliza el método \texttt{verify()} para asegurar que el servicio interactúa correctamente con sus dependencias; por ejemplo, comprobando que el método de guardado de un repositorio se invoca exactamente una vez al registrar un usuario.
+\end{itemize}
+
+\subsubsection{Optimización y Rendimiento de los Test}
+Un aspecto crítico en el diseño de estas pruebas ha sido la velocidad de ejecución. Al evitar el uso de \texttt{@SpringBootTest} —que levantaría el contexto completo de la aplicación y ralentizaría el proceso— y optar por \texttt{@ExtendWith(MockitoExtension.class)}, los test se ejecutan en milisegundos. Esta ligereza facilita la integración continua, permitiendo al desarrollador lanzar la suite completa tras cada modificación para confirmar, de forma inmediata, si el código sigue siendo correcto.
+
+\subsection{Pruebas de Integración y Validación de la API REST con Postman}
+
+Con el objetivo de garantizar la robustez, la consistencia de los datos y el correcto funcionamiento del sistema informático desarrollado, se ha llevado a cabo una fase exhaustiva de pruebas de integración sobre el \textit{backend}. Para la ejecución, automatización y verificación de los diferentes \textit{endpoints} que componen la API REST, se ha seleccionado \textbf{Postman} como herramienta principal, debido a su versatilidad y capacidad para realizar aserciones (\textit{assertions}) en entornos de desarrollo dinámicos.
+
+\subsubsection{Estrategia y Estructura de las Pruebas}
+Las pruebas se organizaron mediante una colección de Postman, estructurada de manera jerárquica emulando los diferentes controladores y recursos del sistema (por ejemplo, usuarios, servicios o citas). A cada petición HTTP configurada (\texttt{GET}, \texttt{POST}, \texttt{PUT}, \texttt{DELETE}) se le asoció un script de pruebas en JavaScript dentro de la pestaña \textit{Tests} de Postman. Estos scripts permitieron automatizar la verificación de las respuestas del servidor bajo tres criterios fundamentales:
+
+\begin{itemize}
+    \item \textbf{Validación del Código de Estado HTTP:} Verificación de que el \textit{backend} responde con el código semántico correcto (p. ej., \texttt{200 OK} para consultas exitosas, \texttt{201 Created} para inserciones, \texttt{400 Bad Request} para errores de validación, y \texttt{404 Not Found} cuando el recurso no existe).
+    \item \textbf{Validación del Tiempo de Respuesta:} Control del rendimiento del \textit{backend}, asegurando que los tiempos de respuesta se mantuvieran por debajo de un umbral crítico para garantizar una buena experiencia de usuario.
+    \item \textbf{Validación de la Estructura y Contenido del JSON:} Comprobación de que el cuerpo de la respuesta contiene los campos requeridos y los tipos de datos esperados mediante aserciones de la librería integrada en Postman.
+\end{itemize}
+
+\subsubsection{Casos de Prueba Implementados}
+Se diseñó una batería de pruebas que contempla tanto el camino feliz (\textit{happy path}) como los flujos de excepción y error. A modo de resumen, se evaluaron los siguientes escenarios:
+
+\begin{enumerate}
+    \item \textbf{Casos de Éxito (Flujo Normal):} Peticiones con datos de entrada válidos que deben resultar en una persistencia correcta en la base de datos o en la devolución de la información solicitada.
+    \item \textbf{Casos de Error por Validación:} Envío de datos incompletos o con formatos erróneos para comprobar que las anotaciones de validación de Spring interceptan la petición correctamente y devuelven un error controlado.
+    \item \textbf{Casos de Gestión de Excepciones:} Intentos de acceso a recursos inexistentes o borrados, verificando que el controlador global de excepciones del \textit{backend} (\texttt{@RestControllerAdvice}) encapsula el error en un formato JSON estandarizado en lugar de exponer trazas del servidor.
+    \item \textbf{Pruebas de Seguridad y Control de Acceso:} Peticiones a \textit{endpoints} protegidos sin el token JWT correspondiente o con un rol insuficiente, verificando las respuestas \texttt{401 Unauthorized} o \texttt{403 Forbidden}.
+\end{enumerate}
+
+
