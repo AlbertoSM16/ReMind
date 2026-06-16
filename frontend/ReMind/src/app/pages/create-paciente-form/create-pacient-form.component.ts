@@ -4,17 +4,21 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { PacientService } from '../../services/pacient.service';
 import { Router, RouterModule } from '@angular/router';
 import { Paciente } from '../../models/paciente.model';
+import { HeaderComponent } from '../../components/header/header.component';
 import Swal from 'sweetalert2';
+
 @Component({
-  selector: 'app-create-patient-form', // Corregido el selector
+  selector: 'app-create-patient-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, HeaderComponent],
   templateUrl: './create-pacient-form.component.html',
   styleUrls: ['./create-pacient-form.component.css']
 })
 export class CreatePatientFormComponent implements OnInit {
   @ViewChild('pacientForm') pacientForm!: NgForm;
   pacient: Paciente = {} as Paciente;
+  today: string = '';
+  submitted = false;
 
   constructor(
     private pacientService: PacientService,
@@ -22,14 +26,22 @@ export class CreatePatientFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.today = this.formatDate(new Date());
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   onSubmit(): void {
+    this.submitted = true;
     if (this.pacientForm.invalid) {
       Object.values(this.pacientForm.controls).forEach(control => {
         control.markAsTouched();
       });
-      Swal.fire('Formulario incompleto', 'Por favor, rellene todos los campos correctamente.', 'warning');
       return;
     }
 

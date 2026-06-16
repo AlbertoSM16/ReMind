@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 export class PacientListComponent implements OnInit {
 
   patients: Paciente[] = [];
+  isLoading = true;
 
   constructor(
     private router: Router,
@@ -32,18 +33,19 @@ export class PacientListComponent implements OnInit {
   }
 
   getPacients(): void {
+    this.isLoading = true;
     this.pacientService.getPatients().subscribe({
       next: (data) => {
         this.patients = data;
-
+        this.isLoading = false;
       },
       error: (error) => {
-        Swal.fire({
-          title: 'No se encontraron pacientes',
-          text: 'Actualmente no hay pacientes registrados.',
-          icon: 'info',
-          confirmButtonColor: '#61b369'
-        });
+        this.isLoading = false;
+        if (error.status === 0) {
+          Swal.fire('Error de conexión', 'No se puede conectar con el servidor.', 'error');
+        } else {
+          Swal.fire('Error', 'Ocurrió un error al cargar los pacientes.', 'error');
+        }
       }
     });
   }
@@ -76,8 +78,7 @@ export class PacientListComponent implements OnInit {
               icon: 'success'
             });
           },
-          error: (err) => {
-            console.error('Error al reiniciar la contraseña:', err);
+          error: () => {
             Swal.fire('Error', 'No se pudo reiniciar la contraseña.', 'error');
           }
         });
@@ -101,13 +102,8 @@ export class PacientListComponent implements OnInit {
           confirmButtonText: 'Entendido'
         });
       },
-      error: (error) => {
-        console.error('Error al obtener los datos del paciente:', error);
-        Swal.fire(
-          'Error',
-          'No se pudieron obtener los datos del paciente.',
-          'error'
-        );
+      error: () => {
+        Swal.fire('Error', 'No se pudieron obtener los datos del paciente.', 'error');
       }
     });
   }
@@ -125,23 +121,13 @@ export class PacientListComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        // Si el usuario confirma, se procede a eliminar
         this.pacientService.deletePatient(pacientId).subscribe({
           next: () => {
             this.patients = this.patients.filter(p => p.id !== pacientId);
-            Swal.fire(
-              '¡Eliminado!',
-              'El paciente ha sido eliminado.',
-              'success'
-            );
+            Swal.fire('¡Eliminado!', 'El paciente ha sido eliminado.', 'success');
           },
-          error: (error) => {
-            console.error('Error al eliminar paciente:', error);
-            Swal.fire(
-              'Error',
-              'Hubo un problema al eliminar el paciente.',
-              'error'
-            );
+          error: () => {
+            Swal.fire('Error', 'Hubo un problema al eliminar el paciente.', 'error');
           }
         });
       }

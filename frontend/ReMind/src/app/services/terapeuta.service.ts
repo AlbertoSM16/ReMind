@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Terapeuta } from '../models/terapeuta.model';
+import { environment } from '../../environments/environment';
 
 export interface PacienteSeguimiento {
     pacienteId: number;
@@ -9,7 +10,6 @@ export interface PacienteSeguimiento {
     juegosCompletados: number;
     juegosTotales: number;
     juegos: JuegoAsignado[];
-
 }
 export interface JuegoAsignado {
     nombre: string;
@@ -27,7 +27,7 @@ export interface TerapeutaSeguimiento {
     providedIn: 'root'
 })
 export class TerapeutaService {
-    private apiUrl = 'http://localhost:8080/api/terapeuta';
+    private apiUrl = `${environment.apiUrl}/terapeuta`;
 
     constructor(private http: HttpClient) { }
 

@@ -1,46 +1,55 @@
-<div class="main-container">
+<div class="form-page">
   <header-component></header-component>
+  <div class="form-body">
+    <form class="form-card" #editForm="ngForm" (ngSubmit)="onSubmit()">
+      <h2 class="form-heading">Editar paciente</h2>
 
-  <form class="patient-form" #editForm="ngForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" class="form-control custom-input" [(ngModel)]="patient.nombre" 
-             name="nombre" #nombre="ngModel" required>
-      <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger mt-1">
-        El nombre es obligatorio.
+      <div *ngIf="submitted && editForm.invalid" class="form-error-banner">
+        <i class="pi pi-exclamation-circle"></i> Corrige los errores marcados antes de continuar.
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="apellido">Apellido</label>
-      <input type="text" id="apellido" class="form-control custom-input" [(ngModel)]="patient.apellido" 
-             name="apellido" #apellido="ngModel" required>
-      <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger mt-1">
-        El apellido es obligatorio.
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" class="form-control custom-input" [(ngModel)]="patient.nombre" 
+               name="nombre" #nombre="ngModel" required pattern=".*\S.*" maxlength="100">
+        <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger mt-1">
+          <div *ngIf="nombre.errors?.['required']">El nombre es obligatorio.</div>
+          <div *ngIf="nombre.errors?.['pattern']">El nombre no puede estar vacío.</div>
+        </div>
       </div>
-    </div>
-    
-    <div class="form-group">
+
+      <div class="form-group">
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" class="form-control custom-input" [(ngModel)]="patient.apellido" 
+               name="apellido" #apellido="ngModel" required pattern=".*\S.*" maxlength="100">
+        <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="alert alert-danger mt-1">
+          <div *ngIf="apellido.errors?.['required']">El apellido es obligatorio.</div>
+          <div *ngIf="apellido.errors?.['pattern']">El apellido no puede estar vacío.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
         <label for="telefono">Teléfono</label>
         <input type="tel" id="telefono" class="form-control custom-input" placeholder="Teléfono" 
-               [(ngModel)]="patient.telefono" name="telefono" #telefono="ngModel" required pattern="^\d{9}$">
+               [(ngModel)]="patient.telefono" name="telefono" #telefono="ngModel" required pattern="^\d{9}$"
+               maxlength="9" minlength="9">
         <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger mt-1">
           <div *ngIf="telefono.errors?.['required']">El teléfono es obligatorio.</div>
-          <div *ngIf="telefono.errors?.['pattern']">El teléfono debe tener 9 dígitos.</div>
+          <div *ngIf="telefono.errors?.['pattern'] || telefono.errors?.['minlength']">El teléfono debe tener 9 dígitos.</div>
         </div>
-    </div>
+      </div>
 
-    <div class="form-group">
+      <div class="form-group">
         <label for="enfermedad">Enfermedad (Diagnóstico)</label>
         <input type="text" id="enfermedad" class="form-control custom-input" placeholder="Enfermedad o Diagnóstico" 
-               [(ngModel)]="patient.enfermedad" name="enfermedad" #enfermedad="ngModel" required>
+               [(ngModel)]="patient.enfermedad" name="enfermedad" #enfermedad="ngModel" required pattern=".*\S.*" maxlength="200">
         <div *ngIf="enfermedad.invalid && (enfermedad.dirty || enfermedad.touched)" class="alert alert-danger mt-1">
-          La enfermedad es obligatoria.
+          <div *ngIf="enfermedad.errors?.['required']">La enfermedad es obligatoria.</div>
+          <div *ngIf="enfermedad.errors?.['pattern']">El diagnóstico no puede estar vacío.</div>
         </div>
-    </div>
-    
-    <div class="d-flex justify-content-center mt-5">
-      <button type="submit" class="btn edit-btn" [disabled]="editForm.invalid">Actualizar</button>
-    </div>
-  </form>
+      </div>
+
+      <button type="submit" class="btn submit-btn">Actualizar</button>
+    </form>
+  </div>
 </div>

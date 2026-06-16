@@ -1,43 +1,38 @@
-// app/services/agenda.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgendaService {
-  private apiUrl = 'http://localhost:8080/api/agenda';
-  private terapeutaApiUrl = 'http://localhost:8080/api/terapeuta';
-
+  private baseApiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
+
   getAgendasByTerapeuta(terapeutaId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.terapeutaApiUrl}/${terapeutaId}/agendas`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/terapeuta/${terapeutaId}/agendas`);
   }
 
   assignJuego(agendaId: number, juegoId: number, dificultad: number): Observable<any> {
     const body = { juegoId, dificultad };
-    // La URL ya no incluye el ID del juego
-    return this.http.post(`${this.apiUrl}/${agendaId}/juego`, body);
+    return this.http.post(`${this.baseApiUrl}/agenda/${agendaId}/juego`, body);
   }
 
-   // OBTENER los juegos de UNA agenda
   getJuegosByAgendaId(agendaId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${agendaId}/juegos`);
+    return this.http.get<any[]>(`${this.baseApiUrl}/agenda/${agendaId}/juegos`);
   }
-  
-   getJuegosByPacienteId(pacienteId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/paciente/${pacienteId}`);
+
+  getJuegosByPacienteId(pacienteId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseApiUrl}/agenda/paciente/${pacienteId}`);
   }
 
   completarJuego(agendaId: number, juegoId: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${agendaId}/juego/${juegoId}/completar`, {});
+    return this.http.put(`${this.baseApiUrl}/agenda/${agendaId}/juego/${juegoId}/completar`, {});
   }
 
-  // ELIMINAR un juego de una agenda
   removeJuegoFromAgenda(agendaId: number, juegoId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${agendaId}/juego/${juegoId}`);
+    return this.http.delete(`${this.baseApiUrl}/agenda/${agendaId}/juego/${juegoId}`);
   }
 }

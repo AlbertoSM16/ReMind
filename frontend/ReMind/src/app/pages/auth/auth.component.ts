@@ -23,6 +23,7 @@ export class AuthComponent {
 
   errorMessage: string = '';
   isLoading = false;
+  submitted = false;
 
   constructor(
     private authService: AuthService,
@@ -30,14 +31,14 @@ export class AuthComponent {
   ) {}
 
   onLogin(): void {
+    this.submitted = true;
     this.errorMessage = '';
-    this.isLoading = true;
 
     if (!this.credentials.usuario || !this.credentials.contrasenia) {
-      this.errorMessage = 'Por favor, introduce tu usuario y contraseña.';
-      this.isLoading = false;
       return;
     }
+
+    this.isLoading = true;
 
     this.authService.login(this.credentials).subscribe({
       next: (response) => {

@@ -17,7 +17,7 @@ import { Terapeuta } from '../../models/terapeuta.model';
 export class DoctorListComponent implements OnInit {
 
   doctors: Terapeuta[] = [];
-
+  isLoading = true;
 
   constructor(
     private router: Router,
@@ -30,18 +30,19 @@ export class DoctorListComponent implements OnInit {
 
 
   getTerapeutas(): void {
+    this.isLoading = true;
     this.terapeutaService.getTerapeutas().subscribe({
       next: (data) => {
         this.doctors = data;
-
+        this.isLoading = false;
       },
       error: (error) => {
-        Swal.fire({
-          title: 'No se encontraron doctores',
-          text: 'Actualmente no hay doctores registrados.',
-          icon: 'info',
-          confirmButtonColor: '#61b369'
-        });
+        this.isLoading = false;
+        if (error.status === 0) {
+          Swal.fire('Error de conexión', 'No se puede conectar con el servidor.', 'error');
+        } else {
+          Swal.fire('Error', 'Ocurrió un error al cargar los doctores.', 'error');
+        }
       }
     });
   }

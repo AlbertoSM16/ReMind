@@ -3,6 +3,11 @@
     <img src="assets/img/logo.png" alt="Logo ReMind" class="logo" />
 
     <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="login-form">
+
+      <div *ngIf="submitted && loginForm.invalid" class="form-error-banner">
+        <i class="pi pi-exclamation-circle"></i> Corrige los errores marcados antes de continuar.
+      </div>
+
       <div class="form-group">
         <label for="usuario">Usuario</label>
         <input
@@ -12,10 +17,14 @@
           placeholder="Escribe tu usuario"
           [(ngModel)]="credentials.usuario"
           required
+          #usuario="ngModel"
           class="form-control"
           autocomplete="username"
-          [attr.aria-invalid]="errorMessage ? 'true' : null"
+          [class.ng-invalid]="usuario.invalid && (usuario.dirty || usuario.touched)"
         />
+        <div *ngIf="usuario.invalid && (usuario.dirty || usuario.touched)" class="field-error">
+          El usuario es obligatorio.
+        </div>
       </div>
 
       <div class="form-group">
@@ -27,10 +36,14 @@
           placeholder="Escribe tu contraseña"
           [(ngModel)]="credentials.contrasenia"
           required
+          #contrasenia="ngModel"
           class="form-control"
           autocomplete="current-password"
-          [attr.aria-invalid]="errorMessage ? 'true' : null"
+          [class.ng-invalid]="contrasenia.invalid && (contrasenia.dirty || contrasenia.touched)"
         />
+        <div *ngIf="contrasenia.invalid && (contrasenia.dirty || contrasenia.touched)" class="field-error">
+          La contraseña es obligatoria.
+        </div>
       </div>
 
       <div *ngIf="errorMessage" class="error-message" role="alert">

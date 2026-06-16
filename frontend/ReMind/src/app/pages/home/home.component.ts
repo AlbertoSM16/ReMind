@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavComponent } from '../../components/nav/nav.component';
 import { DirectAccessComponent } from '../../components/direct-access/direct-access.component';
 import { HeaderComponent } from '../../components/header/header.component';
@@ -28,6 +29,7 @@ export interface Logro {
 })
 export class HomeComponent implements OnInit {
   userRole: string | null = null;
+  userName: string | null = null;
   logrosJuegos: Logro[] = [];
   logrosEspecialesLista: Logro[] = [];
   completadosCount = 0;
@@ -70,11 +72,13 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private agendaService: AgendaService
+    private agendaService: AgendaService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.userRole = this.authService.getRole();
+    this.userName = sessionStorage.getItem('nombre');
 
     if (this.userRole === 'paciente') {
       this.cargarJuegosCompletados();
@@ -114,5 +118,9 @@ export class HomeComponent implements OnInit {
         }
       });
     }
+  }
+
+  goToPacienteAgenda(): void {
+    this.router.navigate(['/paciente-agenda']);
   }
 }

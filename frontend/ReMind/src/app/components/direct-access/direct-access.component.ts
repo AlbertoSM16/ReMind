@@ -4,14 +4,13 @@ import { Component, OnInit } from '@angular/core';
 import { AgendaCardComponent } from '../../components/agenda-card/agenda-card.component';
 import { DoctorCardComponent } from '../doctor-card/doctor-card.component';
 import { AuthService } from '../../services/auth.service';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { PacientesCardComponent } from '../pacientes-card/pacientes-card.component';
-import { tareasCardComponent } from '../tareas-card/tareas-card.component'; 
 @Component({
   selector: 'direct-access',
   standalone: true,
-  imports: [AgendaCardComponent, DoctorCardComponent,CommonModule, PacientesCardComponent,tareasCardComponent],
+  imports: [AgendaCardComponent, DoctorCardComponent, CommonModule, PacientesCardComponent],
   templateUrl: './direct-access.component.html',
   styleUrl: './direct-access.component.css'
 })
@@ -35,6 +34,10 @@ export class DirectAccessComponent implements OnInit {
   }
   toDoctors(){
     this.router.navigate(['/doctors']);
+  }
+
+  toSeguimiento(){
+    this.router.navigate(['/follow']);
   }
   
 }

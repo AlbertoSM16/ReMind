@@ -15,6 +15,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 export class AgendaListComponent implements OnInit {
 
   agendas: any[] = [];
+  isLoading = true;
 
   constructor(
     private agendaService: AgendaService,
@@ -33,18 +34,20 @@ export class AgendaListComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
     this.agendaService.getAgendasByTerapeuta(+terapeutaId).subscribe({
       next: (data) => {
         this.agendas = data;
+        this.isLoading = false;
       },
       error: (error) => {
-        Swal.fire({
-          title: 'No se encontraron agendas',
-          text: 'Asegurese de tener pacientes a su carga dados de alta.',
-          icon: 'info',
-          confirmButtonColor: '#61b369'
-        });
+        this.isLoading = false;
         this.agendas = [];
+        if (error.status === 0) {
+          Swal.fire('Error de conexión', 'No se puede conectar con el servidor.', 'error');
+        } else {
+          Swal.fire('Información', 'Asegúrese de tener pacientes a su cargo dados de alta.', 'info');
+        }
       }
     });
   }

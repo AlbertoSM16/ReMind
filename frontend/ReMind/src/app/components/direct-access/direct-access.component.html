@@ -1,21 +1,16 @@
-<div class="container bg-color d-flex content">
-
-    <div class="icons gap-5">
-
-        <div *ngIf="userRole === 'terapeuta'">
-            <agenda-card (click) = "toAgenda()"></agenda-card>
-        </div>
-        <div *ngIf="userRole === 'terapeuta'">
-            <app-pacientes-card (click)="toPacients()"></app-pacientes-card >
-        </div>
-        <div *ngIf="userRole === 'paciente'">
-            <tareas-card (click)="toPacienteAgenda()"></tareas-card>
-        </div>
-        <div *ngIf="userRole == 'administrador'">
-            <doctor-card (click)="toDoctors()"></doctor-card>
-        </div>
-        
-
+<div class="da-container">
+  <div *ngIf="userRole === 'terapeuta'" class="da-cards">
+    <app-pacientes-card (click)="toPacients()"></app-pacientes-card>
+    <agenda-card (click)="toAgenda()"></agenda-card>
+    <div class="access-card" (click)="toSeguimiento()">
+      <div class="access-card-icon">
+        <i class="pi pi-chart-bar"></i>
+      </div>
+      <h3 class="access-card-title">Seguimiento</h3>
+      <p class="access-card-desc">Progreso de tus pacientes</p>
     </div>
-
+  </div>
+  <div *ngIf="userRole === 'administrador'" class="da-cards">
+    <doctor-card (click)="toDoctors()"></doctor-card>
+  </div>
 </div>

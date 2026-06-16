@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AgendaService } from '../../services/agenda.service';
@@ -51,8 +51,26 @@ export class Gameplay implements OnInit {
     }
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: BeforeUnloadEvent): void {
+    event.preventDefault();
+  }
+
   goBack(): void {
-    this.router.navigate(['/paciente-agenda']);
+    Swal.fire({
+      title: '¿Salir del juego?',
+      text: 'Perderás el progreso actual.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#2c7a7b',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, salir',
+      cancelButtonText: 'Seguir jugando'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['/paciente-agenda']);
+      }
+    });
   }
 
   onGameComplete(): void {

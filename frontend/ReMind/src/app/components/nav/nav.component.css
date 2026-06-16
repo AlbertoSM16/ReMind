@@ -1,6 +1,6 @@
 .menu-btn {
   position: fixed;
-  bottom: var(--spacing-lg);
+  bottom: 125px;
   left: var(--spacing-lg);
   z-index: 100;
   background-color: var(--button-color);

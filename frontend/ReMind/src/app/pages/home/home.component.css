@@ -1,31 +1,33 @@
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.home-wrapper {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .logros-container {
-  background-color: #f8f9fa;
-  padding: var(--spacing-xl);
-  border-radius: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: var(--spacing-xl) auto;
-  max-width: 900px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md) var(--spacing-xl) var(--spacing-lg);
+  overflow: hidden;
 }
 
 .logros-title {
   color: #2c3e50;
   text-align: center;
-  margin-bottom: var(--spacing-lg);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: var(--spacing-sm);
+  margin: 0 0 var(--spacing-sm);
+  font-size: var(--font-size-xl);
 }
 
 .logros-title-icon {
@@ -34,27 +36,22 @@
 }
 
 .progreso-section {
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
-  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
   background: white;
   border-radius: 16px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.progreso-texto {
-  font-size: var(--font-size-lg);
-  color: #2c3e50;
-  margin-bottom: var(--spacing-md);
-}
-
 .progreso-bar {
-  width: 100%;
-  height: 20px;
+  flex: 1;
+  height: 12px;
   background-color: #e9ecef;
   border-radius: 999px;
   overflow: hidden;
-  margin-bottom: var(--spacing-md);
 }
 
 .progreso-fill {
@@ -64,31 +61,15 @@
   transition: width 0.8s ease;
 }
 
-.siguiente-hito {
+.progreso-texto {
   font-size: var(--font-size-base);
-  color: #666;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-}
-
-.siguiente-hito i {
-  color: var(--button-color);
-  font-size: var(--font-size-base);
-}
-
-.logro-completo {
-  color: #2e7d32;
-  font-weight: 600;
-}
-
-.logro-completo i {
-  color: #2e7d32;
+  color: #2c3e50;
+  white-space: nowrap;
+  margin: 0;
 }
 
 .seccion {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-sm);
 }
 
 .seccion-titulo {
@@ -96,39 +77,55 @@
   align-items: center;
   gap: var(--spacing-sm);
   color: #2c3e50;
-  margin-bottom: var(--spacing-lg);
-  font-size: var(--font-size-lg);
+  margin: 0 0 var(--spacing-sm);
+  font-size: var(--font-size-base);
+  font-weight: 600;
 }
 
 .seccion-titulo i {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   color: var(--button-color);
 }
 
-.logros-grid {
+.logros-scroll {
   display: flex;
-  justify-content: center;
-  gap: var(--spacing-lg);
   flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+}
+
+.especiales-row {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
 }
 
 .logro-card {
-  width: 200px;
-  padding: var(--spacing-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-sm);
-  border-radius: 20px;
+  gap: 4px;
+  border-radius: 16px;
   background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s, box-shadow 0.2s;
-  animation: fadeInUp 0.5s ease both;
+  flex-shrink: 0;
 }
 
 .logro-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.logros-scroll .logro-card {
+  width: 120px;
+  padding: var(--spacing-sm);
+}
+
+.especiales-row .logro-card {
+  width: 130px;
+  padding: var(--spacing-sm);
 }
 
 .logro-juego {
@@ -160,7 +157,7 @@
 }
 
 .logro-icon i {
-  font-size: 3rem;
+  font-size: 1.8rem;
   color: var(--button-color);
 }
 
@@ -182,23 +179,17 @@
 }
 
 .logro-nombre {
-  font-size: var(--font-size-lg);
+  font-size: 13px;
   font-weight: 700;
   color: #2c3e50;
   text-align: center;
-}
-
-.logro-desc {
-  font-size: var(--font-size-base);
-  color: #666;
-  text-align: center;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 
 .logro-badge {
-  font-size: var(--font-size-base);
+  font-size: 13px;
   font-weight: 600;
-  padding: 6px 16px;
+  padding: 2px 12px;
   border-radius: 999px;
   text-align: center;
 }
@@ -211,7 +202,6 @@
 .bloqueado {
   background-color: #f5f5f5;
   color: #999;
-  font-size: var(--font-size-base);
 }
 
 .desbloqueado {
@@ -219,19 +209,68 @@
   color: #2e7d32;
 }
 
-.no-logros {
-  text-align: center;
-  padding: var(--spacing-xl);
-}
-
-.no-logros-icon {
-  font-size: 4rem;
-  color: #ccc;
-  display: block;
-  margin-bottom: var(--spacing-md);
-}
-
-.no-logros p {
+.btn-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
   font-size: var(--font-size-lg);
-  color: #666;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  margin-top: auto;
+  margin-bottom: 16px;
+}
+
+.btn-cta:hover {
+  background-color: #236b6c;
+  transform: scale(1.02);
+}
+
+.btn-cta i {
+  font-size: 1.5rem;
+}
+
+.doctor-home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  overflow: hidden;
+}
+
+.doctor-greeting {
+  font-size: var(--font-size-xl);
+  color: #2c3e50;
+  margin: 0 0 var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.doctor-greeting i {
+  font-size: 2rem;
+  color: var(--button-color);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logro-card {
+  animation: fadeInUp 0.4s ease both;
 }

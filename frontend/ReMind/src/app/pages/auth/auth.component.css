@@ -110,6 +110,34 @@
   text-align: center;
 }
 
+.form-error-banner {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.form-error-banner i {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.field-error {
+  color: #721c24;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  padding-left: 4px;
+}
+
+.ng-invalid {
+  border-color: #d9534f;
+}
+
 .spinner {
   width: 24px;
   height: 24px;

@@ -1,14 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TerapeutaService } from '../../services/terapeuta.service';
+import { HeaderComponent } from '../../components/header/header.component';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+
+function noFutureDate(control: AbstractControl): { [key: string]: boolean } | null {
+  if (!control.value) return null;
+  const inputDate = new Date(control.value);
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+  return inputDate > today ? { futureDate: true } : null;
+}
 
 @Component({
   selector: 'app-doctor-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
   templateUrl: './doctor-form.component.html',
   styleUrls: ['./doctor-form.component.css']
 })
@@ -17,6 +26,7 @@ export class DoctorFormComponent implements OnInit {
   isEditMode = false;
   terapeutaId: number | null = null;
   errorMessage: string | null = null;
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -25,13 +35,12 @@ export class DoctorFormComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.doctorForm = this.fb.group({
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern('.*\\S.*'), Validators.maxLength(100)]],
+      apellido: ['', [Validators.required, Validators.pattern('.*\\S.*'), Validators.maxLength(100)]],
       correo: ['', [Validators.required, Validators.email]],
-      telefono: [''],
-      especialidad: ['', Validators.required],
-      fechaNacimiento: ['', Validators.required]
-
+      telefono: ['', [Validators.pattern('^\\d{9}$')]],
+      especialidad: ['', [Validators.required, Validators.pattern('.*\\S.*'), Validators.maxLength(100)]],
+      fechaNacimiento: ['', [Validators.required, noFutureDate]]
     });
   }
 
@@ -41,7 +50,6 @@ export class DoctorFormComponent implements OnInit {
       this.isEditMode = true;
       this.terapeutaId = +id;
       this.terapeutaService.getTerapeutaById(this.terapeutaId).subscribe(data => {
-        // Format the date for the input field
         const formattedData = {
           ...data,
           fechaNacimiento: this.formatDate(data.fechaNacimiento)
@@ -50,6 +58,7 @@ export class DoctorFormComponent implements OnInit {
       });
     }
   }
+
   private formatDate(dateString: string): string {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -60,7 +69,11 @@ export class DoctorFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.submitted = true;
     if (this.doctorForm.invalid) {
+      Object.values(this.doctorForm.controls).forEach(control => {
+        control.markAsTouched();
+      });
       return;
     }
 
@@ -71,44 +84,39 @@ export class DoctorFormComponent implements OnInit {
 
     if (this.isEditMode && this.terapeutaId) {
       this.terapeutaService.updateTerapeuta(this.terapeutaId, formData).subscribe({
-        next: (response) => {
+        next: () => {
           Swal.fire({
             title: 'Doctor actualizado!',
-            html: `
-                      <p>El doctor ha sido actualizado con éxito.</p>
-                      
-                    `,
+            text: 'El doctor ha sido actualizado con éxito.',
             icon: 'success',
             confirmButtonText: 'Entendido'
           }).then(() => {
             this.router.navigate(['/doctors']);
-          })
+          });
         },
-        error: (err) => this.errorMessage = 'Error al actualizar el terapeuta.'
+        error: () => this.errorMessage = 'Error al actualizar el terapeuta.'
       });
     } else {
       this.terapeutaService.createTerapeuta(formData).subscribe({
-
         next: (response) => {
-
           Swal.fire({
             title: 'Doctor Creado!',
             html: `
-                      <p>El doctor ha sido creado con éxito. Sus datos de acceso son:</p>
-                      <div style="text-align: left; margin-left: 20px;">
-                        <strong>Usuario:</strong> ${response.usuario}<br>
-                        <strong>Contraseña:</strong> ${response.contrasena}
-                      </div>
-                      <br>
-                      <p>Por favor, guarde estas credenciales en un lugar seguro.</p>
-                    `,
+              <p>El doctor ha sido creado con éxito. Sus datos de acceso son:</p>
+              <div style="text-align: left; margin-left: 20px;">
+                <strong>Usuario:</strong> ${response.usuario}<br>
+                <strong>Contraseña:</strong> ${response.contrasena}
+              </div>
+              <br>
+              <p>Por favor, guarde estas credenciales en un lugar seguro.</p>
+            `,
             icon: 'success',
             confirmButtonText: 'Entendido'
           }).then(() => {
             this.router.navigate(['/doctors']);
-          })
+          });
         },
-        error: (err) => this.errorMessage = 'Error al crear el terapeuta.'
+        error: () => this.errorMessage = 'Error al crear el terapeuta.'
       });
     }
   }

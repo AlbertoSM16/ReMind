@@ -15,9 +15,10 @@ import { HeaderComponent } from "../../components/header/header.component";
   styleUrls: ['./edit-patient.component.css']
 })
 export class EditPatientFormComponent implements OnInit {
-  
+
   patient: Paciente = {} as Paciente;
   patientId: number = 0;
+  submitted = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,7 +38,7 @@ export class EditPatientFormComponent implements OnInit {
       next: (data) => {
         this.patient = data;
       },
-      error: (error) =>  Swal.fire({
+      error: () => Swal.fire({
             title: 'Error',
             text: 'Error al obtener los datos del paciente!',
             icon: 'error',
@@ -47,6 +48,10 @@ export class EditPatientFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.submitted = true;
+    if (!this.patient.nombre?.trim() || !this.patient.apellido?.trim()) {
+      return;
+    }
     this.pacientService.updatePatient(this.patientId, this.patient).subscribe({
       next: () => {
         Swal.fire({
