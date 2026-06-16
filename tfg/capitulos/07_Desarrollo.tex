@@ -1,100 +1,174 @@
-\chapter{Desarrollo}
+xº\chapter{Desarrollo}
 En esta sección se detalla el proceso de implementación de los diferentes módulos que conforman la aplicación ReMind. Asimismo, se exponen las justificaciones arquitectónicas, las decisiones de diseño técnico y las ventajas operativas que ofrecen las tecnologías seleccionadas para agilizar el desarrollo del sistema.
 
 \section{Desarrollo Backend}
-El backend de la aplicación se ha estructurado siguiendo un patrón de arquitectura por capas, organizando el código fuente en paquetes independientes con responsabilidades bien definidas: \textit{entity}, \textit{mapper}, \textit{repository}, \textit{service}, \textit{controller}, \textit{security} y \textit{dto}.
+El backend de la aplicación se ha estructurado siguiendo un patrón de arquitectura por capas, organizando el código fuente en paquetes independientes con responsabilidades bien definidas: \textit{entity}, \textit{mapper}, \textit{repository}, \textit{service}, \textit{controller}, \textit{security}, \textit{dto} y \textit{utils}.
 
 A continuación, se detalla la función técnica de cada uno de los componentes:
 \begin{itemize}
-    \item \textbf{Entity:} Almacena las clases de dominio que mapean el modelo de datos y definen las relaciones relacionales mediante las especificaciones de JPA. Permite establecer restricciones de integridad (claves primarias, claves foráneas, columnas no nulas y nombres de tablas), automatizando y agilizando la sincronización con la base de datos de manera directa.
-    \item \textbf{Mapper:} Alberga los componentes encargados de la transformación de objetos de datos, gestionando la conversión bidireccional entre las entidades JPA y los Objetos de Transferencia de Datos (DTO).
-    \item \textbf{Repository:} Centraliza las operaciones de persistencia y acceso a los datos. Reduce significativamente la redundancia de código al heredar interfaces predefinidas para la ejecución de consultas, inserciones, modificaciones y eliminaciones de registros.
-    \item \textbf{Service:} Gestiona la lógica de negocio de la aplicación. Actúa como una capa intermedia de aislamiento y desacoplamiento entre el repositorio de datos y los controladores.
-    \item \textbf{Controller:} Constituye el punto de entrada de la aplicación en el servidor. Se encarga de exponer los puntos de acceso, interceptar las peticiones HTTP entrantes, validar la estructura de la solicitud y delegar el flujo a la capa de servicio correspondiente.
-    \item \textbf{Security:} Capa administrada por el ecosistema de Spring Security, responsable de los procesos críticos de autenticación, autorización y control de acceso perimetral de los usuarios.
-    \item \textbf{DTO (Data Transfer Object):} Facilita el intercambio seguro de datos entre las distintas capas del software, abstrayendo la estructura interna de las entidades y previniendo la exposición innecesaria de información sensible hacia el cliente.
+    \item \textbf{Entity:} Clases de dominio que modelan las entidades del sistema y sus relaciones mediante anotaciones JPA. Cada entidad define su tabla correspondiente, las restricciones de integridad (claves primarias, foráneas, columnas no nulas) y las asociaciones con otras entidades (\texttt{@OneToOne}, \texttt{@ManyToOne}, \texttt{@OneToMany}). Esto permite que Hibernate sincronice automáticamente el esquema de la base de datos con el modelo de objetos.
+    \item \textbf{Mapper:} Componentes basados en MapStruct que convierten entidades JPA en DTOs y viceversa, abstrayendo la lógica de mapeo en interfaces declarativas.
+    \item \textbf{Repository:} Interfaces que extienden \texttt{JpaRepository}, proporcionando operaciones CRUD estándar y métodos de consulta personalizados sin necesidad de implementación explícita.
+    \item \textbf{Service:} Capa donde reside la lógica de negocio. Cada servicio implementa una interfaz separada para facilitar el desacoplamiento y las pruebas unitarias. Aquí se ejecutan las validaciones adicionales, las reglas de negocio y la coordinación entre repositorios.
+    \item \textbf{Controller:} Puntos de entrada de la API REST. Cada controlador recibe las peticiones HTTP, valida los parámetros de entrada mediante anotaciones \texttt{@Valid} y delega en la capa de servicio.
+    \item \textbf{Security:} Configuración de Spring Security que define la cadena de filtros, las reglas de autorización por ruta y el componente de autenticación JWT.
+    \item \textbf{DTO (Data Transfer Object):} Objetos planos que encapsulan los datos que viajan entre cliente y servidor, evitando exponer directamente las entidades JPA y sus relaciones internas.
+    \item \textbf{Utils:} Clase de utilidades con funciones auxiliares, principalmente la generación automatizada de nombres de usuario y contraseñas temporales para pacientes y terapeutas.
 \end{itemize}
 
 \subsection{Patrones de diseño utilizados}
 \begin{itemize}
-    \item \textbf{Capa de Servicio (Service Layer):} Centraliza la lógica de negocio en clases especializadas, promoviendo la reutilización del código fuente y garantizando controladores desacoplados y simplificados.
-    \item \textbf{Objeto de Transferencia de Datos (DTO):} Técnica empleada para mitigar vulnerabilidades asociadas a la exposición directa de entidades JPA en la API pública, delimitando estrictamente los datos legibles por el cliente.
-    \item \textbf{Patrón Repositorio (Repository Pattern):} Implementado mediante Spring Data JPA, permitiendo interactuar con el motor de persistencia relacional abstrayendo la escritura de consultas SQL manuales.
-    \item \textbf{Uso de Lombok (Boilerplate Reduction):} Integración de la librería Lombok mediante el uso de anotaciones como \texttt{@Data}, \texttt{@AllArgsConstructor} y \texttt{@NoArgsConstructor}, reduciendo drásticamente la verbosidad del código fuente asociado a getters, setters y constructores.
+    \item \textbf{Service Layer:} La lógica de negocio se centraliza en clases de servicio que implementan interfaces específicas. Esto mantiene los controladores ligeros y facilita la prueba unitaria de cada servicio mediante Mockito.
+    \item \textbf{DTO:} Cada operación de entrada o salida tiene su propio DTO, de manera que la API expone únicamente los campos necesarios en cada caso y no las entidades completas. Por ejemplo, al crear un paciente se usa \texttt{PacienteInputDTO} y al devolver sus datos se usa \texttt{PacienteOutputDTO}.
+    \item \textbf{Repository:} Spring Data JPA permite definir repositorios por herencia de interfaz, con métodos de consulta derivados del nombre del método (como \texttt{findByUsuario()} o \texttt{findByTerapeutaId()}).
+    \item \textbf{Lombok:} Las entidades y DTOs se anotan con \texttt{@Data}, \texttt{@AllArgsConstructor} y \texttt{@NoArgsConstructor} para reducir el código repetitivo de getters, setters y constructores.
+    \item \textbf{Defensa en profundidad:} La autorización se aplica tanto en la configuración global de Spring Security como en la capa de servicio, donde cada método verifica que el usuario autenticado tenga permiso sobre el recurso solicitado antes de ejecutar cualquier operación.
 \end{itemize}
+
+\subsection{Modelo de datos}
+El sistema de persistencia se compone de nueve entidades JPA que reflejan el modelo relacional de la base de datos. A continuación se describen las más relevantes:
+
+\begin{itemize}
+    \item \textbf{Administrador:} Almacena los datos del perfil de administrador. Su tabla contiene los campos básicos de identificación (nombre, apellido, email, teléfono) más las credenciales de acceso (usuario único y contraseña hasheada). El rol se asigna mediante el enum \texttt{TipoUsuario.ADMINISTRADOR}.
+    \item \textbf{Terapeuta:} Similar a Administrador pero con un campo adicional de especialidad. Se relaciona con pacientes a través de la tabla intermedia \texttt{PacienteTerapeuta} y con agendas mediante \texttt{AgendaTerapeuta}.
+    \item \textbf{Paciente:} Incluye datos personales, la enfermedad diagnosticada, la edad y el nombre del responsable o cuidador. Cada paciente está asociado a un terapeuta mediante una relación \texttt{@ManyToOne} directa en la columna \texttt{terapeuta\_id}.
+    \item \textbf{Agenda:} Representa un plan de actividades con un nombre descriptivo. Se vincula a un paciente mediante \texttt{PacienteAgenda} y a un terapeuta mediante \texttt{AgendaTerapeuta}.
+    \item \textbf{Juego:} Entidad simple con los campos \texttt{nombre} y \texttt{codigo}, que identifican de forma única cada minijuego disponible en el sistema.
+    \item \textbf{JuegoAgenda:} Tabla intermedia que asigna un juego a una agenda con un nivel de dificultad (\texttt{dificultad}, valor entero), una fecha de asignación y un campo \texttt{realizado} que indica si el paciente ha completado la actividad.
+    \item \textbf{PacienteJuego:} Registra el historial de juegos realizados por cada paciente, almacenando la fecha de realización y el estado de completado.
+\end{itemize}
+
+Todas las tablas se sincronizan automáticamente con la base de datos MySQL mediante la propiedad \texttt{spring.jpa.hibernate.ddl-auto=update}, que crea o actualiza el esquema al iniciar la aplicación.
+
+\subsection{DTOs y mapeo}
+La comunicación entre la API y la capa de servicio se realiza a través de objetos DTO específicos para cada operación. Se definieron los siguientes grupos:
+
+\begin{itemize}
+    \item \textbf{DTOs de entrada:} \texttt{PacienteInputDTO}, \texttt{TerapeutaInputDTO}, \texttt{AgendaInputDTO}, \texttt{AdministradorInputDTO}, \texttt{AssignJuegoDTO} y \texttt{PacienteTerapeutaInputDTO}. Contienen anotaciones \texttt{@NotBlank}, \texttt{@NotNull} y \texttt{@Size} para validar los datos recibidos.
+    \item \textbf{DTOs de salida:} \texttt{PacienteOutputDTO}, \texttt{TerapeutaOutputDTO}, \texttt{AgendaOutputDTO}, \texttt{AdministradorOutputDTO}, \texttt{JuegoAsignadoDTO}. Exponen únicamente los campos necesarios para cada vista.
+    \item \textbf{DTOs de creación:} \texttt{PacienteCreatedDTO} y \texttt{TerapeutaCreatedDTO}. Se devuelven al registrar un nuevo usuario e incluyen el nombre de usuario y la contraseña generada automáticamente para que el administrador o terapeuta pueda comunicársela al interesado.
+    \item \textbf{DTOs de seguimiento:} \texttt{PacienteSeguimientoDTO} y \texttt{TerapeutaSeguimientoDTO}. Contienen datos agregados como el número de juegos completados y el total de juegos asignados, usados en el panel de monitorización del terapeuta.
+    \item \textbf{DTOs auxiliares:} \texttt{PasswordResetDTO} (devuelve la nueva contraseña tras un reseteo) y \texttt{LoginRequest} (recibe usuario y contraseña en el login).
+\end{itemize}
+
+El mapeo entre entidades y DTOs se realiza mediante MapStruct. Para cada entidad principal existe una interfaz mapper anotada con \texttt{@Mapper(componentModel = "spring")} que define los métodos de conversión. Por ejemplo, \texttt{PacienteMapper} convierte \texttt{PacienteInputDTO} a \texttt{Paciente} y \texttt{Paciente} a \texttt{PacienteOutputDTO}, resolviendo automáticamente la relación con el terapeuta mediante \texttt{@Mapping(source = "terapeuta.id", target = "terapeuta\_id")}.
 
 \subsection{Seguridad}
-La infraestructura de seguridad se fundamenta en el framework Spring Security, constituyendo un núcleo crítico para la protección de la plataforma médica y el aislamiento de datos confidenciales.
+La infraestructura de seguridad se fundamenta en Spring Security y sigue un modelo de autenticación stateless basado en JWT.
 
-\subsubsection{Autenticación basada en JWT}
-El protocolo cerrado para la gestión de sesiones asíncronas se ejecuta de acuerdo con la siguiente secuencia operativa:
-\begin{enumerate}
-    \item El cliente introduce sus credenciales de acceso y las transmite hacia la API mediante una solicitud dirigida al endpoint \textit{/api/auth/login}.
-    \item El servidor recibe las credenciales y valida su veracidad contra los registros de la persistencia de datos.
-    \item Tras una validación exitosa, se genera un token firmado digitalmente mediante JWT (JSON Web Token), el cual incorpora las notificaciones o atributos de identidad del usuario (como su identificador y su rol dentro del sistema).
-    \item Para interactuar con los recursos protegidos de la plataforma, el cliente adjunta de forma obligatoria dicho token en la cabecera \texttt{Authorization} de cada petición HTTP subsecuente.
-    \item El componente de filtrado especializado \texttt{JwtRequestFilter} intercepta cada solicitud entrante antes de que alcance el controlador, encargándose de extraer el token, descodificarlo y verificar su integridad y vigencia.
-    \item Finalmente, la configuración centralizada en \texttt{SecurityConfig} evalúa el token validado junto con los privilegios del rol del usuario para autorizar o denegar el acceso a la ruta solicitada de la API.
-\end{enumerate}
+\subsubsection{Autenticación JWT}
+Cuando un usuario envía sus credenciales a \texttt{POST /api/auth/login}, el \texttt{AuthController} busca secuencialmente en los repositorios de administrador, terapeuta y paciente. Si encuentra una coincidencia, verifica la contraseña con \texttt{PasswordEncoder.matches()} contra el hash BCrypt almacenado. Si la validación es correcta, \texttt{JwtUtil} genera un token HS256 con el nombre de usuario como \textit{subject}, el rol del usuario como \textit{claim} y una expiración de 24 horas.
 
-\subsubsection{Protección contra vulnerabilidades comunes}
+Para las peticiones posteriores, el cliente debe incluir el token en la cabecera \texttt{Authorization: Bearer \{token\}}. El \texttt{JwtAuthenticationFilter} (un \texttt{OncePerRequestFilter}) intercepta cada petición entrante, extrae el token, lo valida y, antes de establecer la autenticación, verifica que el usuario todavía exista en la base de datos consultando el repositorio correspondiente según su rol. Esto impide que tokens de usuarios eliminados sigan siendo válidos.
+
+\subsubsection{Control de acceso por roles}
+Spring Security se configura mediante \texttt{SecurityConfig} con una cadena de reglas que evalúan cada petición HTTP en orden. Las rutas públicas (\texttt{/api/auth/**}) no requieren autenticación. El resto de endpoints están protegidos por rol:
+
 \begin{itemize}
-    \item \textbf{Validación de datos de entrada:} Los flujos entrantes procesados por los controladores se reciben mediante objetos DTO estructurados, validando sus restricciones lógicas a través de la especificación Bean Validation mediante anotaciones restrictivas como \texttt{@NotNull}, \texttt{@NotBlank} o \texttt{@Size}.
-    \item \textbf{Cifrado criptográfico de contraseñas:} Para garantizar el aislamiento seguro de las contraseñas, estas se procesan mediante un hashing criptográfico basado en el algoritmo BCrypt, expuesto a través de la interfaz \texttt{PasswordEncoder}, antes de consolidar su persistencia en la base de datos.
-    \item \textbf{Protección contra ataques XSS (Cross-Site Scripting):} El framework subyacente implementa de forma nativa políticas de saneamiento de cadenas y cabeceras de seguridad que previenen la inyección destructiva de código malicioso en el lado del cliente.
+    \item \texttt{/api/administrador/**}: exclusivo para ROLE\_ADMINISTRADOR.
+    \item \texttt{/api/terapeuta} (GET): accesible para ADMINISTRADOR y TERAPEUTA.
+    \item \texttt{POST, PUT, DELETE /api/terapeuta/**}: solo ADMINISTRADOR.
+    \item \texttt{/api/paciente/**} y \texttt{/api/juegos/**}: exclusivo para TERAPEUTA.
+    \item \texttt{GET /api/agenda/paciente/**} y \texttt{PUT .../completar}: accesible para PACIENTE y TERAPEUTA.
+    \item Cualquier otra ruta requiere autenticación (cualquier rol autenticado).
 \end{itemize}
 
+Además, la capa de servicio incorpora sus propias comprobaciones de pertenencia. Por ejemplo, un terapeuta solo puede ver, modificar o eliminar pacientes que tenga asignados; un paciente solo puede consultar su propia agenda. Esta doble verificación (a nivel de ruta y a nivel de servicio) actúa como defensa en profundidad.
+
+\subsubsection{Configuración CORS}
+El frontend Angular se ejecuta en \texttt{http://localhost:4200}, por lo que la configuración global de CORS en Spring Boot restringe el origen permitido a esa dirección. Las anotaciones \texttt{@CrossOrigin(origins = "*")} en cada controlador quedan sobrescritas por esta configuración global.
+
+\subsubsection{Protección de contraseñas}
+Todas las contraseñas se almacenan usando BCrypt mediante la interfaz \texttt{PasswordEncoder} de Spring Security. En ningún momento se guarda la contraseña en texto plano. Cuando se genera una contraseña automática (tras crear un usuario o resetearla), se devuelve en texto plano en la respuesta de la API para que pueda ser comunicada al usuario, pero nunca persiste sin hashear.
+
+\subsection{Servicio de utilidades}
+La clase \texttt{Utils} centraliza dos funciones auxiliares empleadas en la creación de usuarios:
+
+\begin{itemize}
+    \item \textbf{Generación de nombre de usuario:} Combina el nombre y el apellido del usuario en minúscula, elimina tildes y añade cuatro dígitos aleatorios (por ejemplo, \texttt{juan.perez1234}).
+    \item \textbf{Generación de contraseña:} Construye una contraseña temporal con el formato \texttt{NOap\#\#!}, donde las dos primeras letras son las iniciales del nombre en mayúscula, las dos siguientes son las últimas letras del apellido en minúscula, seguidas de un número aleatorio entre 1 y 100 y un carácter especial.
+\end{itemize}
+
+\subsection{Lógica de servicio destacada}
+Más allá de las operaciones CRUD estándar, varios servicios implementan comportamiento específico que merece mención:
+
+\subsubsection{Creación de paciente}
+Cuando un terapeuta da de alta a un paciente mediante \texttt{POST /api/paciente}, el sistema realiza automáticamente las siguientes operaciones:
+\begin{enumerate}
+    \item Genera un nombre de usuario y una contraseña temporal mediante \texttt{Utils}.
+    \item Codifica la contraseña con BCrypt y crea la entidad \texttt{Paciente} con el terapeuta asignado.
+    \item Crea una nueva \texttt{Agenda} con el nombre ``Agenda de \{nombre del paciente\}''.
+    \item Crea un registro en \texttt{PacienteAgenda} vinculando el paciente con la agenda.
+    \item Crea un registro en \texttt{AgendaTerapeuta} vinculando la agenda con el terapeuta.
+    \item Devuelve \texttt{PacienteCreatedDTO} con el usuario y la contraseña en texto plano.
+\end{enumerate}
+De esta forma, el paciente tiene una agenda lista desde el primer momento y el terapeuta no necesita crearla manualmente.
+
+\subsubsection{Eliminación en cascada}
+Al eliminar un terapeuta (\texttt{DELETE /api/terapeuta/\{id\}}), el servicio recorre todos los pacientes asociados y los elimina uno a uno, lo que a su vez dispara la eliminación de sus agendas, relaciones y juegos asignados. Este proceso garantiza que no queden datos huérfanos en la base de datos.
+
+\subsubsection{Verificación de propiedad}
+En los servicios de Paciente, Terapeuta y Agenda, cada método que opera sobre un recurso concreto comprueba primero que el usuario autenticado sea el propietario del recurso (o un administrador). Por ejemplo, un terapeuta no puede modificar la agenda de un paciente que no tiene asignado, y un paciente no puede consultar los juegos de otro paciente. Esta verificación se implementa extrayendo el ID del usuario autenticado del \texttt{SecurityContextHolder} y comparándolo con el ID del recurso.
+
+\subsubsection{Seguimiento clínico}
+El endpoint \texttt{GET /api/terapeuta/\{id\}/seguimiento} devuelve un \texttt{TerapeutaSeguimientoDTO} que contiene, para cada paciente del terapeuta, el nombre del paciente, el número total de juegos asignados y el número de juegos completados. Esta información se obtiene recorriendo las agendas de cada paciente y contando los registros en \texttt{JuegoAgenda} con el campo \texttt{realizado} a verdadero.
+
 \subsection{API Rest}
-El backend y el frontend se comunican de forma asíncrona a través de una API RESTful. Se han diseñado los diferentes endpoints siguiendo los estándares normativos de nomenclatura HTTP:
+A continuación se listan los endpoints implementados, con el método HTTP, la ruta, el rol requerido y una descripción del comportamiento:
 
 \begin{itemize}
 \item \textbf{Autenticación}
 \begin{itemize}
-\item \verb|POST /api/auth/login| Autenticación de usuarios (administrador, terapeuta, paciente) y generación del token JWT.
+\item \verb|POST /api/auth/login| (público) Autentica al usuario contra los repositorios de administrador, terapeuta y paciente. Devuelve un token JWT, el rol del usuario, su nombre y su identificador. Si las credenciales no coinciden, devuelve 401.
 \end{itemize}
-\item \textbf{Agenda}
-\begin{itemize}
-\item \verb|GET /api/agenda| Obtiene todas las agendas, con soporte de paginación opcional (\textit{page}, \textit{size}).
-\item \verb|GET /api/agenda/{id}| Obtiene una agenda específica por su identificador.
-\item \verb|GET /api/agenda/paciente/{pacienteId}| Obtiene la agenda y las actividades cognitivas asignadas a un paciente específico.
-\item \verb|PUT /api/agenda/{agendaId}/juego/{juegoId}/completar| Marca un juego específico dentro de una agenda como completado.
-\item \verb|POST /api/agenda| Registra una nueva agenda en el sistema.
-\item \verb|PUT /api/agenda/{id}| Actualiza una agenda existente.
-\item \verb|DELETE /api/agenda/{id}| Elimina una agenda específica del sistema por su ID.
-\item \verb|POST /api/agenda/{agendaId}/juego| Asigna una actividad cognitiva a una agenda específica.
-\item \verb|GET /api/agenda/{agendaId}/juegos| Obtiene todos los juegos contenidos en una agenda específica.
-\item \verb|DELETE /api/agenda/{agendaId}/juego/{juegoId}| Elimina un juego asignado a una agenda específica.
-\end{itemize}
+
 \item \textbf{Administrador}
 \begin{itemize}
-\item \verb|POST /api/administrador| Registra un nuevo perfil de administrador.
+\item \verb|POST /api/administrador| (ADMINISTRADOR) Registra un nuevo administrador. La contraseña se codifica con BCrypt antes de persistir.
 \end{itemize}
-\item \textbf{Juego}
-\begin{itemize}
-\item \verb|GET /api/juegos| Obtiene el catálogo completo de juegos.
-\item \verb|GET /api/juegos/{id}| Obtiene un juego por su identificador.
-\item \verb|POST /api/juegos| Registra un nuevo juego en el catálogo.
-\item \verb|DELETE /api/juegos/{id}| Elimina un juego por su ID.
-\end{itemize}
+
 \item \textbf{Terapeuta}
 \begin{itemize}
-\item \verb|GET /api/terapeuta| Obtiene todos los terapeutas registrados, con paginación opcional (\textit{page}, \textit{size}).
-\item \verb|GET /api/terapeuta/{id}| Obtiene un terapeuta por su identificador.
-\item \verb|GET /api/terapeuta/{id}/seguimiento| Obtiene los datos de seguimiento clínico individual para un terapeuta, incluyendo información agregada de sus pacientes y evolución de los juegos.
-\item \verb|POST /api/terapeuta| Registra un nuevo terapeuta en el sistema.
-\item \verb|DELETE /api/terapeuta/{id}| Elimina un terapeuta por su ID.
-\item \verb|PUT /api/terapeuta/{id}| Actualiza un terapeuta existente.
-\item \verb|GET /api/terapeuta/{id}/agendas| Obtiene todas las agendas asociadas y gestionadas por un terapeuta específico.
-\item \verb|POST /api/terapeuta/{id}/reset-password| Restablece la contraseña de acceso de un terapeuta.
+\item \verb|GET /api/terapeuta?page=0\&size=10| (ADMINISTRADOR, TERAPEUTA) Lista todos los terapeutas con paginación opcional.
+\item \verb|GET /api/terapeuta/{id}| (ADMINISTRADOR, TERAPEUTA) Obtiene un terapeuta por su ID. Los terapeutas solo pueden ver su propio perfil.
+\item \verb|POST /api/terapeuta| (ADMINISTRADOR) Crea un terapeuta. Genera usuario y contraseña automáticamente.
+\item \verb|PUT /api/terapeuta/{id}| (ADMINISTRADOR) Actualiza los datos de un terapeuta.
+\item \verb|DELETE /api/terapeuta/{id}| (ADMINISTRADOR) Elimina un terapeuta y todos sus pacientes asociados en cascada.
+\item \verb|GET /api/terapeuta/{id}/seguimiento| (ADMINISTRADOR, TERAPEUTA) Datos de seguimiento clínico: por cada paciente, muestra juegos completados y totales.
+\item \verb|GET /api/terapeuta/{id}/agendas| (ADMINISTRADOR, TERAPEUTA) Obtiene todas las agendas gestionadas por el terapeuta.
+\item \verb|POST /api/terapeuta/{id}/reset-password| (ADMINISTRADOR, TERAPEUTA) Genera una nueva contraseña, la codifica y la devuelve en texto plano.
 \end{itemize}
+
 \item \textbf{Paciente}
 \begin{itemize}
-\item \verb|GET /api/paciente| Obtiene todos los pacientes, con soporte de paginación opcional (\textit{page}, \textit{size}).
-\item \verb|GET /api/paciente/{id}| Obtiene un paciente por su identificador.
-\item \verb|POST /api/paciente| Registra un nuevo paciente en el sistema.
-\item \verb|POST /api/paciente/{id}/reset-password| Restablece la contraseña de acceso de un paciente.
-\item \verb|DELETE /api/paciente/{id}| Elimina un paciente por su ID.
-\item \verb|PUT /api/paciente/{id}| Actualiza la información de un paciente existente.
+\item \verb|GET /api/paciente?page=0\&size=10| (TERAPEUTA) Lista pacientes. Los administradores ven todos; los terapeutas solo los suyos.
+\item \verb|GET /api/paciente/{id}| (TERAPEUTA) Obtiene un paciente. El terapeuta solo puede ver sus propios pacientes.
+\item \verb|POST /api/paciente| (TERAPEUTA) Crea un paciente. Genera usuario y contraseña, crea una agenda automática y las relaciones correspondientes.
+\item \verb|PUT /api/paciente/{id}| (TERAPEUTA) Actualiza los datos de un paciente. Permite cambiar el terapeuta asignado.
+\item \verb|DELETE /api/paciente/{id}| (TERAPEUTA) Elimina un paciente y limpia sus relaciones (agenda, juegos asignados).
+\item \verb|POST /api/paciente/{id}/reset-password| (TERAPEUTA) Genera una nueva contraseña, la codifica y la devuelve en texto plano.
+\end{itemize}
+
+\item \textbf{Agenda}
+\begin{itemize}
+\item \verb|GET /api/agenda?page=0\&size=10| (TERAPEUTA) Obtiene todas las agendas con paginación.
+\item \verb|GET /api/agenda/{id}| (TERAPEUTA) Obtiene una agenda por su ID.
+\item \verb|POST /api/agenda| (TERAPEUTA) Crea una agenda y la asocia a un paciente y un terapeuta.
+\item \verb|PUT /api/agenda/{id}| (TERAPEUTA) Actualiza el nombre de una agenda.
+\item \verb|DELETE /api/agenda/{id}| (TERAPEUTA) Elimina una agenda y sus asociaciones.
+\item \verb|GET /api/agenda/paciente/{pacienteId}| (PACIENTE, TERAPEUTA) Obtiene la agenda y los juegos asignados a un paciente. Los pacientes solo ven su propia agenda.
+\item \verb|POST /api/agenda/{agendaId}/juego| (TERAPEUTA) Asigna un juego a una agenda con un nivel de dificultad (1--3).
+\item \verb|GET /api/agenda/{agendaId}/juegos| (TERAPEUTA) Lista los juegos asignados a una agenda.
+\item \verb|PUT /api/agenda/{agendaId}/juego/{juegoId}/completar| (PACIENTE, TERAPEUTA) Marca un juego como realizado y registra la fecha de finalización.
+\item \verb|DELETE /api/agenda/{agendaId}/juego/{juegoId}| (TERAPEUTA) Elimina un juego de una agenda.
+\end{itemize}
+
+\item \textbf{Juego}
+\begin{itemize}
+\item \verb|GET /api/juegos| (TERAPEUTA) Obtiene el catálogo completo de juegos disponibles.
+\item \verb|GET /api/juegos/{id}| (TERAPEUTA) Obtiene un juego por su identificador.
+\item \verb|POST /api/juegos| (TERAPEUTA) Añade un nuevo juego al catálogo.
+\item \verb|DELETE /api/juegos/{id}| (TERAPEUTA) Elimina un juego del catálogo.
 \end{itemize}
 \end{itemize}
 
