@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'; // Se importa Input
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { InstruccionesModalComponent } from '../instrucciones-modal/instrucciones-modal.component';
 
 interface WordSet {
   options: { word: string; isIntruder: boolean }[];
@@ -9,7 +10,7 @@ interface WordSet {
 @Component({
   selector: 'intruder-game',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, InstruccionesModalComponent],
   templateUrl: './intruder-game.component.html',
   styleUrls: ['./intruder-game.component.css']
 })
@@ -17,8 +18,10 @@ export class IntruderGameComponent implements OnInit {
 
   @Input() dificultad: number = 1;
   @Output() gameCompleted = new EventEmitter<void>();
-  private audioInstrucciones: HTMLAudioElement | null = null;
   title = 'Encuentra al intruso';
+
+  modalVisible = false;
+  modalTexto = 'Lee las palabras y encuentra cuál no pertenece al grupo. Por ejemplo, si ves "manzana, pera, plátano, uva y coche", el intruso es "coche" porque los demás son frutas.';
 
   private allSets: WordSet[] = [
     {
@@ -147,14 +150,7 @@ export class IntruderGameComponent implements OnInit {
     return array;
   }
 
-
-  reproducirInstrucciones(): void {
-    if (this.audioInstrucciones && !this.audioInstrucciones.paused) {
-      this.audioInstrucciones.pause();
-      this.audioInstrucciones.currentTime = 0;
-    }
-
-    this.audioInstrucciones = new Audio('assets/intruder/instrucciones.mp3');
-    this.audioInstrucciones.play();
+  mostrarInstrucciones(): void {
+    this.modalVisible = true;
   }
 }

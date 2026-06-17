@@ -1,0 +1,16 @@
+<div class="modal-overlay" *ngIf="visible" (click)="cerrar()">
+  <div class="modal-contenido" (click)="$event.stopPropagation()">
+    <h2 class="modal-titulo">{{ titulo }}</h2>
+
+    <p class="modal-texto">{{ texto }}</p>
+
+    <div class="modal-acciones">
+      <button class="btn-instrucciones" (click)="reproducirInstrucciones()">
+        <i class="pi pi-volume-up"></i> Escuchar instrucciones
+      </button>
+      <button class="btn-entendido" (click)="cerrar()">
+        <i class="pi pi-check"></i> ¡Entendido!
+      </button>
+    </div>
+  </div>
+</div>

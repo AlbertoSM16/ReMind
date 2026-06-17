@@ -1,9 +1,8 @@
 <div class="intruder-game-wrapper">
   <div class="game-header">
     <h1 class="game-title">{{ title }}</h1>
-    <p class="game-description">Lee las palabras y encuentra cuál no pertenece al grupo.</p>
-    <button class="btn-instructions" (click)="reproducirInstrucciones()">
-      <i class="pi pi-volume-up"></i> Escuchar Instrucciones
+    <button class="btn-instrucciones" (click)="mostrarInstrucciones()">
+      <i class="pi pi-info-circle"></i> Instrucciones
     </button>
   </div>
 
@@ -37,3 +36,10 @@
     <button class="btn-play-again" (click)="startGame()">Jugar de Nuevo</button>
   </div>
 </div>
+
+<app-instrucciones-modal
+  [titulo]="title"
+  [texto]="modalTexto"
+  [audioSrc]="'assets/intruder/instrucciones.mp3'"
+  [(visible)]="modalVisible">
+</app-instrucciones-modal>

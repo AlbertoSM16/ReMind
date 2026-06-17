@@ -1,7 +1,7 @@
-// app/components/juego-cambio/juego-cambio.component.ts
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EuroDenominationComponent } from '../euro-denomination-component/euro-denomination-component.component';
+import { InstruccionesModalComponent } from '../instrucciones-modal/instrucciones-modal.component';
 
 interface Denomination {
   value: number;
@@ -13,7 +13,8 @@ interface Denomination {
   standalone: true,
   imports: [
     CommonModule,
-    EuroDenominationComponent
+    EuroDenominationComponent,
+    InstruccionesModalComponent
   ],
   templateUrl: './juego-cambio.component.html',
   styleUrls: ['./juego-cambio.component.css']
@@ -23,15 +24,15 @@ export class JuegoCambioComponent implements OnInit {
   @Input() dificultad: number = 1;
   @Output() gameCompleted = new EventEmitter<void>();
 
-  title = 'Juego de Cambio de Euro';
+  title = 'Pagos exactos (El cambio)';
   amountToMatch: number = 0;
   currentAmount: number = 0;
   message: string = '';
-  private audioInstrucciones: HTMLAudioElement | null = null;
-
 
   precioArticulo: number = 0;
   dineroEntregado: number = 0;
+
+  modalVisible = false;
 
   euroDenominations: Denomination[] = [
     { value: 0.01, imageUrl: 'assets/euros/1-cent.png' },
@@ -50,6 +51,13 @@ export class JuegoCambioComponent implements OnInit {
 
   ngOnInit() {
     this.startNewRound();
+  }
+
+  get modalTexto(): string {
+    if (this.dificultad === 1) {
+      return 'Imagina que estamos en el supermercado comprando algo. El juego te mostrará el precio del producto y tu misión es añadir dinero hasta que coincida con ese precio. ¡Así compruebas que el cambio es correcto!';
+    }
+    return 'Imagina que estamos en el supermercado comprando algo. El juego te mostrará el precio del producto y el dinero que has entregado para pagar. Tu misión es calcular el cambio y juntar las vueltas exactas que te tienen que devolver.';
   }
 
   startNewRound() {
@@ -75,10 +83,10 @@ export class JuegoCambioComponent implements OnInit {
 
   checkAmount() {
     if (this.currentAmount === this.amountToMatch) {
-      this.message = '¡Felicidades! Has devuelto la cantidad exacta. 🎉';
+      this.message = '¡Felicidades! Has devuelto la cantidad exacta.';
       this.gameCompleted.emit();
     } else if (this.currentAmount > this.amountToMatch) {
-      this.message = '¡Te has pasado! Vuelve a intentarlo. 😔';
+      this.message = '¡Te has pasado! Vuelve a intentarlo.';
     } else {
       if (this.dificultad === 1) {
         this.message = `Te faltan ${(this.amountToMatch - this.currentAmount).toFixed(2)} €`;
@@ -92,13 +100,7 @@ export class JuegoCambioComponent implements OnInit {
     this.startNewRound();
   }
 
-  reproducirInstrucciones(): void {
-    if (this.audioInstrucciones && !this.audioInstrucciones.paused) {
-      this.audioInstrucciones.pause();
-      this.audioInstrucciones.currentTime = 0;
-    }
-
-    this.audioInstrucciones = new Audio('assets/euros/instrucciones.mp3');
-    this.audioInstrucciones.play();
+  mostrarInstrucciones(): void {
+    this.modalVisible = true;
   }
 }

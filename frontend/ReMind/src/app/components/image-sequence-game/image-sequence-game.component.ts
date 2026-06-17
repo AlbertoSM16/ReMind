@@ -1,18 +1,18 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { InstruccionesModalComponent } from '../instrucciones-modal/instrucciones-modal.component';
 
-// Se añade la propiedad 'audioSrc' para guardar la ruta del sonido
 interface Image {
   id: number;
   src: string;
   flipped: boolean;
-  audioSrc: string; 
+  audioSrc: string;
 }
 
 @Component({
   selector: 'app-image-sequence-game',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, InstruccionesModalComponent],
   templateUrl: './image-sequence-game.component.html',
   styleUrls: ['./image-sequence-game.component.css']
 })
@@ -20,9 +20,8 @@ export class ImageSequenceGameComponent implements OnInit {
   @Input() dificultad: number = 1;
   @Output() gameCompleted = new EventEmitter<void>();
 
-  title = 'Juego de Secuencia de Imágenes';
-  
-  // AÑADIDO: Se agrega la ruta del audio a cada imagen
+  title = 'Ordenar la secuencia';
+
   images: Image[] = [
     { id: 1, src: 'assets/gameSequence/image1.png', flipped: false, audioSrc: 'assets/gameSequence/audio/coche.mp3' },
     { id: 2, src: 'assets/gameSequence/image2.png', flipped: false, audioSrc: 'assets/gameSequence/audio/moto.mp3' },
@@ -32,8 +31,11 @@ export class ImageSequenceGameComponent implements OnInit {
     { id: 6, src: 'assets/gameSequence/image6.png', flipped: false, audioSrc: 'assets/gameSequence/audio/bus.mp3' },
   ];
 
+  modalVisible = false;
+  modalTexto = '¡Memoriza el orden de las imágenes que aparecen una a una! Después, las imágenes se ocultarán y tendrás que pulsarlas en el mismo orden en que aparecieron. ¡Presta mucha atención!';
+
   sequenceLength: number = 4;
-  displayDuration: number = 2500; 
+  displayDuration: number = 2500;
   currentSequence: Image[] = [];
   userSequence: number[] = [];
   message: string = '';
@@ -105,7 +107,7 @@ export class ImageSequenceGameComponent implements OnInit {
     if (selectedImg) {
       if (this.userSequence.length < this.sequenceLength && !this.userSequence.includes(imageId)) {
         this.userSequence.push(imageId);
-        selectedImg.flipped = false; 
+        selectedImg.flipped = false;
       }
     }
 
@@ -130,7 +132,7 @@ export class ImageSequenceGameComponent implements OnInit {
       this.gameCompleted.emit();
     } else {
       const correctOrderIds = this.currentSequence.map(img => img.id);
-      this.message = `¡Incorrecto! La secuencia correcta era: ${correctOrderIds.join(', ')}. 😔`;
+      this.message = `¡Incorrecto! La secuencia correcta era: ${correctOrderIds.join(', ')}.`;
     }
 
     this.currentSequence.forEach(imgInSeq => {
@@ -158,5 +160,9 @@ export class ImageSequenceGameComponent implements OnInit {
       const audio = new Audio(audioSrc);
       audio.play();
     }
+  }
+
+  mostrarInstrucciones(): void {
+    this.modalVisible = true;
   }
 }

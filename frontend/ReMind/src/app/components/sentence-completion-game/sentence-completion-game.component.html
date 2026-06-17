@@ -1,7 +1,9 @@
 <div class="sentence-game-container">
   <div class="game-header">
-    <h2>Completa la Oración</h2>
-    <p>Elige la palabra correcta para completar la frase.</p>
+    <h1 class="game-title">{{ title }}</h1>
+    <button class="btn-instrucciones" (click)="mostrarInstrucciones()">
+      <i class="pi pi-info-circle"></i> Instrucciones
+    </button>
   </div>
 
   <div *ngIf="!gameOver && currentRoundData" class="game-area">
@@ -42,3 +44,10 @@
     <button class="btn-play-again" (click)="startGame()">Volver a Jugar</button>
   </div>
 </div>
+
+<app-instrucciones-modal
+  [titulo]="title"
+  [texto]="modalTexto"
+  [audioSrc]="'assets/sentence/instrucciones.mp3'"
+  [(visible)]="modalVisible">
+</app-instrucciones-modal>

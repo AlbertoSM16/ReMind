@@ -1,17 +1,11 @@
 <div class="clothing-game-container">
-  <div class="card shadow-lg p-4 mb-4 bg-primary text-white text-center">
-    <h1 class="card-title display-4">{{ title }}</h1>
-    <button class="btn instructions-button" (click)="reproducirInstrucciones()">
-          <i class="pi pi-volume-up"></i> Escuchar Instrucciones
-        </button>
-      <p class = "instrucciones">
-        Imagínate que te estas preparando para salir de tu casa a hacer recados,
-        y necesitas vestirte. En este juego tendrás que vestir a la persona que hay abajo
-        como si de tí se tratara. ¡Coloca cada prenda en su sitio!
-      </p>
-        
-      
+  <div class="game-header">
+    <h1 class="game-title">{{ title }}</h1>
+    <button class="btn-instrucciones" (click)="mostrarInstrucciones()">
+      <i class="pi pi-info-circle"></i> Instrucciones
+    </button>
   </div>
+
   <div *ngIf="feedbackMessage && !gameOver" class="feedback-message">{{ feedbackMessage }}</div>
 
   <div class="game-area">
@@ -30,7 +24,7 @@
 
     <div class="silhouette-container">
       <img src="assets/clothing/silueta.png" alt="Silueta de cuerpo humano" class="silhouette-img">
-      
+
       <div class="drop-target head" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'head')"></div>
       <div class="drop-target torso" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'torso')"></div>
       <div class="drop-target legs" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'legs')"></div>
@@ -47,4 +41,11 @@
     <h3>{{ feedbackMessage }}</h3>
     <button (click)="resetGame()">Jugar de nuevo</button>
   </div>
+
+  <app-instrucciones-modal
+    [titulo]="title"
+    [texto]="modalTexto"
+    [audioSrc]="'assets/clothing/instrucciones.mp3'"
+    [(visible)]="modalVisible">
+  </app-instrucciones-modal>
 </div>

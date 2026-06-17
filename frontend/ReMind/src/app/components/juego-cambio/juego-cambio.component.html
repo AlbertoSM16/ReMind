@@ -1,56 +1,27 @@
 <div class="container my-4">
-  <div class="card shadow-lg p-4 mb-4 bg-primary text-white text-center">
-    <h1 class="card-title display-4">{{ title }}</h1>
-    <button class="btn instructions-button" (click)="reproducirInstrucciones()">
-          <i class="pi pi-volume-up"></i> Escuchar Instrucciones
-        </button>
-    <div *ngIf="dificultad === 1" class="card-text lead">
-        
-      <p class="instrucciones lead">¡Hola! Imagina que estamos en el supermercado comprando algo.
-
-        El juego te mostrará el precio del producto y tu misión es añadir dinero hasta que coincida con el precio.
-
-        ¡Así compruebas que el cambio es correcto!</p>
-    </div>
-    <div *ngIf="dificultad > 1" class="card-text lead">
-      <p class="instrucciones lead">¡Hola! Imagina que estamos en el supermercado comprando algo.
-
-        El juego te mostrará el precio del producto y el dinero que has entregado para pagar. Tu misión es calcular el
-        cambio y juntar las vueltas exactas que te tienen que devolver.
-
-        ¡Así compruebas que el cambio es correcto
-      </p>
-
-    </div>
-
+  <div class="game-header">
+    <h1 class="game-title">{{ title }}</h1>
+    <button class="btn-instrucciones" (click)="mostrarInstrucciones()">
+      <i class="pi pi-info-circle"></i> Instrucciones
+    </button>
   </div>
 
   <div class="row justify-content-center mb-4">
-
     <div class="col-md-8 col-lg-6">
       <div class="card shadow-sm p-3">
         <div class="card-body text-center">
-          <div>
-
-          </div>
           <div *ngIf="dificultad === 3">
-            <p class="fs-4 mb-2">Precio del artículo: <strong class="text-danger">{{ precioArticulo |
-                currency:'EUR':'symbol' }}</strong></p>
-            <p class="fs-4 mb-2">Dinero entregado: <strong class="text-success">{{ dineroEntregado |
-                currency:'EUR':'symbol' }}</strong></p>
+            <p class="fs-4 mb-2">Precio del artículo: <strong class="text-danger">{{ precioArticulo | currency:'EUR':'symbol' }}</strong></p>
+            <p class="fs-4 mb-2">Dinero entregado: <strong class="text-success">{{ dineroEntregado | currency:'EUR':'symbol' }}</strong></p>
             <hr>
           </div>
           <div *ngIf="dificultad === 1">
-            <p class="fs-4 mb-2">Precio del producto: <strong class="text-info">{{ amountToMatch |
-                currency:'EUR':'symbol' }}</strong></p>
+            <p class="fs-4 mb-2">Precio del producto: <strong class="text-info">{{ amountToMatch | currency:'EUR':'symbol' }}</strong></p>
           </div>
           <div *ngIf="dificultad === 2">
-            <p class="fs-4 mb-2">Precio del producto: <strong class="text-info">{{ precioArticulo |
-                currency:'EUR':'symbol' }}</strong></p>
-            <p class="fs-4 mb-2">Dinero entregado: <strong class="text-success">{{ dineroEntregado |
-                currency:'EUR':'symbol' }}</strong></p>
-            <p class="fs-4 mb-2">Total a devolver <strong class="text-success">{{ amountToMatch |
-                currency:'EUR':'symbol' }}</strong></p>
+            <p class="fs-4 mb-2">Precio del producto: <strong class="text-info">{{ precioArticulo | currency:'EUR':'symbol' }}</strong></p>
+            <p class="fs-4 mb-2">Dinero entregado: <strong class="text-success">{{ dineroEntregado | currency:'EUR':'symbol' }}</strong></p>
+            <p class="fs-4 mb-2">Total a devolver <strong class="text-success">{{ amountToMatch | currency:'EUR':'symbol' }}</strong></p>
           </div>
 
           <p class="fs-4 mb-3">
@@ -83,7 +54,7 @@
             {{ message }}
           </div>
 
-          <button (click)="resetGame()" class="btn btn-success btn-lg mt-3">
+          <button (click)="resetGame()" class="btn-nueva-partida">
             <i class="bi bi-arrow-clockwise me-2"></i> Nueva Partida
           </button>
         </div>
@@ -99,8 +70,13 @@
   <div class="d-flex flex-wrap justify-content-center denominations-grid">
     <app-euro-denomination *ngFor="let item of euroDenominations" [value]="item.value" [imageUrl]="item.imageUrl"
       (clicked)="addAmount($event)">
-
     </app-euro-denomination>
-
   </div>
 </div>
+
+<app-instrucciones-modal
+  [titulo]="title"
+  [texto]="modalTexto"
+  [audioSrc]="'assets/euros/instrucciones.mp3'"
+  [(visible)]="modalVisible">
+</app-instrucciones-modal>

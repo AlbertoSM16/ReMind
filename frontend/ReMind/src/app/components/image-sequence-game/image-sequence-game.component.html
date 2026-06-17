@@ -1,9 +1,9 @@
 <div class="container my-4">
-  <div class="card shadow-lg p-4 mb-4 bg-info text-white text-center">
-    <h1 class="card-title display-4">{{ title }}</h1>
-    <p class="card-text lead">
-      ¡Memoriza el orden de las imágenes y repítelo!
-    </p>
+  <div class="game-header">
+    <h1 class="game-title">{{ title }}</h1>
+    <button class="btn-instrucciones" (click)="mostrarInstrucciones()">
+      <i class="pi pi-info-circle"></i> Instrucciones
+    </button>
   </div>
 
   <div class="row justify-content-center mb-4">
@@ -38,3 +38,10 @@
     </div>
   </div>
 </div>
+
+<app-instrucciones-modal
+  [titulo]="title"
+  [texto]="modalTexto"
+  [audioSrc]="'assets/gameSequence/instrucciones.mp3'"
+  [(visible)]="modalVisible">
+</app-instrucciones-modal>

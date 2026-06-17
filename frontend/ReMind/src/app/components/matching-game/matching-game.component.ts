@@ -1,6 +1,6 @@
-// app/components/matching-game/matching-game.component.ts
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { InstruccionesModalComponent } from '../instrucciones-modal/instrucciones-modal.component';
 
 interface Image {
   id: number;
@@ -20,23 +20,24 @@ interface DropZone {
 @Component({
   selector: 'app-matching-game',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, InstruccionesModalComponent],
   templateUrl: './matching-game.component.html',
   styleUrls: ['./matching-game.component.css']
 })
 export class MatchingGameComponent implements OnInit {
 
   @Input() dificultad: number = 1;
-  @Output() gameCompleted = new EventEmitter<void>(); // Evento para notificar la finalización
+  @Output() gameCompleted = new EventEmitter<void>();
 
   images: Image[] = [];
   unmatchedImages: Image[] = [];
   dropZones: DropZone[] = [];
   gameOver = false;
   successMessage = '';
-  private audioInstrucciones: HTMLAudioElement | null = null;
   title = 'Profesión-objeto';
 
+  modalVisible = false;
+  modalTexto = 'Relaciona cada profesión con su objeto. Arrastra las imágenes de la izquierda a la zona correspondiente.';
 
   ngOnInit(): void {
     this.initializeGame();
@@ -144,13 +145,7 @@ export class MatchingGameComponent implements OnInit {
     this.initializeGame();
   }
 
-  reproducirInstrucciones(): void {
-    if (this.audioInstrucciones && !this.audioInstrucciones.paused) {
-      this.audioInstrucciones.pause();
-      this.audioInstrucciones.currentTime = 0;
-    }
-
-    this.audioInstrucciones = new Audio('assets/matching/instrucciones.mp3');
-    this.audioInstrucciones.play();
+  mostrarInstrucciones(): void {
+    this.modalVisible = true;
   }
 }

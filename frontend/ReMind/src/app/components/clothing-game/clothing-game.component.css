@@ -4,8 +4,44 @@
   padding: 20px;
   max-width: 900px;
   margin: 20px auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background-color: var(--button-color);
+  color: white;
+  border-radius: 20px;
+}
+
+.game-title {
+  margin-bottom: var(--spacing-md);
+}
+
+.btn-instrucciones {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  font-size: var(--font-size-base);
+  padding: 12px 28px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-height: 48px;
+  font-weight: 600;
+}
+
+.btn-instrucciones:hover {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-color: white;
+}
+
+.btn-instrucciones i {
+  margin-right: 8px;
 }
 
 .game-area {
@@ -15,7 +51,6 @@
   margin-top: 20px;
 }
 
-/* Lista de prendas */
 .clothing-list {
   width: 30%;
   border: 2px solid #f0f0f0;
@@ -59,12 +94,11 @@
 .drop-target {
   position: absolute;
   transition: background-color 0.2s;
- 
   background-color: rgba(255, 255, 0, 0.2);
 }
 
 .drop-target:hover {
-  background-color: rgba(0, 162, 255, 0.3); 
+  background-color: rgba(0, 162, 255, 0.3);
 }
 .drop-target.head { top: 0; left: 105px; width: 90px; height: 90px; border-radius: 50%; }
 .drop-target.torso { top: 110px; left: 75px; width: 150px; height: 150px; }
@@ -73,33 +107,32 @@
 
 .placed-item {
   position: absolute;
-  pointer-events: none; 
-  object-fit: contain; 
+  pointer-events: none;
+  object-fit: contain;
 }
 
-
 .placed-head {
-  width: 85px; 
+  width: 85px;
   top: 18px;
-  left: 107px; 
+  left: 107px;
 }
 
 .placed-torso {
-  width: 135px; 
-  top: 110px;   
-  left: 82px;   
+  width: 135px;
+  top: 110px;
+  left: 82px;
 }
 
 .placed-legs {
-  width: 115px; 
-  top: 270px;   
-  left: 93px;   
+  width: 115px;
+  top: 270px;
+  left: 93px;
 }
 
 .placed-feet {
-  width: 135px; 
+  width: 135px;
   top: 425px;
-  left: 82px;   
+  left: 82px;
 }
 
 .feedback-message, .game-over-message {
@@ -134,28 +167,4 @@ button {
 
 button:hover {
   background-color: #236b6c;
-}
-
-.instructions-button {
-  background-color: var(--button-color); 
-  color: white;
-  border: none;
-  font-size: 1.1rem;
-  padding: 12px 25px;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.instructions-button:hover {
-  background-color: #236b6c;
-}
-
-.instructions-button .pi {
-  margin-right: 8px;
-}
-
-.instrucciones {
-  font-size: 200%;
-  margin-bottom: 20px;
 }

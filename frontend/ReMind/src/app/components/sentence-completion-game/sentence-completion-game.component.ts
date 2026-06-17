@@ -1,6 +1,6 @@
-// app/components/sentence-completion-game/sentence-completion-game.component.ts
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { InstruccionesModalComponent } from '../instrucciones-modal/instrucciones-modal.component';
 
 interface SentenceRound {
   start: string;
@@ -14,13 +14,17 @@ interface SentenceRound {
 @Component({
   selector: 'app-sentence-completion-game',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, InstruccionesModalComponent],
   templateUrl: './sentence-completion-game.component.html',
   styleUrls: ['./sentence-completion-game.component.css']
 })
 export class SentenceCompletionGameComponent implements OnInit {
   @Input() dificultad: number = 1;
   @Output() gameCompleted = new EventEmitter<void>();
+
+  title = 'Completa la Oración';
+  modalVisible = false;
+  modalTexto = 'Los nietos han escrito una carta pero faltan algunas palabras. Debes elegir la palabra correcta entre varias opciones para completar cada frase. ¡Selecciona la que creas que encaja mejor!';
 
   private allRounds: SentenceRound[] = [
     {
@@ -76,7 +80,7 @@ export class SentenceCompletionGameComponent implements OnInit {
   loadNextRound(): void {
     if (this.roundIndex < this.allRounds.length) {
       this.currentRoundData = this.allRounds[this.roundIndex];
-      
+
       const optionsCount = this.dificultad + 1;
       const correctOption = this.currentRoundData.options.find(o => o.isCorrect)!;
       const incorrectOptions = this.shuffleArray(this.currentRoundData.options.filter(o => !o.isCorrect)).slice(0, optionsCount - 1);
@@ -114,5 +118,9 @@ export class SentenceCompletionGameComponent implements OnInit {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+  }
+
+  mostrarInstrucciones(): void {
+    this.modalVisible = true;
   }
 }

@@ -1,8 +1,8 @@
-xº\chapter{Desarrollo}
+\chapter{Desarrollo}
 En esta sección se detalla el proceso de implementación de los diferentes módulos que conforman la aplicación ReMind. Asimismo, se exponen las justificaciones arquitectónicas, las decisiones de diseño técnico y las ventajas operativas que ofrecen las tecnologías seleccionadas para agilizar el desarrollo del sistema.
 
 \section{Desarrollo Backend}
-El backend de la aplicación se ha estructurado siguiendo un patrón de arquitectura por capas, organizando el código fuente en paquetes independientes con responsabilidades bien definidas: \textit{entity}, \textit{mapper}, \textit{repository}, \textit{service}, \textit{controller}, \textit{security}, \textit{dto} y \textit{utils}.
+El backend de la aplicación se ha estructurado siguiendo un patrón de arquitectura por capas, organizando el código fuente en paquetes independientes con responsabilidades bien definidas: \textit{entities}, \textit{Mapper}, \textit{repositories}, \textit{services}, \textit{controllers}, \textit{security}, \textit{dto} y \textit{utils}.
 
 A continuación, se detalla la función técnica de cada uno de los componentes:
 \begin{itemize}
@@ -26,7 +26,7 @@ A continuación, se detalla la función técnica de cada uno de los componentes:
 \end{itemize}
 
 \subsection{Modelo de datos}
-El sistema de persistencia se compone de nueve entidades JPA que reflejan el modelo relacional de la base de datos. A continuación se describen las más relevantes:
+El sistema de persistencia se compone de diez entidades JPA que reflejan el modelo relacional de la base de datos. A continuación se describen las más relevantes:
 
 \begin{itemize}
     \item \textbf{Administrador:} Almacena los datos del perfil de administrador. Su tabla contiene los campos básicos de identificación (nombre, apellido, email, teléfono) más las credenciales de acceso (usuario único y contraseña hasheada). El rol se asigna mediante el enum \texttt{TipoUsuario.ADMINISTRADOR}.
@@ -34,7 +34,7 @@ El sistema de persistencia se compone de nueve entidades JPA que reflejan el mod
     \item \textbf{Paciente:} Incluye datos personales, la enfermedad diagnosticada, la edad y el nombre del responsable o cuidador. Cada paciente está asociado a un terapeuta mediante una relación \texttt{@ManyToOne} directa en la columna \texttt{terapeuta\_id}.
     \item \textbf{Agenda:} Representa un plan de actividades con un nombre descriptivo. Se vincula a un paciente mediante \texttt{PacienteAgenda} y a un terapeuta mediante \texttt{AgendaTerapeuta}.
     \item \textbf{Juego:} Entidad simple con los campos \texttt{nombre} y \texttt{codigo}, que identifican de forma única cada minijuego disponible en el sistema.
-    \item \textbf{JuegoAgenda:} Tabla intermedia que asigna un juego a una agenda con un nivel de dificultad (\texttt{dificultad}, valor entero), una fecha de asignación y un campo \texttt{realizado} que indica si el paciente ha completado la actividad.
+    \item \textbf{JuegoAgenda:} Tabla intermedia que asigna un juego a una agenda con un nivel de dificultad (\texttt{dificultad}, valor entero), una fecha de asignación (\texttt{fechaAsignacion}) y un campo \texttt{realizado} que indica si el paciente ha completado la actividad. Además, incluye \texttt{fechaRealizacion}, que almacena la fecha en que el paciente completó el juego (nulo hasta que se realiza).
     \item \textbf{PacienteJuego:} Registra el historial de juegos realizados por cada paciente, almacenando la fecha de realización y el estado de completado.
 \end{itemize}
 
@@ -44,14 +44,14 @@ Todas las tablas se sincronizan automáticamente con la base de datos MySQL medi
 La comunicación entre la API y la capa de servicio se realiza a través de objetos DTO específicos para cada operación. Se definieron los siguientes grupos:
 
 \begin{itemize}
-    \item \textbf{DTOs de entrada:} \texttt{PacienteInputDTO}, \texttt{TerapeutaInputDTO}, \texttt{AgendaInputDTO}, \texttt{AdministradorInputDTO}, \texttt{AssignJuegoDTO} y \texttt{PacienteTerapeutaInputDTO}. Contienen anotaciones \texttt{@NotBlank}, \texttt{@NotNull} y \texttt{@Size} para validar los datos recibidos.
-    \item \textbf{DTOs de salida:} \texttt{PacienteOutputDTO}, \texttt{TerapeutaOutputDTO}, \texttt{AgendaOutputDTO}, \texttt{AdministradorOutputDTO}, \texttt{JuegoAsignadoDTO}. Exponen únicamente los campos necesarios para cada vista.
+    \item \textbf{DTOs de entrada:} \texttt{PacienteInputDTO}, \texttt{TerapeutaInputDTO}, \texttt{AgendaInputDTO}, \texttt{AdministradorInputDTO}, \texttt{AssignJuegoDTO}, \texttt{PacienteTerapeutaInputDTO} y \texttt{JuegoInputDTO}. Contienen anotaciones \texttt{@NotBlank}, \texttt{@NotNull} y \texttt{@Size} para validar los datos recibidos.
+    \item \textbf{DTOs de salida:} \texttt{PacienteOutputDTO}, \texttt{TerapeutaOutputDTO}, \texttt{AgendaOutputDTO}, \texttt{AdministradorOutputDTO}, \texttt{JuegoAsignadoDTO} y \texttt{JuegoOutputDTO}. Exponen únicamente los campos necesarios para cada vista.
     \item \textbf{DTOs de creación:} \texttt{PacienteCreatedDTO} y \texttt{TerapeutaCreatedDTO}. Se devuelven al registrar un nuevo usuario e incluyen el nombre de usuario y la contraseña generada automáticamente para que el administrador o terapeuta pueda comunicársela al interesado.
-    \item \textbf{DTOs de seguimiento:} \texttt{PacienteSeguimientoDTO} y \texttt{TerapeutaSeguimientoDTO}. Contienen datos agregados como el número de juegos completados y el total de juegos asignados, usados en el panel de monitorización del terapeuta.
-    \item \textbf{DTOs auxiliares:} \texttt{PasswordResetDTO} (devuelve la nueva contraseña tras un reseteo) y \texttt{LoginRequest} (recibe usuario y contraseña en el login).
+    \item \textbf{DTOs de seguimiento:} \texttt{PacienteSeguimientoDTO} y \texttt{TerapeutaSeguimientoDTO}. Contienen datos agregados como el número de juegos completados, el total de juegos asignados y la lista detallada de juegos (con nombre, código, dificultad y estado), usados en el panel de monitorización del terapeuta.
+    \item \textbf{DTOs auxiliares:} \texttt{PasswordResetDTO} (devuelve la nueva contraseña tras un reseteo).
 \end{itemize}
 
-El mapeo entre entidades y DTOs se realiza mediante MapStruct. Para cada entidad principal existe una interfaz mapper anotada con \texttt{@Mapper(componentModel = "spring")} que define los métodos de conversión. Por ejemplo, \texttt{PacienteMapper} convierte \texttt{PacienteInputDTO} a \texttt{Paciente} y \texttt{Paciente} a \texttt{PacienteOutputDTO}, resolviendo automáticamente la relación con el terapeuta mediante \texttt{@Mapping(source = "terapeuta.id", target = "terapeuta\_id")}.
+El mapeo entre entidades y DTOs se realiza mediante MapStruct. Para cada entidad principal existe una interfaz mapper anotada con \texttt{@Mapper(componentModel = "spring")} que define los métodos de conversión. Por ejemplo, \texttt{PacienteMapper}, \texttt{TerapeutaMapper}, \texttt{AgendaMapper}, \texttt{AdministradorMapper} y \texttt{PacienteTerapeutaMapper} convierten sus respectivos DTOs de entrada a entidades y entidades a DTOs de salida, resolviendo automáticamente las relaciones entre tablas mediante \texttt{@Mapping}.
 
 \subsection{Seguridad}
 La infraestructura de seguridad se fundamenta en Spring Security y sigue un modelo de autenticación stateless basado en JWT.
@@ -76,7 +76,7 @@ Spring Security se configura mediante \texttt{SecurityConfig} con una cadena de 
 Además, la capa de servicio incorpora sus propias comprobaciones de pertenencia. Por ejemplo, un terapeuta solo puede ver, modificar o eliminar pacientes que tenga asignados; un paciente solo puede consultar su propia agenda. Esta doble verificación (a nivel de ruta y a nivel de servicio) actúa como defensa en profundidad.
 
 \subsubsection{Configuración CORS}
-El frontend Angular se ejecuta en \texttt{http://localhost:4200}, por lo que la configuración global de CORS en Spring Boot restringe el origen permitido a esa dirección. Las anotaciones \texttt{@CrossOrigin(origins = "*")} en cada controlador quedan sobrescritas por esta configuración global.
+El frontend Angular se ejecuta en \texttt{http://localhost:4200}, por lo que la configuración global de CORS en Spring Boot (mediante \texttt{WebMvcConfigurer}) restringe el origen permitido a esa dirección. Aunque cada controlador incluye \texttt{@CrossOrigin(origins = "*")}, la configuración global centraliza los orígenes permitidos.
 
 \subsubsection{Protección de contraseñas}
 Todas las contraseñas se almacenan usando BCrypt mediante la interfaz \texttt{PasswordEncoder} de Spring Security. En ningún momento se guarda la contraseña en texto plano. Cuando se genera una contraseña automática (tras crear un usuario o resetearla), se devuelve en texto plano en la respuesta de la API para que pueda ser comunicada al usuario, pero nunca persiste sin hashear.
@@ -86,7 +86,7 @@ La clase \texttt{Utils} centraliza dos funciones auxiliares empleadas en la crea
 
 \begin{itemize}
     \item \textbf{Generación de nombre de usuario:} Combina el nombre y el apellido del usuario en minúscula, elimina tildes y añade cuatro dígitos aleatorios (por ejemplo, \texttt{juan.perez1234}).
-    \item \textbf{Generación de contraseña:} Construye una contraseña temporal con el formato \texttt{NOap\#\#!}, donde las dos primeras letras son las iniciales del nombre en mayúscula, las dos siguientes son las últimas letras del apellido en minúscula, seguidas de un número aleatorio entre 1 y 100 y un carácter especial.
+    \item \textbf{Generación de contraseña:} Construye una contraseña temporal combinando las dos primeras letras del nombre en mayúscula con las dos últimas letras del apellido en minúscula, seguidas de un número aleatorio entre 1 y 100 y un carácter especial (por ejemplo, \texttt{NOap42!}).
 \end{itemize}
 
 \subsection{Lógica de servicio destacada}
@@ -183,10 +183,10 @@ La arquitectura del lado del cliente se distribuye según los siguientes princip
     \item \textbf{Organización de directorios:}
     \begin{itemize}
         \item \textbf{components:} Almacena los elementos moleculares y componentes visuales reutilizables de la interfaz, tales como botones, tarjetas y formularios de control.
-        \item \textbf{services:} Contiene las clases encargadas de gestionar la lógica de comunicación asíncrona y el consumo de endpoints desde la API del servidor.
+        \item \textbf{services:} Alberga los servicios de Angular que gestionan la comunicación asíncrona con la API, así como el interceptor HTTP (\texttt{auth.interceptor.ts}) que adjunta automáticamente el token JWT en las cabeceras de cada petición saliente.
         \item \textbf{models:} Define las interfaces y estructuras de datos estáticas que tipifican los objetos compartidos en la aplicación, garantizando la robustez del tipado.
         \item \textbf{pages:} Representa las vistas completas del sistema que se encargan de organizar y orquestar a los diferentes componentes reutilizables.
-        \item \textbf{interceptor:} Componente especializado encargado de interceptar globalmente las peticiones HTTP salientes para adjuntar el token de autenticación JWT de manera automatizada en las cabeceras de la solicitud.
+        \item \textbf{guards:} Contiene los guardianes de ruta encargados de proteger el acceso a las vistas según el estado de autenticación y el rol del usuario (\texttt{terapeuta}, \texttt{paciente} o \texttt{administrador}).
     \end{itemize}
     \item \textbf{Estilos y consistencia visual:} El diseño visual y la adaptabilidad de la interfaz se apoyan en el estándar CSS3 combinado con el framework Bootstrap para agilizar la maquetación geométrica de contenedores, tarjetas, botones y menús. Asimismo, se integra la librería PrimeIcons para unificar el catálogo de iconografía, optimizando la experiencia de usuario y la calidad de la presentación gráfica.
 \end{itemize}

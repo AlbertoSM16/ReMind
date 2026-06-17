@@ -1,12 +1,9 @@
 <div class="matching-game-container">
   <div class="game-header">
     <h1 class="game-title">{{ title }}</h1>
-    <button class="btn-instructions" (click)="reproducirInstrucciones()">
-      <i class="pi pi-volume-up"></i> Escuchar Instrucciones
+    <button class="btn-instrucciones" (click)="mostrarInstrucciones()">
+      <i class="pi pi-info-circle"></i> Instrucciones
     </button>
-    <p class="game-description">
-      Relaciona cada profesión con su objeto. Arrastra las imágenes de la izquierda a la zona correspondiente.
-    </p>
   </div>
 
   <div class="game-area">
@@ -46,4 +43,11 @@
   <div class="game-actions">
     <button class="btn-reset" (click)="resetGame()">Reiniciar Juego</button>
   </div>
+
+  <app-instrucciones-modal
+    [titulo]="title"
+    [texto]="modalTexto"
+    [audioSrc]="'assets/matching/instrucciones.mp3'"
+    [(visible)]="modalVisible">
+  </app-instrucciones-modal>
 </div>

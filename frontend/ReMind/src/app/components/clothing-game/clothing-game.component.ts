@@ -1,6 +1,6 @@
-// app/components/clothing-game/clothing-game.component.ts
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { InstruccionesModalComponent } from '../instrucciones-modal/instrucciones-modal.component';
 
 interface ClothingItem {
   id: number;
@@ -18,22 +18,24 @@ interface DropTarget {
 @Component({
   selector: 'app-clothing-game',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, InstruccionesModalComponent],
   templateUrl: './clothing-game.component.html',
   styleUrls: ['./clothing-game.component.css']
 })
 export class ClothingGameComponent implements OnInit {
 
-  @Input() dificultad: number = 1; // Añadido para consistencia
-  @Output() gameCompleted = new EventEmitter<void>(); // Añadido
+  @Input() dificultad: number = 1;
+  @Output() gameCompleted = new EventEmitter<void>();
 
   clothingItems: ClothingItem[] = [];
   dropTargets: { [key: string]: DropTarget } = {};
   score = 0;
   gameOver = false;
   feedbackMessage = '';
-  private audioInstrucciones: HTMLAudioElement | null = null;
-  title = 'Vístete ';
+  title = 'Vístete';
+
+  modalVisible = false;
+  modalTexto = 'Imagínate que te estás preparando para salir de tu casa a hacer recados, y necesitas vestirte. En este juego tendrás que vestir a la persona que hay abajo como si de ti se tratara. ¡Coloca cada prenda en su sitio!';
 
   constructor() { }
 
@@ -88,7 +90,7 @@ export class ClothingGameComponent implements OnInit {
           item.placed = true;
           target.item = item;
           this.score++;
-          this.feedbackMessage = `¡Bien hecho! Has colocado la ${item.name.toLowerCase()}.`;
+          this.feedbackMessage = `¡Bien hecho! Has colocado ${item.name.toLowerCase()}.`;
           this.checkGameOver();
         } else {
           this.feedbackMessage = '¡Ups! Esa prenda no va en esa parte del cuerpo. Inténtalo de nuevo.';
@@ -100,7 +102,7 @@ export class ClothingGameComponent implements OnInit {
   checkGameOver(): void {
     if (this.score === this.clothingItems.length) {
       this.gameOver = true;
-      this.gameCompleted.emit(); 
+      this.gameCompleted.emit();
     }
   }
 
@@ -108,13 +110,7 @@ export class ClothingGameComponent implements OnInit {
     this.initializeGame();
   }
 
-   reproducirInstrucciones(): void {
-    if (this.audioInstrucciones && !this.audioInstrucciones.paused) {
-      this.audioInstrucciones.pause();
-      this.audioInstrucciones.currentTime = 0;
-    }
-
-    this.audioInstrucciones = new Audio('assets/clothing/instrucciones.mp3');
-    this.audioInstrucciones.play();
+  mostrarInstrucciones(): void {
+    this.modalVisible = true;
   }
 }
