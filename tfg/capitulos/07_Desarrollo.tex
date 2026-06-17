@@ -40,6 +40,11 @@ El sistema de persistencia se compone de diez entidades JPA que reflejan el mode
 
 Todas las tablas se sincronizan automáticamente con la base de datos MySQL mediante la propiedad \texttt{spring.jpa.hibernate.ddl-auto=update}, que crea o actualiza el esquema al iniciar la aplicación.
 
+\subsection{Entorno de desarrollo con Docker}
+El entorno de desarrollo del backend se apoya en Docker para la gestión de la base de datos. En lugar de instalar MySQL directamente en el sistema operativo, se define un contenedor Docker a partir de la imagen oficial de MySQL 8.0, configurado mediante el archivo \texttt{docker-compose.yml} situado en la raíz del proyecto. Este archivo especifica las variables de entorno necesarias (usuario \texttt{root}, contraseña \texttt{root1234}, base de datos \texttt{remind}) y monta un volumen (\texttt{mysql\_data}) para garantizar la persistencia de los datos entre reinicios del contenedor. La base de datos se expone en el puerto \texttt{3306} del equipo anfitrión.
+
+El flujo de trabajo diario comienza ejecutando \texttt{docker compose up -d} en la raíz del proyecto para levantar el contenedor MySQL en segundo plano. Una vez que la base de datos está operativa, se inicia el backend con Maven (\texttt{./mvnw spring-boot:run}) y el frontend con Angular CLI (\texttt{ng serve}). Este proceso se ha automatizado mediante el script \texttt{start-all.sh}, que orquesta los tres componentes secuencialmente, permitiendo poner en marcha el entorno completo de desarrollo con una sola orden.
+
 \subsection{DTOs y mapeo}
 La comunicación entre la API y la capa de servicio se realiza a través de objetos DTO específicos para cada operación. Se definieron los siguientes grupos:
 

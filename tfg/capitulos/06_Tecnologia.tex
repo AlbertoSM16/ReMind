@@ -26,6 +26,18 @@ Más allá de las ventajas técnicas objetivas, un factor decisivo para la adopc
     \item \textbf{Gestión de Riesgos:} El conocimiento de los problemas comunes de configuración y escalado de MySQL permitió anticipar incidencias. Esto evitó dedicar tiempo valioso del cronograma a depurar fallos de configuración de bajo nivel, permitiendo centrar los esfuerzos en la lógica de negocio.
 \end{itemize}
 
+\subsection{Docker}
+Para la gestión y el despliegue del sistema gestor de bases de datos MySQL, se ha utilizado Docker, una plataforma de código abierto que permite automatizar el despliegue de aplicaciones dentro de contenedores de software. Un contenedor Docker encapsula una aplicación y todas sus dependencias en una unidad estandarizada, garantizando que se ejecute de manera consistente independientemente del entorno en el que se despliegue.
+
+La decisión de integrar Docker en el proyecto responde a las siguientes consideraciones:
+
+\begin{itemize}
+    \item \textbf{Portabilidad:} La base de datos MySQL se ejecuta dentro de un contenedor Docker, lo que elimina la necesidad de instalar y configurar manualmente el SGBD en la máquina del desarrollador. Esto asegura que el entorno de base de datos sea idéntico en cualquier sistema que ejecute el contenedor.
+    \item \textbf{Aislamiento:} El contenedor de la base de datos opera de forma aislada del resto del sistema, evitando conflictos con otras versiones de MySQL o servicios que puedan estar ejecutándose en el equipo.
+    \item \textbf{Reproducibilidad:} Mediante el archivo \texttt{docker-compose.yml} se define y versiona la configuración completa del servicio de base de datos, incluyendo la imagen de MySQL 8.0, las variables de entorno (usuario, contraseña, nombre de la base de datos) y la persistencia de datos mediante volúmenes de Docker.
+    \item \textbf{Automatización del inicio:} El script \texttt{start-all.sh} orquesta la puesta en marcha de toda la aplicación: primero levanta el contenedor Docker con \texttt{docker compose up -d}, a continuación arranca el backend Spring Boot y finalmente inicia el frontend Angular. De esta manera, el entorno de desarrollo completo se activa con un solo comando.
+\end{itemize}
+
 \subsection{Backend: Spring Boot}
 Para la implementación del \textit{backend} y la lógica de negocio de este proyecto, se seleccionó el \textit{framework} Spring Boot. Esta decisión se basó en un análisis de sus capacidades para acelerar el desarrollo y su robustez para la puesta en producción.
 
