@@ -2,6 +2,10 @@ package com.remind.back.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.remind.back.dto.*;
+import com.remind.back.repositories.AdministradorRepository;
+import com.remind.back.repositories.PacienteRepository;
+import com.remind.back.repositories.TerapeutaRepository;
+import com.remind.back.security.JwtUtil;
 import com.remind.back.services.AgendaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,18 @@ public class AgendaControllerTest {
 
     @MockBean
     private AgendaService agendaService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
+
+    @MockBean
+    private AdministradorRepository administradorRepository;
+
+    @MockBean
+    private TerapeutaRepository terapeutaRepository;
+
+    @MockBean
+    private PacienteRepository pacienteRepository;
 
     @Autowired
     private ObjectMapper objectMapper;

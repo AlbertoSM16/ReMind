@@ -5,6 +5,10 @@ import com.remind.back.dto.PacienteCreatedDTO;
 import com.remind.back.dto.PacienteInputDTO;
 import com.remind.back.dto.PacienteOutputDTO;
 import com.remind.back.dto.PasswordResetDTO;
+import com.remind.back.repositories.AdministradorRepository;
+import com.remind.back.repositories.PacienteRepository;
+import com.remind.back.repositories.TerapeutaRepository;
+import com.remind.back.security.JwtUtil;
 import com.remind.back.services.PacienteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,18 @@ public class PacienteControllerTest {
 
     @MockBean
     private PacienteService pacienteService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
+
+    @MockBean
+    private AdministradorRepository administradorRepository;
+
+    @MockBean
+    private TerapeutaRepository terapeutaRepository;
+
+    @MockBean
+    private PacienteRepository pacienteRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -109,10 +125,22 @@ public class PacienteControllerTest {
                 .andExpect(jsonPath("$.contrasenia").value("pass123"));
     }
 
+    private PacienteInputDTO createValidPacienteInput() {
+        PacienteInputDTO input = new PacienteInputDTO();
+        input.setNombre("Paciente1");
+        input.setApellido("Apellido1");
+        input.setTelefono("123456789");
+        input.setEnfermedad("Alzheimer");
+        input.setEdad(70);
+        input.setNombreResponsable("Responsable1");
+        input.setFechaNacimiento(new Date());
+        input.setTerapeuta_id(1);
+        return input;
+    }
+
     @Test
     public void testCreatePaciente_Failure() throws Exception {
-        PacienteInputDTO input = new PacienteInputDTO();
-        // Missing fields to trigger validation/error if processed or mock service throwing error
+        PacienteInputDTO input = createValidPacienteInput();
         when(pacienteService.createPaciente(any(PacienteInputDTO.class))).thenThrow(new RuntimeException("Error en base de datos"));
 
         mockMvc.perform(post("/api/paciente")
@@ -171,7 +199,7 @@ public class PacienteControllerTest {
 
     @Test
     public void testUpdatePaciente_Success() throws Exception {
-        PacienteInputDTO input = new PacienteInputDTO();
+        PacienteInputDTO input = createValidPacienteInput();
         input.setNombre("PacienteActualizado");
 
         PacienteOutputDTO output = new PacienteOutputDTO();
@@ -190,7 +218,7 @@ public class PacienteControllerTest {
 
     @Test
     public void testUpdatePaciente_Failure() throws Exception {
-        PacienteInputDTO input = new PacienteInputDTO();
+        PacienteInputDTO input = createValidPacienteInput();
 
         when(pacienteService.updatePaciente(eq(99), any(PacienteInputDTO.class))).thenThrow(new RuntimeException("Not found"));
 

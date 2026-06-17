@@ -5,6 +5,8 @@ import com.remind.back.entities.*;
 import com.remind.back.repositories.AdministradorRepository;
 import com.remind.back.repositories.PacienteRepository;
 import com.remind.back.repositories.TerapeutaRepository;
+import com.remind.back.security.JwtUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,8 +43,16 @@ public class AuthControllerTest {
     @MockBean
     private PasswordEncoder passwordEncoder;
 
+    @MockBean
+    private JwtUtil jwtUtil;
+
     @Autowired
     private ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp() {
+        when(jwtUtil.generateToken(anyString(), anyString())).thenReturn("mock-jwt-token");
+    }
 
     @Test
     public void testLogin_AdminSuccess() throws Exception {

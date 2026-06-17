@@ -2,6 +2,10 @@ package com.remind.back.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.remind.back.dto.*;
+import com.remind.back.repositories.AdministradorRepository;
+import com.remind.back.repositories.PacienteRepository;
+import com.remind.back.repositories.TerapeutaRepository;
+import com.remind.back.security.JwtUtil;
 import com.remind.back.services.TerapeutaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,18 @@ public class TerapeutaControllerTest {
 
     @MockBean
     private TerapeutaService terapeutaService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
+
+    @MockBean
+    private AdministradorRepository administradorRepository;
+
+    @MockBean
+    private TerapeutaRepository terapeutaRepository;
+
+    @MockBean
+    private PacienteRepository pacienteRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -104,8 +120,7 @@ public class TerapeutaControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
-    public void testCreateTerapeuta_Success() throws Exception {
+    private TerapeutaInputDTO createValidTerapeutaInput() {
         TerapeutaInputDTO input = new TerapeutaInputDTO();
         input.setNombre("Terapeuta1");
         input.setApellido("Apellido1");
@@ -113,6 +128,12 @@ public class TerapeutaControllerTest {
         input.setTelefono("123456789");
         input.setEspecialidad("Neuro");
         input.setFechaNacimiento(new Date());
+        return input;
+    }
+
+    @Test
+    public void testCreateTerapeuta_Success() throws Exception {
+        TerapeutaInputDTO input = createValidTerapeutaInput();
 
         TerapeutaCreatedDTO created = new TerapeutaCreatedDTO("t.usuario", "pass123");
 
@@ -128,7 +149,7 @@ public class TerapeutaControllerTest {
 
     @Test
     public void testCreateTerapeuta_Failure() throws Exception {
-        TerapeutaInputDTO input = new TerapeutaInputDTO();
+        TerapeutaInputDTO input = createValidTerapeutaInput();
 
         when(terapeutaService.createTerapeuta(any(TerapeutaInputDTO.class))).thenThrow(new RuntimeException("DB Error"));
 
@@ -158,7 +179,7 @@ public class TerapeutaControllerTest {
 
     @Test
     public void testUpdateTerapeuta() throws Exception {
-        TerapeutaInputDTO input = new TerapeutaInputDTO();
+        TerapeutaInputDTO input = createValidTerapeutaInput();
         input.setNombre("TerapeutaActualizado");
 
         TerapeutaOutputDTO output = new TerapeutaOutputDTO();

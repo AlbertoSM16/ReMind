@@ -15,7 +15,7 @@ import com.remind.back.dto.AdministradorInputDTO;
 import com.remind.back.dto.AdministradorOutputDTO;
 import com.remind.back.entities.Administrador;
 import com.remind.back.repositories.AdministradorRepository;
-import com.remind.back.services.AdministradorService;
+import com.remind.back.services.AdministradorServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class AdministradorServiceImplTest {
@@ -30,7 +30,7 @@ public class AdministradorServiceImplTest {
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private AdministradorService administradorService;
+    private AdministradorServiceImpl administradorService;
 
     @Test
     void testCreateAdministrador() {
